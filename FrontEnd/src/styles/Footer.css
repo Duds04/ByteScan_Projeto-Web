@@ -1,0 +1,44 @@
+.footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  /* color: gray; */
+  font-weight: 900;
+  border-top: 1px solid #ffffff;
+  font-size: 18px;
+
+  padding: 10px 32px;
+  background: #000;
+  box-shadow: 0 2px 16px 0 rgba(108, 46, 191, 0.1);
+  position: relative;
+  bottom: 0;
+  margin-top: 100px;
+
+  color: gray;
+}
+
+.footer-icons {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+
+  /* Aplica css nos elementos filhos da div */
+  > * {
+    cursor: pointer;
+  }
+}
+
+.footer-discord-icon {
+  margin-left: -4px;
+  height: 35px;
+  align-self: center;
+  margin-top: 5.1px;
+  display: inline-block;
+}
+
+.footer-logo {
+  width: 80px;
+  filter: drop-shadow(0 2px 8px #47178544);
+}

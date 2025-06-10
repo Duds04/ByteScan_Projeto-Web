@@ -1,0 +1,186 @@
+.manga-page {
+  .manga-card-img {
+    width: 360px;
+    height: 540px;
+    object-fit: cover;
+    align-self: center;
+    border-radius: 20px;
+    box-shadow: 0 0 40px 0 #4a0ca0, 0 0 24px 8px #580dc044;
+    border: 6px solid #6a00ff62;
+    user-select: "none";
+  }
+
+  .manga-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 60px;
+    padding: 20px 60px;
+    box-sizing: border-box;
+    max-height: 100%;
+    margin-bottom: 40px;
+  }
+
+  .manga-card-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    width: 45%;
+    font-size: 1rem;
+    /* border: 6px  #580dc065; */
+    box-shadow: 0 0 24px 8px #6700f8a4;
+    padding: 15px 4% 15px 3%;
+    border: 6px solid #6800fa62;
+    border-radius: 20px;
+    backdrop-filter: blur(4);
+
+    background: linear-gradient(
+      135deg,
+      rgba(72, 0, 255, 0.1) 0%,
+      rgba(72, 0, 255, 0.042) 100%
+    );
+
+    p {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      text-align: end;
+    }
+  }
+  .manga-title-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .manga-title {
+    box-shadow: 0 0 18px 8px #17198669;
+    padding: 20px 25px;
+    border-radius: 20px;
+    border: 3px solid #450e9144;
+    color: #a251fe;
+    border: none;
+    backdrop-filter: blur(8px);
+    width: fit-content;
+    align-self: center;
+    background: #450e9144;
+    background: linear-gradient(
+      135deg,
+      rgba(72, 0, 255, 0.226) 0%,
+      rgba(72, 0, 255, 0.123) 100%
+    );
+  }
+  .nav-chapters {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  .button-chapters-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+  .button-chapters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    color: #d651fe;
+    font-weight: 900;
+    font-size: 1rem;
+    background: linear-gradient(120deg, #3b1d8f 50%, #252562 100%);
+
+    /* box-shadow: 0 4px 16px rgba(108, 46, 191, 0.18); */
+    /* transition: background 0.3s, box-shadow 0.3s, color 0.3s; */
+
+    &:hover {
+      background: linear-gradient(90deg, #3b1d8f 0%, #471785 100%);
+
+      box-shadow: 0 6px 24px rgba(210, 61, 255, 0.18);
+      transition: color 0.2s, background 0.2s, text-shadow 0.2s;
+      color: #d651fe;
+    }
+  }
+
+  .button-bookmark,
+  .button-bookmark-disabled {
+    background-color: #00000000;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+
+  .button-bookmark {
+    &:hover {
+      color: #d6c2f1;
+    }
+  }
+  .bookmark-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    text-align: center;
+  }
+
+  .manga-description {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    padding: 10px;
+    box-shadow: inset 0px 16px 5px -8px #6a00ff62,
+      inset 0px -16px 5px -8px #6a00ff62;
+    border-radius: 4px;
+    margin: 0px 40px;
+
+    .manga-description-title {
+      border-bottom: 3px solid #ffffffe1;
+      padding-left: 10px;
+      padding-bottom: 4px;
+      font-weight: 900;
+    }
+    .manga-description-text {
+      padding-left: 10px;
+    }
+  }
+
+  .manga-chapters {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin: 0px 40px;
+    .manga-chapter-title {
+      padding-left: 10px;
+      padding-bottom: 4px;
+      font-weight: 900;
+    }
+  }
+
+  .manga-chapters-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .manga-chapters-item {
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #7400f87c;
+    box-shadow: 0 0 10px 4px #7400f893;
+    padding: 18px 30px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .chapters-titulo {
+    font-weight: 900;
+  }
+}

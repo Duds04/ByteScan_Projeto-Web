@@ -16,16 +16,13 @@ O ByteScan é um site que disponibiliza traduções de mangás, manhwa, webtoons
       npm run dev
    
 ---
-   
-   #### Tecnologias Utilizadas
+#### Tecnologias Utilizadas
    
    - **React**: Biblioteca para construção de interfaces de usuário.
    - **Vite**: Ferramenta de build e servidor de desenvolvimento rápido.
    - **JavaScript**: Linguagem principal do projeto.
    - **Tailwind CSS**: Framework utilitário para estilização rápida e responsiva.
    
-   ---
-
-
+---
 
 

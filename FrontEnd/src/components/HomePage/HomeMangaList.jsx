@@ -15,7 +15,7 @@ function HomeMangaList({ title, mangas }) {
   }
 
   function returnMangaCap(idManga, idCap) {
-    navigate(`/Manga/${idManga}/${idCap}`);
+    navigate(`/Manga/${idManga}/Cap/${idCap}`);
   }
   return (
     <div className="home-manga-list">
@@ -47,9 +47,9 @@ function HomeMangaList({ title, mangas }) {
                     <div className="home-manga-card-rating">
                       <StarRating value={manga.avaliacao} />
                     </div>
-                    {manga.lancamento && manga.lancamento.length > 0 && (
+                    {manga.capitulos && manga.capitulos.length > 0 && (
                       <div className="home-manga-card-release">
-                        {manga.lancamento.map((lancamento, lidx) => (
+                        {manga.capitulos.map((capitulos, lidx) => (
                           <div
                             key={lidx}
                             className="home-manga-card-release-item"
@@ -57,13 +57,13 @@ function HomeMangaList({ title, mangas }) {
                             <button
                               className="release-chapter"
                               onClick={() => {
-                                returnMangaCap(manga.id, lancamento.idCap);
+                                returnMangaCap(manga.id, capitulos.idCap);
                               }}
                             >
-                              {lancamento.capitulo}
+                              {capitulos.capitulo}
                             </button>
                             <span className="release-date">
-                              {lancamento.data}
+                              {capitulos.data}
                             </span>
                           </div>
                         ))}

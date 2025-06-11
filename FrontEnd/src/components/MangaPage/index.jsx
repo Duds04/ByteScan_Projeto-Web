@@ -13,10 +13,6 @@ function MangaPage() {
   const [userRating, setUserRating] = useState(null);
   const [favoritado, setFavoritado] = useState(false);
 
-  function returnMangaCap(idCap) {
-    navigate(`/Manga/${id}/Cap/${idCap}`);
-  }
-
   // Mock de requisição ao servidor
   useEffect(() => {
     setLoading(true);
@@ -42,13 +38,14 @@ function MangaPage() {
           { idCap: 2, capitulo: "Capítulo 2", data: "10/05/2025" },
           { idCap: 3, capitulo: "Capítulo 2", data: "10/05/2025" },
         ],
+        idUltimoCapituloLancado: 3, // passa o id
       });
       // Simula verificação no backend se já favoritou
       // fetch(`/api/manga/${id}/favoritado`, { method: 'GET' })
       //   .then(res => res.json()).then(data => setFavoritado(data.favoritado));
 
       setLoading(false);
-    }, 5000); // Simula 5 segundos de carregamento
+    }, 500); // Simula 5 segundos de carregamento
   }, [id]);
 
   // Função para enviar avaliação ao backend (mock)
@@ -78,6 +75,12 @@ function MangaPage() {
     }));
     setFavoritado(true);
     alert("Mangá favoritado com sucesso!");
+  }
+
+  function returnMangaCap(idCap) {
+    navigate(`/Manga/${id}/Cap/${idCap}`, {
+      state: { manga, favoritado },
+    });
   }
 
   if (loading) return <LoadingGame />;

@@ -1,9 +1,7 @@
 import { Instagram, Linkedin } from "lucide-react";
 import "../../styles/Footer.css";
-import { useNavigate } from "react-router-dom";
 
 function Footer() {
-  const navigate = useNavigate();
 
   function returnPage(urls) {
     urls.map((url) => {

@@ -1,0 +1,169 @@
+.chapter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 50px 100px;
+}
+
+.chapter-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  span {
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    gap: 6px;
+    font-weight: 900;
+    color: #a992c7;
+  }
+
+  a {
+    font-family: "Poppins", sans-serif;
+    color: #a992c7;
+    font-weight: 0;
+
+    text-decoration: none;
+    font-weight: bold;
+    &:hover {
+      color: #9659e6;
+    }
+  }
+}
+
+.chapter-controler {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.chapter-controler-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.chapter-select {
+  width: 60%;
+  padding: 15px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(235, 235, 235, 0.2);
+  color: rgb(216, 184, 253);
+
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.chapter-select:hover {
+  background-color: rgba(235, 235, 235, 0.233);
+  cursor: pointer;
+}
+
+.chapter-select::after {
+  position: absolute;
+  right: 0;
+  content: "\f0dc";
+  font-family: "Font Awesome 5 Free";
+  font-style: normal;
+  font-weight: 900;
+  text-decoration: inherit;
+  background: transparent;
+  width: 17px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.chapter-button {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 1rem;
+  background: linear-gradient(90deg, #3b1d8f 0%, #471785 100%);
+
+  cursor: pointer;
+  /* box-shadow: 0 4px 16px rgba(108, 46, 191, 0.18); */
+  /* transition: background 0.3s, box-shadow 0.3s, color 0.3s; */
+
+  &:hover {
+    background: linear-gradient(120deg, #3b1d8f 50%, #252562 100%);
+
+    box-shadow: 0 6px 24px rgba(210, 61, 255, 0.18);
+    transition: color 0.2s, background 0.2s, text-shadow 0.2s;
+    color: #d651fe;
+  }
+}
+
+.prev-disable {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 1rem;
+  background: linear-gradient(90deg, #3b1d8f 0%, #471785 100%);
+
+  &:hover {
+    box-shadow: none;
+  }
+}
+
+.chapter-imagem-item {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  box-shadow: inset 0px 16px 5px -8px #6a00ff62,
+    inset 0px -16px 5px -8px #6a00ff62;
+}
+
+.chapter-images-container {
+  margin: 50px 0px;
+}
+
+.chapter-bookmark-btn {
+  background: #c4b4e6;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px #a251fe22;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.chapter-bookmark-btn-ativado {
+  background: #2f2f7c;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px #a251fe22;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.chapter-bookmark-btn:hover {
+  box-shadow: 0 4px 16px #a251fe44;
+}
+.chapter-bookmark-btn:active {
+  box-shadow: 0 2px 12px #a251fe11;
+  background-color: #2f2f7c;
+}

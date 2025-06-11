@@ -1,5 +1,4 @@
 .home-manga-list {
-  margin-bottom: 60px;
 }
 .home-manga-list-items {
   display: grid;
@@ -132,6 +131,27 @@
 @media (max-width: 900px) {
   .home-manga-list-items {
     grid-template-columns: 1fr;
+  }
+  .home-manga-list-container {
+    display: block;
+    padding: 2rem 6rem;
+  }
+  .home-manga-list-items {
+    display: block;
+  }
+  .home-manga-card {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 35px;
+  }
+  .home-manga-card-img {
+    width: 350px;
+    height: 450px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 0 40px #461786;
+    border: 6px solid #580dc065;
+    cursor: pointer;
   }
 }
 

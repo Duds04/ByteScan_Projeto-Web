@@ -39,7 +39,15 @@ function SearchPage() {
       const genero = location.state.genero;
       const filtrados = ALL_MANGAS.filter((m) => m.generos.includes(genero));
       setSearchResults(filtrados);
-      setQuery("");
+      setQuery(genero); // Mostra o texto do filtro no input
+    } else if (location.state?.tipo) {
+      const tipo = location.state.tipo;
+      const filtrados = ALL_MANGAS.filter(
+        (m) =>
+          m.tipos?.includes(tipo) || m.status === tipo || m.generos.includes(tipo)
+      );
+      setSearchResults(filtrados);
+      setQuery(tipo); // Mostra o texto do filtro no input
     } else {
       setSearchResults(ALL_MANGAS);
     }

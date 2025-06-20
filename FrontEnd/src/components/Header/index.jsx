@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp, CircleUserRound } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../styles/Header.css";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../auth/AuthContext";
@@ -8,6 +8,7 @@ import LoginComponent from "../LoginComponent";
 
 function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [login, setLogin] = useState(false);
   const [open, setOpen] = useState(false);
   const [hiding, setHiding] = useState(false);
@@ -85,10 +86,8 @@ function Header() {
                   <ul>
                     {generos.map((g, i) => (
                       <li key={i} onClick={() => {
-                        window.location.pathname !== '/SearchPage'
-                          ? window.location.assign('/SearchPage')
-                          : window.history.replaceState({ genero: g }, '', '/SearchPage');
-                        // Preferencialmente, use navigate com state se possível
+                        navigate('/SearchPage', { state: { genero: g } });
+                        setOpen(false);
                       }}>{g}</li>
                     ))}
                   </ul>
@@ -97,7 +96,10 @@ function Header() {
                   <span className="dropdown-title">Tipos</span>
                   <ul>
                     {tipos.map((t, i) => (
-                      <li key={i}>{t}</li>
+                      <li key={i} onClick={() => {
+                        navigate('/SearchPage', { state: { tipo: t } });
+                        setOpen(false);
+                      }}>{t}</li>
                     ))}
                   </ul>
                 </div>

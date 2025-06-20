@@ -2,11 +2,13 @@ import "./App.css";
 import { useParams, Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
-import HomePage from "./components/HomePage";
+import HomePage from "./Pages/HomePage";
 import Footer from "./components/Footer";
-import MangaPage from "./components/MangaPage";
+import MangaPage from "./Pages/MangaPage";
 import LoadingGame from "./components/LoadingGame";
-import ChapterPage from "./components/ChapterPage";
+import ChapterPage from "./Pages/ChapterPage";
+import PrivateRoute from "./auth/PrivateRoute";
+import SearchPage from "./Pages/SearchPage";
 
 function App() {
   return (
@@ -15,10 +17,24 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/Manga/:id" element={<MangaPage />} />
-          <Route path="/Manga/:id/Cap/:idCap" element={<ChapterPage />}></Route>
+          <Route
+            path="/Manga/:id"
+            element={
+              <PrivateRoute>
+                <MangaPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/Manga/:id/Cap/:idCap"
+            element={
+              <PrivateRoute>
+                <ChapterPage />
+              </PrivateRoute>
+            }
+          ></Route>
           <Route path="/404" element={<LoadingGame loading={false} />} />
-          {/* <Route path="/Pagina" element={<Pagina />} /> */}
+          <Route path="/SearchPage" element={<SearchPage/>} />
         </Routes>
       </main>
       <Footer />

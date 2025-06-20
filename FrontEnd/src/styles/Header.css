@@ -219,3 +219,36 @@
   margin-left: 0.25rem;
   font-size: 1.2em;
 }
+
+.header-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+}
+
+.custom-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 2px 8px #47178522;
+}
+
+.header-username {
+  color: #c238eb;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  font-family: "Orbitron", sans-serif;
+}
+.header-user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5rem;
+}

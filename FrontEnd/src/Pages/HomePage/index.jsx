@@ -1,17 +1,17 @@
 import "../../styles/HomePage.css";
 import HomeIntroduction from "./HomeIntroduction.jsx";
 import HomeMangaList from "./HomeMangaList.jsx";
-import LoadingGame from "../LoadingGame/index.jsx";
+import LoadingGame from "../../components/LoadingGame/index.jsx";
 import { useState, useEffect } from "react";
 
 function HomePage() {
   const [loading, setLoading] = useState(true);
   const [mangasUltimos, setMangasUltimos] = useState([]);
   const [mangasMaisLidos, setMangasMaisLidos] = useState([]);
+  
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
       setMangasUltimos([
         {
           id: 1,
@@ -129,7 +129,6 @@ function HomePage() {
         },
       ]);
       setLoading(false);
-    }, 1200);
   }, []);
 
   if (loading) return <LoadingGame />;

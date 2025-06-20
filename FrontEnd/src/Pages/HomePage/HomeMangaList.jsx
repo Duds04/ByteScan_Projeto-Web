@@ -1,5 +1,5 @@
 import "../../styles/HomeMangaList.css";
-import StarRating from "../StarRating";
+import StarRating from "../../components/StarRating";
 import { useNavigate } from "react-router-dom";
 
 function HomeMangaList({ title, mangas }) {

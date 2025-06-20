@@ -9,6 +9,7 @@ const ALL_MANGAS = [
     nome: "SPEH",
     imagemCapa: "/manga1.jpeg",
     generos: ["Terror", "Fantasia", "Mistério"],
+    tipo: "Mangá",
     status: "Em lançamento",
     anoLancamento: 2025,
     autores: ["Ataide Jr"],
@@ -19,6 +20,7 @@ const ALL_MANGAS = [
     nome: "A Crônica do Erudito",
     imagemCapa: "/manga2.jpg",
     generos: ["Aventura", "Fantasia"],
+    tipo: "Manhua",
     status: "Completo",
     anoLancamento: 2024,
     autores: ["Maria Eduarda"],
@@ -42,10 +44,7 @@ function SearchPage() {
       setQuery(genero); // Mostra o texto do filtro no input
     } else if (location.state?.tipo) {
       const tipo = location.state.tipo;
-      const filtrados = ALL_MANGAS.filter(
-        (m) =>
-          m.tipos?.includes(tipo) || m.status === tipo || m.generos.includes(tipo)
-      );
+      const filtrados = ALL_MANGAS.filter((m) => m.tipo === tipo);
       setSearchResults(filtrados);
       setQuery(tipo); // Mostra o texto do filtro no input
     } else {
@@ -56,9 +55,11 @@ function SearchPage() {
   // Busca por texto
   const handleSearch = (e) => {
     e.preventDefault();
-    const filtrados = ALL_MANGAS.filter((m) =>
-      m.nome.toLowerCase().includes(query.toLowerCase()) ||
-      m.generos.some((g) => g.toLowerCase().includes(query.toLowerCase()))
+    const filtrados = ALL_MANGAS.filter(
+      (m) =>
+        m.nome.toLowerCase().includes(query.toLowerCase()) ||
+        m.generos.some((g) => g.toLowerCase().includes(query.toLowerCase())) ||
+        (m.tipo && m.tipo.toLowerCase().includes(query.toLowerCase()))
     );
     setSearchResults(filtrados);
   };
@@ -79,7 +80,9 @@ function SearchPage() {
         <button type="submit">Pesquisar</button>
       </form>
 
-      <h2 className="search-result-title">{searchResults.length} Resultado(s)</h2>
+      <h2 className="search-result-title">
+        {searchResults.length} Resultado(s)
+      </h2>
       <hr className="search-divider" />
 
       <div className="search-results">
@@ -97,6 +100,9 @@ function SearchPage() {
             <div className="search-info-box">
               <p>
                 <b>Nome:</b> {manga.nome}
+              </p>
+              <p>
+                <b>Tipo:</b> {manga.tipo}
               </p>
               <p>
                 <b>Gênero:</b> {manga.generos.join(", ")}

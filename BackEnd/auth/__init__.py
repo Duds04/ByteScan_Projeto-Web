@@ -1,5 +1,5 @@
 from flask import Blueprint
 
-auth_bp = Blueprint('auth', __name__)
+auth_bp = Blueprint("auth", __name__)
 
-from auth import login, cadastro  # importa os módulos para registrar as rotas
+from auth import login, cadastro  # Garante que rotas sejam registradas

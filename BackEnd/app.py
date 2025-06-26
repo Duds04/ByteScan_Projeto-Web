@@ -12,7 +12,7 @@ from auth import auth_bp
 
 # Dicionário com as blueprints principais e seus prefixos
 blueprints = {
-    auth_bp: "/api/auth",
+    auth_bp: "/api/auth"
 }
 
 def create_app():

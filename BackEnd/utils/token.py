@@ -3,6 +3,7 @@ import jwt
 import os
 from datetime import datetime, timedelta
 from functools import wraps
+from database.models import User
 
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback_secret")
 
@@ -58,7 +59,7 @@ def authorize_user(id):
     except ValueError as e:
         return jsonify({"message": str(e)}), 401
 
-    user = Users.query.get(id)
+    user = User.query.get(id)
     if not user:
         return jsonify({"message": "Usuário não encontrado."}), 404
 

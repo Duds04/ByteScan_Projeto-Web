@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from database.models import User
 from utils.hash import verify_password
-from utils.token import generate_token, protected
+from utils.token import generate_token
 
 login_bp = Blueprint("login", __name__, url_prefix="/login")
 
@@ -25,7 +25,3 @@ def login():
         return jsonify({"message": "Campos obrigatórios não fornecidos"}), 400
 
     return autenticar_user(email, password)
-
-@login_bp.route("/protected", methods=["GET"])
-def proteger():
-    return protected()

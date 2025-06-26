@@ -1,11 +1,16 @@
 from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
-from auth.routes import auth_bp
-from database.db import db
 import os
 
 load_dotenv()
+
+# Importa os blueprints
+from auth import auth_bp
+
+blueprints = {
+        auth_bp: "/api/auth",
+    }
 
 def create_app():
     app = Flask(__name__)
@@ -13,8 +18,14 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
-    db.init_app(app)
     CORS(app)
-    app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    # db.init_app(app)  # se usar banco
+
+    # Dicionário com blueprint e prefixo
+    
+
+    # Registra todas as blueprints do dicionário
+    for bp, prefix in blueprints.items():
+        app.register_blueprint(bp, url_prefix=prefix)
 
     return app

@@ -1,74 +1,65 @@
-from flask import jsonify, abort, request
+from flask import request, jsonify
 import jwt
-import datetime
-from ciw_backend.models import Users
 import os
+from datetime import datetime, timedelta
+from functools import wraps
 
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback_secret")
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-
+# Gera um token JWT válido
 def generate_token(user):
-    
-    
     payload = {
         "sub": user.id,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=2),
-        'nome': user.nome,
-        'username': user.username,
-        'email': user.email
+        "nome": user.nome,
+        "username": user.username,
+        "email": user.email,
+        "exp": datetime.utcnow() + timedelta(days=2)
     }
-    
-    token = jwt.encode(payload, "my_secret", algorithm="HS256")
-    
-    return jsonify({"token": token})
+    token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+    return token
 
-def decode_token():
-    auth_header = request.headers.get('Authorization')
-    
-    if not auth_header:
-        return None, "Token não fornecido", 401
-
+# Decodifica e valida o token
+def decode_token(token):
     try:
-        token = auth_header.split()[1]
-        
-    except IndexError:
-        return jsonify({"message": "Formato do token inválido"}), 401
-    
-    try:
-        decoded_payload = jwt.decode(token, "my_secret", algorithms="HS256")
-        return decoded_payload, None, 200
-    
+        return jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
     except jwt.ExpiredSignatureError:
-        return None, "Token expirado. Faça login novamente.", 401
-    
+        raise ValueError("Token expirado.")
     except jwt.InvalidTokenError:
-        return None, "Token inválido. Verifique suas credenciais.", 401
+        raise ValueError("Token inválido.")
 
-def protected():
-    decoded_payload, error_message, status_code = decode_token()
-    
-    if status_code != 200:
-        return jsonify({"message": error_message}), status_code
+# Extrai o token do cabeçalho
+def get_token_from_header():
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        raise ValueError("Token não fornecido ou mal formatado.")
+    return auth_header.split()[1]
 
-    return jsonify({"message": "Acesso permitido", "sub": decoded_payload["sub"]}), status_code
+# Decorator para proteger rotas
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        try:
+            token = get_token_from_header()
+            user_data = decode_token(token)
+        except ValueError as e:
+            return jsonify({"message": str(e)}), 401
 
-def autorization(id):
+        request.user_data = user_data  # Você pode acessar isso na view
+        return f(*args, **kwargs)
+    return decorated
+
+# Autorização baseada no ID do token
+def authorize_user(id):
+    try:
+        token = get_token_from_header()
+        user_data = decode_token(token)
+        if int(user_data["sub"]) != int(id):
+            return jsonify({"message": "Usuário não autorizado."}), 403
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 401
+
     user = Users.query.get(id)
-    
-    if user is None:
-        return jsonify({"message": 'Usuário não encontrado',
-                        'field': 'User'}), 404
-    
-    response, status_code = protected()
-    response_JSON = response.json
+    if not user:
+        return jsonify({"message": "Usuário não encontrado."}), 404
 
-    if status_code != 200:
-        return jsonify({"message": "Token inválido",
-                        'field': 'token'}), 401
-
-    if response_JSON['sub'] != int(id):
-        return jsonify({"message": "Usuário não autorizado",
-                        'field': 'id'}), 403
-
-    return user, 200
-
+    return user

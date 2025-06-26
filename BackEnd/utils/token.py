@@ -2,9 +2,10 @@ from flask import jsonify, abort, request
 import jwt
 import datetime
 from ciw_backend.models import Users
+import os
 
 
-SECRET_KEY = "my_secret"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 def generate_token(user):
     

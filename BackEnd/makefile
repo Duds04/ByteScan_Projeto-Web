@@ -1,16 +1,27 @@
+# Makefile
+
 ENV_FILE=.env
 
+# Detecta o SO e define prefixo para comandos
+ifeq ($(OS),Windows_NT)
+    PYTHON_CMD=python
+    SET_PATH=set PYTHONPATH=.
+else
+    PYTHON_CMD=python3
+    SET_PATH=PYTHONPATH=.
+endif
+
 install:
-	pip install -r requirements.txt
+	$(PYTHON_CMD) -m pip install -r requirements.txt
 
 uninstall:
-	pip uninstall -r requirements.txt -y
+	$(PYTHON_CMD) -m pip uninstall -r requirements.txt -y
 
 run:
-	python run.py
+	$(PYTHON_CMD) run.py
 
 init-db:
-	python scripts/db_tools.py --init
+	$(SET_PATH) && $(PYTHON_CMD) scripts/db_tools.py --init
 
 reset-db:
-	python scripts/db_tools.py --reset
+	$(SET_PATH) && $(PYTHON_CMD) scripts/db_tools.py --reset

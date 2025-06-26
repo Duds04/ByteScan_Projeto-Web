@@ -1,17 +1,33 @@
-import sys
+import os
+import pymysql
 from app import create_app
 from database.db import db
 
-app = create_app()
+def create_database_if_not_exists():
+    # Pegando dados de conexão do .env
+    user = os.getenv("USERNAME")
+    password = os.getenv("PASSWORD")
+    host = "localhost"
+    dbname = "bytescan"
+
+    # Conectando sem especificar o banco de dados
+    connection = pymysql.connect(
+        host=host,
+        user=user,
+        password=password,
+        charset='utf8mb4',
+        cursorclass=pymysql.cursors.DictCursor
+    )
+
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(f"CREATE DATABASE IF NOT EXISTS {dbname}")
+        connection.commit()
 
 if __name__ == "__main__":
+    create_database_if_not_exists()
+
+    app = create_app()
     with app.app_context():
-        if "--init" in sys.argv:
-            db.create_all()
-            print("✅ Banco de dados inicializado com sucesso.")
-        elif "--reset" in sys.argv:
-            db.drop_all()
-            db.create_all()
-            print("✅ Banco de dados resetado com sucesso.")
-        else:
-            print("Use --init para criar ou --reset para resetar o banco de dados.")
+        db.create_all()
+        print("✅ Banco de dados e tabelas criados com sucesso!")

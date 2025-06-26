@@ -5,8 +5,9 @@ from database.db import db
 
 def create_database_if_not_exists():
     # Pegando dados de conexão do .env
-    user = os.getenv("USERNAME")
-    password = os.getenv("PASSWORD")
+    user = os.getenv("DB_USERNAME")
+    password = os.getenv("DB_PASSWORD")
+    
     host = "localhost"
     dbname = "bytescan"
 

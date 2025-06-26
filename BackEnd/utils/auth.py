@@ -1,4 +1,5 @@
 from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 import jwt
 import os
 from datetime import datetime, timedelta
@@ -24,5 +25,9 @@ def generate_token(user_id):
 def decode_token(token):
     try:
         return jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=['HS256'])
-    except:
+    except jwt.ExpiredSignatureError:
+        # Token expirado
+        return None
+    except jwt.InvalidTokenError:
+        # Token inválido por outros motivos
         return None

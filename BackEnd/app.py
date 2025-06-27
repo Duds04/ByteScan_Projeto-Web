@@ -9,10 +9,12 @@ load_dotenv()
 
 # Importa os blueprints
 from auth import auth_bp
+from manga import manga_bp
 
 # Dicionário com as blueprints principais e seus prefixos
 blueprints = {
-    auth_bp: "/api/auth"
+    auth_bp: "/api/auth",
+    manga_bp: "/api/manga"
 }
 
 def create_app():

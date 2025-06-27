@@ -4,11 +4,15 @@ from database.models import Obra, Capitulo, Avaliacao
 from database.db_func import get_all, get_id, create_registro
 from sqlalchemy import or_, and_
 
+
+
+# TODO: fazer o GET das categorias e generos, sendo fixos ou algo assim
+
 # Navegação por categorias ou gênero     
 @manga_bp.route("/filtro", methods=["GET"])
 def filtro():
     categoria = request.args.get("categoria")
-    genero = request.args.get("genero")
+    genero = request.args.get("categoria")
 
     query = Obra.query
     
@@ -39,6 +43,8 @@ def pesquisa():
 
     return jsonify([obra.serialize() for obra in resultados]), 200
 
+# TODO: fazer a leitura
+
 # # Leitura online (retorna URL do PDF do capítulo)
 # @manga_bp.route("/<int:obra_id>/capitulo/<int:num>", methods=["GET"])
 # def leitura_online(obra_id, num):
@@ -50,6 +56,10 @@ def pesquisa():
 #         "titulo": capitulo.titulo,
 #         "pdf_url": capitulo.pdf_url
 #     }), 200
+
+
+
+# TODO: fazer o get das avaliaçoes de um manga
 
 # Avaliação de obras
 @manga_bp.route("/<int:obra_id>/avaliar", methods=["POST"])

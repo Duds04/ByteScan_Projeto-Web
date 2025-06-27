@@ -1,10 +1,9 @@
-# scripts/db_tools.py
-
 import os
 import pymysql
 from app import create_app
 from database.db import db
 from database.models import User, Obra, Capitulo, Avaliacao  # ajuste para o nome real do seu models.py
+from scripts.db_mangas import create_obras
 import click
 
 def create_database_if_not_exists():
@@ -32,6 +31,8 @@ def init_db():
     with app.app_context():
         db.create_all()
         print("Banco de dados e tabelas criados com sucesso!")
+        
+        create_obras()
 
 def reset_db():
     app = create_app()
@@ -40,6 +41,8 @@ def reset_db():
         db.drop_all()
         db.create_all()
         print("Banco de dados resetado com sucesso!")
+        
+        create_obras()
 
 def pop_vars(obj):
     data = vars(obj).copy()

@@ -2,7 +2,6 @@
 
 ENV_FILE=.env
 
-# Detecta o SO e define prefixo para comandos
 ifeq ($(OS),Windows_NT)
     PYTHON_CMD=python
     SET_PATH=set PYTHONPATH=.
@@ -25,3 +24,6 @@ init-db:
 
 reset-db:
 	$(SET_PATH) && $(PYTHON_CMD) scripts/db_tools.py --reset
+
+print-db:
+	$(SET_PATH) && $(PYTHON_CMD) scripts/db_tools.py --print

@@ -1,9 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import StarRating from "../StarRating";
+import StarRating from "../../components/StarRating";
 import "../../styles/MangaPage.css";
 import { Bookmark } from "lucide-react";
-import LoadingGame from "../LoadingGame";
+import LoadingGame from "../../components/LoadingGame";
+
+
 
 function MangaPage() {
   const navigate = useNavigate();

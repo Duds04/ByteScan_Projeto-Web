@@ -1,11 +1,18 @@
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ChevronDown, ChevronUp, CircleUserRound } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../styles/Header.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../auth/AuthContext";
+
+import LoginComponent from "../LoginComponent";
 
 function Header() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [login, setLogin] = useState(false);
   const [open, setOpen] = useState(false);
   const [hiding, setHiding] = useState(false);
+  const { user, isLoggedIn } = useAuth();
 
   // Lista de gêneros e tipos
   const generos = [
@@ -28,60 +35,116 @@ function Header() {
     }, 100); // tempo igual ao transition do CSS
   };
 
+  // Abre o modal de login automaticamente se vier do PrivateRoute
+  useEffect(() => {
+    if (location.state?.openLogin) {
+      setLogin(true);
+      // Limpa o state para evitar reabrir ao navegar
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
   return (
-    <div className="header">
-      <img className="header-logo" src="/logo.png" alt="Logo ByteScan" />
-      <div className="header-nav">
-        <Link to="/">Home</Link>
-        <a
-          href="https://discord.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Discord
-        </a>
-        <div
-          className={`header-nav-dropdown-wrapper${open ? " --open" : ""}`}
-        >
-          <button
-            className="header-nav-manga"
-            onClick={() => (open ? handleDropdownClose() : setOpen(true))}
+    <>
+      <style>
+        @import
+        url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+      </style>
+      {login && <LoginComponent onClose={() => setLogin(false)} />}
+      <div className="header">
+        <img className="header-logo" src="/logo.png" alt="Logo ByteScan" />
+        <div className="header-nav">
+          <Link to="/">Home</Link>
+          <a
+            href="https://discord.com/"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Mangás{" "}
-            {open ? (
-              <ChevronUp className="header-nav-chevron" />
-            ) : (
-              <ChevronDown className="header-nav-chevron" />
-            )}
-          </button>
-          {open && (
-            <div
-              className={`dropdown-menu${hiding ? " hide" : ""}`}
-              onMouseLeave={handleDropdownClose}
+            Discord
+          </a>
+          <div
+            className={`header-nav-dropdown-wrapper${open ? " --open" : ""}`}
+          >
+            <button
+              className="header-nav-manga"
+              onClick={() => (open ? handleDropdownClose() : setOpen(true))}
             >
-              <div className="dropdown-section">
-                <span className="dropdown-title">Gêneros</span>
-                <ul>
-                  {generos.map((g, i) => (
-                    <li key={i}>{g}</li>
-                  ))}
-                </ul>
+              Mangás{" "}
+              {open ? (
+                <ChevronUp className="header-nav-chevron" />
+              ) : (
+                <ChevronDown className="header-nav-chevron" />
+              )}
+            </button>
+            {open && (
+              <div
+                className={`dropdown-menu${hiding ? " hide" : ""}`}
+                onMouseLeave={handleDropdownClose}
+              >
+                <div className="dropdown-section">
+                  <span className="dropdown-title">Gêneros</span>
+                  <ul>
+                    {generos.map((g, i) => (
+                      <li key={i} onClick={() => {
+                        navigate('/SearchPage', { state: { genero: g } });
+                        setOpen(false);
+                      }}>{g}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="dropdown-section">
+                  <span className="dropdown-title">Tipos</span>
+                  <ul>
+                    {tipos.map((t, i) => (
+                      <li key={i} onClick={() => {
+                        navigate('/SearchPage', { state: { tipo: t } });
+                        setOpen(false);
+                      }}>{t}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-              <div className="dropdown-section">
-                <span className="dropdown-title">Tipos</span>
-                <ul>
-                  {tipos.map((t, i) => (
-                    <li key={i}>{t}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
+          <Link to="/faq">FAQ</Link>
         </div>
-        <Link to="/faq">FAQ</Link>
+        {/* {isLoggedIn ? (): () } */}
+        {isLoggedIn() && (      
+          <div
+            className="header-user-info"
+            style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+            onClick={() => setLogin(true)}
+          >
+            <span className="custom-avatar">
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                fill="none"
+                src="/avatar.svg"
+              >
+                <circle cx="24" cy="24" r="22" fill="#F9DFFF" />
+                <ellipse cx="24" cy="20" rx="8" ry="9" fill="#3B1D8F" />
+                <ellipse cx="24" cy="36" rx="13" ry="7" fill="#3B1D8F" />
+              </svg>
+            </span>
+            <span className="header-username">
+              {user?.nomeUsuario || "Usuário"}
+            </span>
+          </div>      
+        )}
+        {!isLoggedIn() && (
+          <button
+            className="header-button"
+            onClick={() => {
+              setLogin(true);
+            }}
+          >
+            Entre
+          </button>
+        )}
       </div>
-      <button className="header-button">Entre</button>
-    </div>
+    </>
   );
 }
 

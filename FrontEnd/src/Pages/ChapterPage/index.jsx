@@ -1,9 +1,9 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "../../styles/ChapterPage.css";
+import LoadingGame from "../../components/LoadingGame";
+import ScrollToTopButton from "../../components/ScrollToTopButton";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import LoadingGame from "../LoadingGame";
 import { ArrowLeft, ArrowRight, InfoIcon, Bookmark } from "lucide-react";
-import ScrollToTopButton from "../ScrollToTopButton";
 
 function ChapterPage() {
   const navigate = useNavigate();

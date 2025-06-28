@@ -4,7 +4,7 @@ function Faq() {
   const developers = [
     { name: "Arthur Saraiva", email: "arthur.saraiva@ufv.br" },
     { name: "Tarik Paiva", email: "tarik.paiva@ufv.br" },
-    { name: "Maria Eduarda Braga", email: "maria.e.braga@ufv.br" }
+    { name: "Maria Eduarda", email: "maria.e.braga@ufv.br" }
   ];
 
   return (

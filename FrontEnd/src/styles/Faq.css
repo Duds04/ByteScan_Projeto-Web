@@ -4,7 +4,6 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
 
 .faq-content {
@@ -46,6 +45,8 @@
 }
 
 .developer-card {
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(135deg, #3d2465 0%, #4a2a75 100%);
   border-radius: 15px;
   padding: 2rem;
@@ -74,7 +75,7 @@
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
-  padding: 0.8rem 1.5rem;
+  padding: 13px 10px;
   background: linear-gradient(135deg, #5c3ee6 0%, #3a3ab8 100%);
   border-radius: 8px;
   display: inline-block;

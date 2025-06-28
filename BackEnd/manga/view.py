@@ -3,7 +3,9 @@ from flask import Blueprint, request, jsonify
 from database.models import Obra, Capitulo, Avaliacao
 from database.db_func import get_all, get_id, create_registro
 from sqlalchemy import or_, and_
-
+from utils.categorias import CATEGORIAS_FIXAS, GENEROS_FIXOS
+from flask import send_file
+import os
 
 
 # TODO: fazer o GET das categorias e generos, sendo fixos ou algo assim
@@ -12,7 +14,7 @@ from sqlalchemy import or_, and_
 @manga_bp.route("/filtro", methods=["GET"])
 def filtro():
     categoria = request.args.get("categoria")
-    genero = request.args.get("categoria")
+    genero = request.args.get("genero")
 
     query = Obra.query
     
@@ -45,19 +47,24 @@ def pesquisa():
 
 # TODO: fazer a leitura
 
-# # Leitura online (retorna URL do PDF do capítulo)
-# @manga_bp.route("/<int:obra_id>/capitulo/<int:num>", methods=["GET"])
-# def leitura_online(obra_id, num):
-#     capitulo = Capitulo.query.filter_by(obra_id=obra_id, numero=num).first()
-#     if not capitulo:
-#         return jsonify({"message": "Capítulo não encontrado"}), 404
-#     return jsonify({
-#         "numero": capitulo.numero,
-#         "titulo": capitulo.titulo,
-#         "pdf_url": capitulo.pdf_url
-#     }), 200
+# Leitura online (retorna PDF do capítulo)
+@manga_bp.route("/<int:obra_id>/capitulo/<int:num>", methods=["GET"])
+def leitura_online(obra_id, num):
+    capitulo = Capitulo.query.filter_by(obra_id=obra_id, numero=num).first()
+    if not capitulo:
+        return jsonify({"message": "Capítulo não encontrado"}), 404
+
+    return jsonify({
+        "numero": capitulo.numero,
+        "titulo": capitulo.titulo,
+        "pdf_url": capitulo.pdf_url
+    }), 200
 
 
+@manga_bp.route("/obras", methods=["GET"])
+def listar_obras():
+    obras = Obra.query.all()
+    return jsonify([obra.serialize() for obra in obras]), 200
 
 # TODO: fazer o get das avaliaçoes de um manga
 
@@ -80,3 +87,29 @@ def avaliar_obra(obra_id):
     }
 
     return create_registro(Avaliacao, nova_avaliacao)
+
+# GET das avaliações de uma obra
+@manga_bp.route("/<int:obra_id>/avaliacoes", methods=["GET"])
+def get_avaliacoes_obra(obra_id):
+    avaliacoes = Avaliacao.query.filter_by(obra_id=obra_id).all()
+    return jsonify([a.serialize() for a in avaliacoes]), 200
+
+
+@manga_bp.route("/categorias", methods=["GET"])
+def get_categorias():
+    return jsonify(CATEGORIAS_FIXAS), 200
+
+@manga_bp.route("/generos", methods=["GET"])
+def get_generos():
+    return jsonify(GENEROS_FIXOS), 200
+
+
+@manga_bp.route("/<int:obra_id>/capitulo", methods=["POST"])
+def adicionar_capitulo(obra_id):
+    dados = request.get_json()
+
+    if not dados.get("numero") or not dados.get("titulo") or not dados.get("pdf_url"):
+        return jsonify({"message": "Campos obrigatórios: numero, titulo, pdf_url"}), 400
+
+    dados["obra_id"] = obra_id
+    return create_registro(Capitulo, dados)

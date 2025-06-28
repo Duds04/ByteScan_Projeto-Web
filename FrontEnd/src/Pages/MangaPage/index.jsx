@@ -99,7 +99,7 @@ function MangaPage() {
   }
 
   function returnMangaCap(idCap) {
-    navigate(`/Manga/${id}/Cap/${idCap}`, {
+    navigate(`/manga/${id}/cap/${idCap}`, {
       state: { manga, favoritado },
     });
   }

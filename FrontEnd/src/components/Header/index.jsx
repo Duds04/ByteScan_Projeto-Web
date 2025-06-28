@@ -107,7 +107,7 @@ function Header() {
                   <ul>
                     {generos.map((g, i) => (
                       <li key={i} onClick={() => {
-                        navigate('/SearchPage', { state: { genero: g } });
+                        navigate('/buscar', { state: { genero: g } });
                         setOpen(false);
                       }}>{g}</li>
                     ))}
@@ -121,7 +121,7 @@ function Header() {
                   <ul>
                     {tipos.map((t, i) => (
                       <li key={i} onClick={() => {
-                        navigate('/SearchPage', { state: { tipo: t } });
+                        navigate('/buscar', { state: { tipo: t } });
                         setOpen(false);
                       }}>{t}</li>
                     ))}
@@ -130,11 +130,11 @@ function Header() {
               </div>
             )}
           </div>
-          <Link to="/SearchPage" className="nav-link">
+          <Link to="/buscar" className="nav-link">
             <Search size={18} />
             Pesquisar
           </Link>
-          <Link to="/Favoritos" className="nav-link">
+          <Link to="/favoritos" className="nav-link">
             <Heart size={18} />
             Favoritos
           </Link>

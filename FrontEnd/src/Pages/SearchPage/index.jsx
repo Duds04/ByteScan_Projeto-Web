@@ -75,7 +75,7 @@ function SearchPage() {
   };
 
   const handleClick = (id) => {
-    navigate(`/Manga/${id}`);
+    navigate(`/manga/${id}`);
   };
 
   return (

@@ -29,14 +29,14 @@ function ChapterPage() {
   const [loading, setLoading] = useState(true);
 
   function returnMangaPage() {
-    navigate(`/Manga/${id}`);
+    navigate(`/manga/${id}`);
   }
   function returnPrevCap() {
     if (idCap == 0) {
       alert("Você já está no primeiro capítulo!");
       return;
     }
-    navigate(`/Manga/${id}/Cap/${parseInt(idCap) - 1}`);
+    navigate(`/manga/${id}/cap/${parseInt(idCap) - 1}`);
   }
 
   function returnNextCap() {
@@ -44,7 +44,7 @@ function ChapterPage() {
       alert("Você já está no último capítulo!");
       return;
     }
-    navigate(`/Manga/${id}/Cap/${parseInt(idCap) + 1}`);
+    navigate(`/manga/${id}/cap/${parseInt(idCap) + 1}`);
   }
 
   // Vai pegar o capitulo do manga passado como param
@@ -111,7 +111,7 @@ function ChapterPage() {
       <div className="chapter-controler">
         <select
           value={capitulo.idCap}
-          onChange={(e) => navigate(`/Manga/${id}/Cap/${e.target.value}`)}
+          onChange={(e) => navigate(`/Manga/${id}/cap/${e.target.value}`)}
           className="chapter-select"
         >
           {manga.capitulos.map((cap) => (

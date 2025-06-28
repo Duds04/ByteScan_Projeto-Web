@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route
-            path="/Manga/:id"
+            path="/manga/:id"
             element={
               <PrivateRoute>
                 <MangaPage />
@@ -28,7 +28,7 @@ function App() {
             }
           />
           <Route
-            path="/Manga/:id/Cap/:idCap"
+            path="/manga/:id/cap/:idCap"
             element={
               <PrivateRoute>
                 <ChapterPage />
@@ -45,7 +45,7 @@ function App() {
           ></Route>
           <Route path="/faq" element={<Faq />} />
           <Route path="/404" element={<LoadingGame loading={false} />} />
-          <Route path="/SearchPage" element={<SearchPage />} />
+          <Route path="/buscar" element={<SearchPage />} />
         </Routes>
       </main>
       <Footer />

@@ -71,11 +71,11 @@ function FavoritosPage() {
   }, []);
 
   const returnMangaPage = (id) => {
-    navigate(`/Manga/${id}`);
+    navigate(`/manga/${id}`);
   };
 
   const returnMangaCap = (idManga, idCap) => {
-    navigate(`/Manga/${idManga}/Cap/${idCap}`);
+    navigate(`/manga/${idManga}/cap/${idCap}`);
   };
 
   const handleRemoverFavorito = async (mangaId) => {
@@ -119,7 +119,7 @@ function FavoritosPage() {
           </p>
           <button
             className="btn-explorar"
-            onClick={() => navigate("/SearchPage")}
+            onClick={() => navigate("/buscar")}
           >
             Explorar Mangás
           </button>

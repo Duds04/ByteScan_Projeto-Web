@@ -11,11 +11,11 @@ function HomeMangaList({ title, mangas }) {
   });
 
   function returnMangaPage(id) {
-    navigate(`/Manga/${id}`);
+    navigate(`/manga/${id}`);
   }
 
   function returnMangaCap(idManga, idCap) {
-    navigate(`/Manga/${idManga}/Cap/${idCap}`);
+    navigate(`/manga/${idManga}/cap/${idCap}`);
   }
   return (
     <div className="home-manga-list">

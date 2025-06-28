@@ -9,6 +9,8 @@ import LoadingGame from "./components/LoadingGame";
 import ChapterPage from "./Pages/ChapterPage";
 import PrivateRoute from "./auth/PrivateRoute";
 import SearchPage from "./Pages/SearchPage";
+import Faq from "./components/Faq";
+import FavoritosPage from "./Pages/FavoritosPage";  
 
 function App() {
   return (
@@ -33,8 +35,17 @@ function App() {
               </PrivateRoute>
             }
           ></Route>
+          <Route
+            path="/Favoritos"
+            element={
+              <PrivateRoute>
+                <FavoritosPage />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route path="/faq" element={<Faq />} />
           <Route path="/404" element={<LoadingGame loading={false} />} />
-          <Route path="/SearchPage" element={<SearchPage/>} />
+          <Route path="/SearchPage" element={<SearchPage />} />
         </Routes>
       </main>
       <Footer />

@@ -1,5 +1,16 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { 
+  User, 
+  Palette, 
+  Search, 
+  BookOpen, 
+  Calendar,
+  Tag,
+  Star,
+  Clock,
+  Filter
+} from "lucide-react";
 import "../../styles/SearchPage.css";
 
 // Lista de mangás simulada (pode ser importada de um arquivo ou contexto futuramente)
@@ -26,7 +37,6 @@ const ALL_MANGAS = [
     autores: ["Maria Eduarda"],
     artistas: ["João Silva"],
   },
-  // ...adicione mais mangás conforme necessário
 ];
 
 function SearchPage() {
@@ -70,19 +80,36 @@ function SearchPage() {
 
   return (
     <div className="search-page">
+      <div className="search-header">
+        <h1 className="search-page-title">
+          <Search className="search-title-icon" />
+          Pesquisar Mangás
+        </h1>
+        <p className="search-subtitle">Encontre seus mangás favoritos</p>
+      </div>
+
       <form className="search-bar" onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="Digite sua pesquisa!"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <button type="submit">Pesquisar</button>
+        <div className="search-input-container">
+          <Search className="search-input-icon" />
+          <input
+            type="text"
+            placeholder="Digite o nome, gênero ou tipo..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+        <button type="submit" className="search-btn">
+          <Filter size={18} />
+          Pesquisar
+        </button>
       </form>
 
-      <h2 className="search-result-title">
-        {searchResults.length} Resultado(s)
-      </h2>
+      <div className="search-results-header">
+        <h2 className="search-result-title">
+          <BookOpen className="results-icon" />
+          {searchResults.length} Resultado(s) Encontrado(s)
+        </h2>
+      </div>
       <hr className="search-divider" />
 
       <div className="search-results">
@@ -92,33 +119,61 @@ function SearchPage() {
             key={manga.id}
             onClick={() => handleClick(manga.id)}
           >
-            <img
-              src={manga.imagemCapa}
-              alt={manga.nome}
-              className="search-card-img"
-            />
+            <div className="search-card-image-container">
+              <img
+                src={manga.imagemCapa}
+                alt={manga.nome}
+                className="search-card-img"
+              />
+            </div>
             <div className="search-info-box">
-              <p>
-                <b>Nome:</b> {manga.nome}
-              </p>
-              <p>
-                <b>Tipo:</b> {manga.tipo}
-              </p>
-              <p>
-                <b>Gênero:</b> {manga.generos.join(", ")}
-              </p>
-              <p>
-                <b>Status:</b> {manga.status}
-              </p>
-              <p>
-                <b>Ano Lançamento:</b> {manga.anoLancamento}
-              </p>
-              <p>
-                <b>Autore(s):</b> {manga.autores.join(", ")}
-              </p>
-              <p>
-                <b>Artista(s):</b> {manga.artistas.join(", ")}
-              </p>
+              <div className="manga-title-section">
+                <h3 className="manga-title">{manga.nome}</h3>
+                <div className="rating-section">
+                  <Star className="star-icon" />
+                  <span>4.5</span>
+                </div>
+              </div>
+              
+              <div className="manga-details">
+                <div className="detail-item">
+                  <BookOpen size={16} className="detail-icon" />
+                  <span className="detail-label">Tipo:</span>
+                  <span className="detail-value">{manga.tipo}</span>
+                </div>
+                
+                <div className="detail-item">
+                  <Tag size={16} className="detail-icon" />
+                  <span className="detail-label">Gêneros:</span>
+                  <span className="detail-value">{manga.generos.join(", ")}</span>
+                </div>
+                
+                <div className="detail-item">
+                  <Clock size={16} className="detail-icon" />
+                  <span className="detail-label">Status:</span>
+                  <span className={`detail-value status-${manga.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                    {manga.status}
+                  </span>
+                </div>
+                
+                <div className="detail-item">
+                  <Calendar size={16} className="detail-icon" />
+                  <span className="detail-label">Ano:</span>
+                  <span className="detail-value">{manga.anoLancamento}</span>
+                </div>
+                
+                <div className="detail-item">
+                  <User size={16} className="detail-icon" />
+                  <span className="detail-label">Autor(es):</span>
+                  <span className="detail-value">{manga.autores.join(", ")}</span>
+                </div>
+                
+                <div className="detail-item">
+                  <Palette size={16} className="detail-icon" />
+                  <span className="detail-label">Artista(s):</span>
+                  <span className="detail-value">{manga.artistas.join(", ")}</span>
+                </div>
+              </div>
             </div>
           </div>
         ))}

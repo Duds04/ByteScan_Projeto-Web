@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/LoginComponent.css";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Heart } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
 
 function LoginComponent({ onClose }) {
@@ -8,6 +9,12 @@ function LoginComponent({ onClose }) {
   const [error, setError] = useState(null);
   const [singIn, setSingIn] = useState(false);
   const { login, isLoggedIn, logout, register } = useAuth();
+  const navigate = useNavigate();
+
+  const handleGoToFavorites = () => {
+    navigate("/favoritos");
+    onClose(); // Fecha o modal após navegar
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -285,11 +292,21 @@ function LoginComponent({ onClose }) {
           </span>
           <h1>Você já está logado!</h1>
           <div className="logged-buttons">
-            <button onClick={logout} className="logout-btn">Logout</button>
+            <button onClick={logout} className="logout-btn">
+              Logout
+            </button>
             <button onClick={onClose} className="login-close-btn">
               Fechar
             </button>
           </div>
+          <button
+            onClick={handleGoToFavorites}
+            className="favorites-btn"
+            type="button"
+          >
+            <Heart size={18} />
+            Meus Favoritos
+          </button>
         </div>
       </div>
     </div>

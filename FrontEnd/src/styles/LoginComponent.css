@@ -40,18 +40,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 350px;
-  height: 100px;
-  padding: 4rem 2.5rem;
+  width: 420px;
+  min-height: 300px;
+  padding: 2.5rem;
   background: linear-gradient(135deg, #291148 80%, #3a1e5c 100%);
-  border-radius: 18px;
-  box-shadow: 0 4px 32px #46178699;
-  transition: box-shadow 0.2s, background 0.2s;
-  border: 1.5px solid #8a3cff33;
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(138, 60, 255, 0.25);
+  transition: all 0.3s ease;
+  border: 2px solid rgba(138, 60, 255, 0.3);
   color: #e5d8f7;
-  font-size: 1.1rem;
-  font-weight: 500;
-  gap: 0.7rem;
+  position: relative;
 }
 
 .login-inputs {
@@ -133,20 +131,22 @@
 }
 
 .login-close-btn {
-  padding: 0.5rem 1.2rem;
+  padding: 0.8rem 1.5rem;
   font-size: medium;
   font-weight: 600;
-  background-color: #ff1c1ce9;
-  margin: 0.5rem 0px;
-  border: 0px solid #ff3c3c;
-  border-radius: 2px;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: 4px 5px 20px #da030349;
+  background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
   cursor: pointer;
-  &:hover {
-    background-color: #ff1c1c;
-    box-shadow: 0 4px 16px #ff3c3c55;
-  }
+}
+
+.login-close-btn:hover {
+  background: linear-gradient(135deg, #ff3742 0%, #ff2838 100%);
+  box-shadow: 0 6px 20px rgba(255, 71, 87, 0.5);
+  transform: translateY(-2px);
 }
 
 .back-login-btn {
@@ -183,18 +183,27 @@
 }
 
 .login-close-span-isLogged {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
-  align-self: flex-end;
   position: absolute;
-  margin-right: -1rem;
+  top: 15px;
+  right: 20px;
   color: #8a3cff;
-
-  margin-top: -10rem;
   cursor: pointer;
-  &:hover {
-    color: #6e2dcf;
-  }
+  transition: all 0.3s ease;
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.login-close-span-isLogged:hover {
+  color: #6e2dcf;
+  background: rgba(138, 60, 255, 0.1);
+  transform: scale(1.1);
 }
 
 .login-header {
@@ -293,23 +302,101 @@
 }
 
 .logout-btn {
-  padding: 0.5rem 1.2rem;
+  padding: 0.8rem 1.5rem;
   font-size: medium;
   font-weight: 600;
-  background-color: #fe8800e5;
+  background: linear-gradient(135deg, #fe8800 0%, #e07000 100%);
   color: #fff;
-  margin: 0.5rem 0px;
-  border: 0px solid #ff943c;
-  border-radius: 2px;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: 4px 5px 20px #da590349;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(254, 136, 0, 0.3);
   cursor: pointer;
 }
 
-.logged-buttons{
+.logout-btn:hover {
+  background: linear-gradient(135deg, #e07000 0%, #c86000 100%);
+  box-shadow: 0 6px 20px rgba(254, 136, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+.logged-buttons {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+.logged-buttons .logout-btn,
+.logged-buttons .login-close-btn {
+  flex: 1;
+  min-width: 100px;
+}
+
+/* Título do modal logado */
+.login-container-isLogged h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #e5d8f7;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(138, 60, 255, 0.3);
+}
+
+.favorites-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 1rem 2rem;
+  font-size: medium;
+  font-weight: 600;
+  background: linear-gradient(135deg, #8a3cff 0%, #6e2dcf 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(138, 60, 255, 0.3);
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.favorites-btn:hover {
+  background: linear-gradient(135deg, #6e2dcf 0%, #5c1fa3 100%);
+  box-shadow: 0 6px 20px rgba(138, 60, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Responsividade para modal de usuário logado */
+@media (max-width: 480px) {
+  .login-container-isLogged {
+    width: 90vw;
+    max-width: 350px;
+    padding: 2rem 1.5rem;
+  }
+  
+  .logged-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .logged-buttons .logout-btn,
+  .logged-buttons .login-close-btn {
+    width: 100%;
+  }
+  
+  .login-container-isLogged h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .login-container-isLogged {
+    width: 95vw;
+    padding: 1.5rem 1rem;
+  }
 }

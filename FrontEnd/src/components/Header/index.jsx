@@ -1,4 +1,17 @@
-import { ChevronDown, ChevronUp, CircleUserRound } from "lucide-react";
+import { 
+  ChevronDown, 
+  ChevronUp, 
+  CircleUserRound,
+  Home,
+  MessageCircle,
+  BookOpen,
+  Search,
+  Heart,
+  HelpCircle,
+  LogIn,
+  Tag,
+  Library
+} from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../styles/Header.css";
 import { useEffect, useState } from "react";
@@ -54,12 +67,17 @@ function Header() {
       <div className="header">
         <img className="header-logo" src="/logo.png" alt="Logo ByteScan" />
         <div className="header-nav">
-          <Link to="/">Home</Link>
+          <Link to="/" className="nav-link">
+            <Home size={18} />
+            Home
+          </Link>
           <a
             href="https://discord.com/"
             target="_blank"
             rel="noopener noreferrer"
+            className="nav-link"
           >
+            <MessageCircle size={18} />
             Discord
           </a>
           <div
@@ -69,7 +87,7 @@ function Header() {
               className="header-nav-manga"
               onClick={() => (open ? handleDropdownClose() : setOpen(true))}
             >
-              Mangás{" "}
+              <span className="mangas"><BookOpen size={18} /> Mangás</span>
               {open ? (
                 <ChevronUp className="header-nav-chevron" />
               ) : (
@@ -82,7 +100,10 @@ function Header() {
                 onMouseLeave={handleDropdownClose}
               >
                 <div className="dropdown-section">
-                  <span className="dropdown-title">Gêneros</span>
+                  <span className="dropdown-title">
+                    <Tag size={16} />
+                    Gêneros
+                  </span>
                   <ul>
                     {generos.map((g, i) => (
                       <li key={i} onClick={() => {
@@ -93,7 +114,10 @@ function Header() {
                   </ul>
                 </div>
                 <div className="dropdown-section">
-                  <span className="dropdown-title">Tipos</span>
+                  <span className="dropdown-title">
+                    <Library size={16} />
+                    Tipos
+                  </span>
                   <ul>
                     {tipos.map((t, i) => (
                       <li key={i} onClick={() => {
@@ -106,7 +130,19 @@ function Header() {
               </div>
             )}
           </div>
-          <Link to="/faq">FAQ</Link>
+          <Link to="/SearchPage" className="nav-link">
+            <Search size={18} />
+            Pesquisar
+          </Link>
+          <Link to="/Favoritos" className="nav-link">
+            <Heart size={18} />
+            Favoritos
+          </Link>
+          <Link to="/faq" className="nav-link">
+            <HelpCircle size={18} />
+            FAQ
+          </Link>
+
         </div>
         {/* {isLoggedIn ? (): () } */}
         {isLoggedIn() && (      
@@ -140,6 +176,7 @@ function Header() {
               setLogin(true);
             }}
           >
+            <LogIn size={18} />
             Entre
           </button>
         )}

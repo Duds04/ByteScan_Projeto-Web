@@ -1,0 +1,398 @@
+.favoritos-page {
+  color: white;
+  padding: 40px;
+  font-family: sans-serif;
+  min-height: 100vh;
+}
+
+.favoritos-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.favoritos-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #e5d8f7;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(138, 60, 255, 0.3);
+}
+
+.favoritos-icon {
+  color: #8a3cff;
+}
+
+.favoritos-subtitle {
+  font-size: 1.2rem;
+  color: #c8b3e5;
+  margin: 0;
+}
+
+.favoritos-filtros {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.filtro-btn {
+  padding: 12px 24px;
+  border: 2px solid #8a3cff;
+  background: linear-gradient(135deg, #291148 80%, #3a1e5c 100%);
+  color: #e5d8f7;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(138, 60, 255, 0.2);
+}
+
+.filtro-btn:hover {
+  background: linear-gradient(135deg, #3a1e5c 80%, #4a2a75 100%);
+  box-shadow: 0 6px 20px rgba(138, 60, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.filtro-btn.active {
+  background: linear-gradient(135deg, #8a3cff 0%, #6e2dcf 100%);
+  color: white;
+  box-shadow: 0 6px 25px rgba(138, 60, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.favoritos-empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: #c8b3e5;
+}
+
+.empty-icon {
+  color: #8a3cff;
+  margin-bottom: 20px;
+}
+
+.favoritos-empty h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #e5d8f7;
+}
+
+.favoritos-empty p {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.btn-explorar {
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #8a3cff 0%, #6e2dcf 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(138, 60, 255, 0.3);
+}
+
+.btn-explorar:hover {
+  background: linear-gradient(135deg, #6e2dcf 0%, #5c1fa3 100%);
+  box-shadow: 0 6px 25px rgba(138, 60, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.favoritos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.favoritos-card {
+  background: linear-gradient(135deg, #291148 80%, #3a1e5c 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(69, 23, 134, 0.3);
+  border: 1.5px solid rgba(138, 60, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.favoritos-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(138, 60, 255, 0.4);
+  border-color: rgba(138, 60, 255, 0.4);
+}
+
+.card-image-container {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.favoritos-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.favoritos-card-img:hover {
+  transform: scale(1.05);
+}
+
+.progress-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: 15px;
+}
+
+.progress-bar {
+  height: 6px;
+  background: linear-gradient(135deg, #8a3cff 0%, #6e2dcf 100%);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  margin-bottom: 5px;
+}
+
+.progress-text {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.favoritos-card-info {
+  padding: 20px;
+}
+
+.manga-nome {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #e5d8f7;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  line-height: 1.3;
+}
+
+.manga-nome:hover {
+  color: #8a3cff;
+}
+
+.manga-detalhes {
+  margin-bottom: 15px;
+}
+
+.manga-detalhes p {
+  margin: 5px 0;
+  color: #c8b3e5;
+  font-size: 0.95rem;
+}
+
+.manga-detalhes strong {
+  color: #e5d8f7;
+}
+
+.manga-rating {
+  margin-bottom: 20px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.btn-continuar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #8a3cff 0%, #6e2dcf 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 15px rgba(138, 60, 255, 0.3);
+}
+
+.btn-continuar:hover {
+  background: linear-gradient(135deg, #6e2dcf 0%, #5c1fa3 100%);
+  box-shadow: 0 5px 20px rgba(138, 60, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-remover {
+  padding: 12px;
+  background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 15px rgba(255, 71, 87, 0.3);
+}
+
+.btn-remover:hover {
+  background: linear-gradient(135deg, #ff3742 0%, #ff2838 100%);
+  box-shadow: 0 5px 20px rgba(255, 71, 87, 0.5);
+  transform: translateY(-1px);
+}
+
+.data-adicionado {
+  color: #a992c7;
+  font-size: 0.85rem;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Estilos específicos para a página de favoritos */
+.manga-details {
+  margin: 15px 0;
+  color: #c8b3e5;
+}
+
+.manga-info-item {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.manga-info-item strong {
+  color: #e5d8f7;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-icon {
+  color: #8a3cff;
+}
+
+.favoritos-actions {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.btn-continuar-favorito {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #8a3cff 0%, #6e2dcf 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 15px rgba(138, 60, 255, 0.3);
+  font-size: 0.9rem;
+}
+
+.btn-continuar-favorito:hover {
+  background: linear-gradient(135deg, #6e2dcf 0%, #5c1fa3 100%);
+  box-shadow: 0 5px 20px rgba(138, 60, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-remover-favorito {
+  padding: 10px;
+  background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 15px rgba(255, 71, 87, 0.3);
+}
+
+.btn-remover-favorito:hover {
+  background: linear-gradient(135deg, #ff3742 0%, #ff2838 100%);
+  box-shadow: 0 5px 20px rgba(255, 71, 87, 0.5);
+  transform: translateY(-1px);
+}
+
+.release-header {
+  font-weight: 600;
+  color: #e5d8f7;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+/* Estilos originais mantidos */
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .favoritos-page {
+    padding: 20px;
+  }
+  
+  .favoritos-title {
+    font-size: 2rem;
+  }
+  
+  .favoritos-filtros {
+    gap: 10px;
+  }
+  
+  .filtro-btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .favoritos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  .favoritos-card {
+    border-radius: 15px;
+  }
+  
+  .favoritos-card-info {
+    padding: 15px;
+  }
+  
+  .manga-nome {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .favoritos-filtros {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .favoritos-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-actions {
+    flex-direction: column;
+  }
+  
+  .btn-continuar {
+    justify-content: center;
+  }
+}

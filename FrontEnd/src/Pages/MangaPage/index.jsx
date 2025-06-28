@@ -2,10 +2,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import StarRating from "../../components/StarRating";
 import "../../styles/MangaPage.css";
-import { Bookmark } from "lucide-react";
+import { 
+  Bookmark, 
+  User, 
+  Palette, 
+  Star,
+  Tag,
+  BookOpen,
+  Clock,
+  Calendar,
+  Heart,
+  Play,
+  SkipForward
+} from "lucide-react";
 import LoadingGame from "../../components/LoadingGame";
-
-
 
 function MangaPage() {
   const navigate = useNavigate();
@@ -64,7 +74,16 @@ function MangaPage() {
   // Função para favoritar manga
   function handleFavorite() {
     if (favoritado) {
-      alert("Você já favoritou este mangá!");
+      // remove favorito
+      // fetch(`/api/manga/${id}/desfavoritar`, { method: 'POST' })
+      //   .then(...)
+      //   .catch(...)
+      setManga((prev) => ({
+        ...prev,
+        quantidadeFavoritos: prev.quantidadeFavoritos - 1,
+      }));
+      setFavoritado(false);
+      alert("Mangá desfavoritado com sucesso!");
       return;
     }
     // Simulação de requisição ao backend
@@ -101,31 +120,32 @@ function MangaPage() {
           className="manga-card-img"
         />
         <div className="manga-card-info">
-          <p>
+          <div className="rating-section">
+            <Star className="rating-icon" />
             <b>Avaliação</b>
             <StarRating
               value={userRating !== null ? userRating : manga.avaliacao}
               onChange={handleRating}
               interactive={true}
             />
+          </div>
+          <p>
+            <b><Tag size={16} className="info-icon" /> Gênero(s):</b> {manga.generos.join(", ")}
           </p>
           <p>
-            <b>Gênero(s):</b> {manga.generos.join(", ")}
+            <b><BookOpen size={16} className="info-icon" /> Tipo:</b> {manga.tipo}
           </p>
           <p>
-            <b>Tipo:</b> {manga.tipo}
+            <b><Clock size={16} className="info-icon" /> Status:</b> {manga.status}
           </p>
           <p>
-            <b>Status:</b> {manga.status}
+            <b><Calendar size={16} className="info-icon" /> Ano de Lançamento:</b> {manga.anoLancamento}
           </p>
           <p>
-            <b>Ano de Lançamento:</b> {manga.anoLancamento}
+            <b><User size={16} className="info-icon" /> Autor(es):</b> {manga.autores.join(", ")}
           </p>
           <p>
-            <b>Autor(es):</b> {manga.autores.join(", ")}
-          </p>
-          <p>
-            <b>Artista(s):</b> {manga.artistas.join(", ")}
+            <b><Palette size={16} className="info-icon" /> Artista(s):</b> {manga.artistas.join(", ")}
           </p>
           <div className="nav-chapters">
             <div className="button-chapters-container">
@@ -135,7 +155,8 @@ function MangaPage() {
                   returnMangaCap(1);
                 }}
               >
-                Primeiro Capitulo
+                <Play size={18} />
+                Primeiro Capítulo
               </button>
               <button
                 className="button-chapters"
@@ -143,7 +164,8 @@ function MangaPage() {
                   returnMangaCap(manga.ultimoCapituloLancado);
                 }}
               >
-                Último Capitulo
+                <SkipForward size={18} />
+                Último Capítulo
               </button>
             </div>
             <span className="bookmark-container">
@@ -154,12 +176,11 @@ function MangaPage() {
                 onClick={() => {
                   handleFavorite();
                 }}
-                disabled={favoritado}
                 style={
-                  favoritado ? { opacity: 0.5, cursor: "not-allowed" } : {}
+                  favoritado ? { opacity: 0.5 } : {}
                 }
               >
-                <Bookmark fill="white" size={50} />
+                <Heart fill={favoritado ? "#8a3cff" : "white" } size={50} />
               </button>
               {favoritado ? (
                 <>
@@ -181,7 +202,10 @@ function MangaPage() {
       </div>
 
       <div className="manga-chapters">
-        <h2 className="manga-chapter-title">Capítulos</h2>
+        <h2 className="manga-chapter-title">
+          <BookOpen className="chapter-title-icon" />
+          Capítulos
+        </h2>
         <div className="manga-chapters-list">
           {manga.capitulos.map((cap) => (
             <button
@@ -191,8 +215,14 @@ function MangaPage() {
                 returnMangaCap(cap.idCap);
               }}
             >
-              <span className="chapters-titulo">{cap.capitulo}</span>
-              <span className="chapters-data">{cap.data}</span>
+              <div className="chapter-info">
+                <BookOpen size={16} className="chapter-icon" />
+                <span className="chapters-titulo">{cap.capitulo}</span>
+              </div>
+              <div className="chapter-date">
+                <Calendar size={14} className="date-icon" />
+                <span className="chapters-data">{cap.data}</span>
+              </div>
             </button>
           ))}
         </div>

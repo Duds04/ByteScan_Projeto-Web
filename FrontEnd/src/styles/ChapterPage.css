@@ -14,26 +14,36 @@
   width: 100%;
   gap: 20px;
   margin-bottom: 20px;
+}
 
-  span {
-    font-family: "Poppins", sans-serif;
-    display: flex;
-    gap: 6px;
-    font-weight: 900;
-    color: #a992c7;
-  }
+.breadcrumb-nav {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  color: #a992c7;
+}
 
-  a {
-    font-family: "Poppins", sans-serif;
-    color: #a992c7;
-    font-weight: 0;
+.breadcrumb-icon {
+  color: #8a3cff;
+}
 
-    text-decoration: none;
-    font-weight: bold;
-    &:hover {
-      color: #9659e6;
-    }
-  }
+.breadcrumb-nav a {
+  font-family: "Poppins", sans-serif;
+  color: #a992c7;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.breadcrumb-nav a:hover {
+  color: #9659e6;
+}
+
+.breadcrumb-nav span {
+  color: #c8b3e5;
+  margin: 0 4px;
 }
 
 .chapter-controler {
@@ -84,26 +94,26 @@
 .chapter-button {
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
+  justify-content: center;
   padding: 15px 20px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 900;
   font-size: 1rem;
   background: linear-gradient(90deg, #3b1d8f 0%, #471785 100%);
-
+  color: white;
   cursor: pointer;
-  /* box-shadow: 0 4px 16px rgba(108, 46, 191, 0.18); */
-  /* transition: background 0.3s, box-shadow 0.3s, color 0.3s; */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(108, 46, 191, 0.18);
+}
 
-  &:hover {
-    background: linear-gradient(120deg, #3b1d8f 50%, #252562 100%);
-
-    box-shadow: 0 6px 24px rgba(210, 61, 255, 0.18);
-    transition: color 0.2s, background 0.2s, text-shadow 0.2s;
-    color: #d651fe;
-  }
+.chapter-button:hover {
+  background: linear-gradient(120deg, #3b1d8f 50%, #252562 100%);
+  box-shadow: 0 6px 24px rgba(210, 61, 255, 0.18);
+  color: #d651fe;
+  transform: translateY(-2px);
 }
 
 .prev-disable {

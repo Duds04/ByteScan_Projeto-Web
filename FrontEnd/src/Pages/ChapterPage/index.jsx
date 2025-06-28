@@ -3,7 +3,18 @@ import LoadingGame from "../../components/LoadingGame";
 import ScrollToTopButton from "../../components/ScrollToTopButton";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, InfoIcon, Bookmark } from "lucide-react";
+import { 
+  ArrowLeft, 
+  ArrowRight, 
+  Info, 
+  Bookmark, 
+  BookOpen,
+  Home,
+  Heart,
+  Eye,
+  ChevronLeft,
+  ChevronRight
+} from "lucide-react";
 
 function ChapterPage() {
   const navigate = useNavigate();
@@ -93,7 +104,7 @@ function ChapterPage() {
       }
       setLoading(false);
     }, 400);
-  }, [id, idCap]); // Toda vez que os param das rotas mudarem chama o useEffect
+  }, [id, idCap]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function ControlerCapitulo() {
     return (
@@ -120,8 +131,8 @@ function ChapterPage() {
               returnPrevCap();
             }}
           >
-            {" "}
-            <ArrowLeft /> Anterior{" "}
+            <ChevronLeft size={18} />
+            Anterior
           </button>
           <button
             className={
@@ -138,8 +149,8 @@ function ChapterPage() {
               returnNextCap();
             }}
           >
-            {" "}
-            Próximo <ArrowRight />
+            Próximo
+            <ChevronRight size={18} />
           </button>
           <button
             className="chapter-button"
@@ -147,7 +158,7 @@ function ChapterPage() {
               returnMangaPage();
             }}
           >
-            <InfoIcon />
+            <Info size={18} />
             Manga Info
           </button>
         </div>
@@ -161,18 +172,24 @@ function ChapterPage() {
   return (
     <div className="chapter-container">
       <div className="chapter-header">
-        <span>
-          <a href="">Home</a> / <a href="">{manga.nome}</a> /{" "}
+        <div className="breadcrumb-nav">
+          <Home size={16} className="breadcrumb-icon" />
+          <a href="">Home</a>
+          <span>/</span>
+          <BookOpen size={16} className="breadcrumb-icon" />
+          <a href="">{manga.nome}</a>
+          <span>/</span>
+          <Eye size={16} className="breadcrumb-icon" />
           <a href="">{capitulo.capitulo}</a>
-        </span>
+        </div>
         <button
           className={favoritado ? "chapter-bookmark-btn-ativado" : "chapter-bookmark-btn"}
           onClick={() => setFavoritado((f) => !f)}
           aria-label={favoritado ? "Desfavoritar" : "Favoritar"}
         >
-          <Bookmark
+          <Heart
             color={favoritado ? "#a251fe" : "#252562"}
-            fill={favoritado ? "#a251fe" : "#252562"}
+            fill={favoritado ? "#a251fe" : "transparent"}
             strokeWidth={2.5}
             size={23}
           />

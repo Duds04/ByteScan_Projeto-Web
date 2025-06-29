@@ -1,20 +1,24 @@
 from database.db import db
-from database.models import Obra, Capitulo
+from database.models import Manga, Capitulo
+from datetime import datetime, timezone
 
-def create_obras():
-    # Verifica se já existem obras
-    if Obra.query.first():
-        print("Ja existem obras cadastradas. Abortando insercao.")
+def create_mangas():
+    # Verifica se já existem mangás cadastrados
+    if Manga.query.first():
+        print("Já existem mangás cadastrados. Abortando inserção.")
         return
 
-    obras_data = [
+    mangas_data = [
         {
-            "titulo": "Shingeki no Kyojin",
+            "nome": "Shingeki no Kyojin",
             "descricao": "A humanidade contra gigantes devoradores.",
-            "genero": "Acao",
-            "categoria": "Manga",
-            "capa_url": "https://example.com/shingeki.jpg",
+            "genero": "Ação",
+            "tipo": "Mangá",
+            "imagemCapa": "https://example.com/shingeki.jpg",
             "status": "Finalizado",
+            "anoLancamento": 2009,
+            "autores": "Hajime Isayama",
+            "artistas": "Hajime Isayama",
             "capitulos": [
                 {"numero": 1, "titulo": "Para Ti, 2.000 Anos Depois", "pdf_url": "https://example.com/snkap1.pdf"},
                 {"numero": 2, "titulo": "Aquele Dia", "pdf_url": "https://example.com/snkap2.pdf"},
@@ -24,12 +28,15 @@ def create_obras():
             ]
         },
         {
-            "titulo": "One Piece",
+            "nome": "One Piece",
             "descricao": "Piratas em busca do lendário tesouro One Piece.",
             "genero": "Aventura",
-            "categoria": "Manga",
-            "capa_url": "https://example.com/onepiece.jpg",
+            "tipo": "Mangá",
+            "imagemCapa": "https://example.com/onepiece.jpg",
             "status": "Em andamento",
+            "anoLancamento": 1997,
+            "autores": "Eiichiro Oda",
+            "artistas": "Eiichiro Oda",
             "capitulos": [
                 {"numero": 1, "titulo": "Romance Dawn", "pdf_url": "https://example.com/opcap1.pdf"},
                 {"numero": 2, "titulo": "O Grande Espadachim Aparece", "pdf_url": "https://example.com/opcap2.pdf"},
@@ -40,16 +47,27 @@ def create_obras():
         }
     ]
 
-    for obra_data in obras_data:
-        capitulos_data = obra_data.pop("capitulos")
-        nova_obra = Obra(**obra_data)
-        db.session.add(nova_obra)
-        db.session.flush()
+    for manga_data in mangas_data:
+        capitulos_data = manga_data.pop("capitulos")
+        novo_manga = Manga(**manga_data)
+        db.session.add(novo_manga)
+        db.session.flush()  # Garante que novo_manga.id esteja disponível
 
+        ultimo_cap = None
         for cap in capitulos_data:
-            cap["obra_id"] = nova_obra.id
-            novo_capitulo = Capitulo(**cap)
+            novo_capitulo = Capitulo(
+                numero=cap["numero"],
+                titulo=cap["titulo"],
+                pdf_url=cap["pdf_url"],
+                manga_id=novo_manga.id,
+                data_postagem=datetime.now(timezone.utc)
+            )
             db.session.add(novo_capitulo)
+            ultimo_cap = novo_capitulo
+
+        if ultimo_cap:
+            novo_manga.ultimoCapituloLancado = ultimo_cap.numero
+            novo_manga.idUltimoCapituloLancado = ultimo_cap.id
 
     db.session.commit()
-    print("Obras e capitulos inseridos com sucesso.")
+    print("Mangás e capítulos inseridos com sucesso.")

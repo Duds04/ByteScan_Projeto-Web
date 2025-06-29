@@ -74,7 +74,7 @@ function ChapterPage() {
       //   .then(res => res.json()).then(data => setFavoritado(data.favoritado));
 
       setCapitulo({
-        ...mockCapitulo,
+        
       });
 
       if (manga === null) {
@@ -107,13 +107,14 @@ function ChapterPage() {
     async function fetchData() {
       try {
         const res = await fetch(`http://localhost:5000/api/manga/${id}/capitulo/${idCap}`);
+        setCapitulo(await res.json());
         if (manga === null) {
           const res = await fetch(`http://localhost:5000/api/manga/obras/${id}`, {
             headers: {
               "Authorization": `Bearer ${token}`
             }
           });
-          setManga(res);
+          setManga(await res.json());
         }
       } catch (error) {
         console.error("Erro ao buscar dados:", error);

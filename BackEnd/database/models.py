@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 from database.db import db
 
-
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -13,7 +12,8 @@ class User(db.Model):
     image_url = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
-    avaliacoes = db.relationship('Avaliacao', backref='user', cascade="all, delete-orphan")
+    avaliacoes = db.relationship('Avaliacao', backref='user', cascade="all, delete-orphan", passive_deletes=True)
+    favoritos = db.relationship('Favorito', backref='user', cascade="all, delete-orphan", passive_deletes=True)
 
     def serialize(self):
         return {
@@ -26,31 +26,44 @@ class User(db.Model):
         }
 
 
-class Obra(db.Model):
-    __tablename__ = 'obras'
+class Manga(db.Model):
+    __tablename__ = 'mangas'
 
     id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String(100), nullable=False)
+    nome = db.Column(db.String(100), nullable=False)
+    imagemCapa = db.Column(db.String(255))
     descricao = db.Column(db.Text)
-    genero = db.Column(db.String(50), nullable=False)
-    categoria = db.Column(db.String(50), nullable=False)
-    capa_url = db.Column(db.String(255))
-    status = db.Column(db.String(50), default='Em andamento')
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    genero = db.Column(db.String(50))
+    tipo = db.Column(db.String(50))
+    status = db.Column(db.String(50))
+    avaliacao = db.Column(db.Float)
+    anoLancamento = db.Column(db.Integer)
+    quantidadeFavoritos = db.Column(db.Integer, default=0)
+    autores = db.Column(db.String(255))
+    artistas = db.Column(db.String(255))
+    ultimoCapituloLancado = db.Column(db.Integer)
+    idUltimoCapituloLancado = db.Column(db.Integer)
 
-    avaliacoes = db.relationship('Avaliacao', backref='obra', cascade="all, delete-orphan")
-    capitulos = db.relationship('Capitulo', backref='obra', cascade="all, delete-orphan")
+    avaliacoes = db.relationship('Avaliacao', backref='manga', cascade="all, delete-orphan", passive_deletes=True)
+    capitulos = db.relationship('Capitulo', backref='manga', cascade="all, delete-orphan", passive_deletes=True)
+    favoritos = db.relationship('Favorito', backref='manga', cascade="all, delete-orphan", passive_deletes=True)
 
     def serialize(self):
         return {
             "id": self.id,
-            "titulo": self.titulo,
+            "nome": self.nome,
+            "imagemCapa": self.imagemCapa,
             "descricao": self.descricao,
             "genero": self.genero,
-            "categoria": self.categoria,
-            "capa_url": self.capa_url,
+            "tipo": self.tipo,
             "status": self.status,
-            "created_at": self.created_at.isoformat()
+            "avaliacao": self.avaliacao,
+            "anoLancamento": self.anoLancamento,
+            "quantidadeFavoritos": self.quantidadeFavoritos,
+            "autores": self.autores,
+            "artistas": self.artistas,
+            "ultimoCapituloLancado": self.ultimoCapituloLancado,
+            "idUltimoCapituloLancado": self.idUltimoCapituloLancado
         }
 
 
@@ -63,7 +76,7 @@ class Capitulo(db.Model):
     data_postagem = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     pdf_url = db.Column(db.String(255))
 
-    obra_id = db.Column(db.Integer, db.ForeignKey('obras.id'), nullable=False)
+    manga_id = db.Column(db.Integer, db.ForeignKey('mangas.id', ondelete="CASCADE"), nullable=False)
 
     def serialize(self):
         return {
@@ -72,7 +85,7 @@ class Capitulo(db.Model):
             "titulo": self.titulo,
             "data_postagem": self.data_postagem.isoformat(),
             "pdf_url": self.pdf_url,
-            "obra_id": self.obra_id
+            "manga_id": self.manga_id
         }
 
 
@@ -84,8 +97,8 @@ class Avaliacao(db.Model):
     comentario = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    obra_id = db.Column(db.Integer, db.ForeignKey('obras.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+    manga_id = db.Column(db.Integer, db.ForeignKey('mangas.id', ondelete="CASCADE"), nullable=False)
 
     def serialize(self):
         return {
@@ -94,24 +107,22 @@ class Avaliacao(db.Model):
             "comentario": self.comentario,
             "created_at": self.created_at.isoformat(),
             "user_id": self.user_id,
-            "obra_id": self.obra_id
+            "manga_id": self.manga_id
         }
-        
+
+
 class Favorito(db.Model):
     __tablename__ = 'favoritos'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    obra_id = db.Column(db.Integer, db.ForeignKey('obras.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+    manga_id = db.Column(db.Integer, db.ForeignKey('mangas.id', ondelete="CASCADE"), nullable=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-
-    user = db.relationship('User', backref=db.backref('favoritos', cascade="all, delete-orphan"))
-    obra = db.relationship('Obra', backref=db.backref('favoritos', cascade="all, delete-orphan"))
 
     def serialize(self):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "obra_id": self.obra_id,
+            "manga_id": self.manga_id,
             "created_at": self.created_at.isoformat()
         }

@@ -1,12 +1,12 @@
 import os
 import pymysql
 import sys
-from database.models import User, Obra, Capitulo, Avaliacao  # ajuste para o nome real do seu models.py
+from database.models import User, Manga, Capitulo, Avaliacao  # ajuste para o nome real do seu models.py
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app import create_app
 from database.db import db
-from scripts.db_mangas import create_obras
+from scripts.db_mangas import create_mangas
 import click
 
 
@@ -35,8 +35,8 @@ def init_db():
     with app.app_context():
         db.create_all()
         print("Banco de dados e tabelas criados com sucesso!")
-        
-        create_obras()
+
+        create_mangas()
 
 def reset_db():
     app = create_app()
@@ -46,7 +46,7 @@ def reset_db():
         db.create_all()
         print("Banco de dados resetado com sucesso!")
         
-        create_obras()
+        create_mangas()
 
 def pop_vars(obj):
     data = vars(obj).copy()
@@ -65,9 +65,9 @@ def print_all_data():
         for user in User.query.all():
             print(pop_vars(user))
 
-        print("\nOBRAS:")
-        for obra in Obra.query.all():
-            print(pop_vars(obra))
+        print("\nMANGAS:")
+        for manga in Manga.query.all():
+            print(pop_vars(manga))
 
         print("\nCAPÍTULOS:")
         for cap in Capitulo.query.all():

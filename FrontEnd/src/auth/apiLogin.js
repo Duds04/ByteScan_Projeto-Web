@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/api/auth'; // ajuste se seu backend estiver em outra porta
+const BASE_URL = 'http://localhost:5000/api/auth'; 
 
 // Função para login
 export async function loginAPI({ email, senha }) {
@@ -7,7 +7,7 @@ export async function loginAPI({ email, senha }) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email, password: senha }) // o backend espera `password`
+    body: JSON.stringify({ email, password: senha }) 
   });
 
   if (!response.ok) {
@@ -17,7 +17,7 @@ export async function loginAPI({ email, senha }) {
 
   const data = await response.json();
   
-  console.log("Login realizado com sucesso:", data.token); // Log para depuração
+  console.log("Login realizado com sucesso:", data.token); 
 
   return {
     token: data.token,
@@ -50,7 +50,7 @@ export async function registerAPI({ nome, nomeUsuario, email, senha }) {
 }
 
 
-const decodeJWT = (token) => {
+export const decodeJWT = (token) => {
   try {
     const payloadBase64 = token.split('.')[1];
     const decodedPayload = JSON.parse(atob(payloadBase64));

@@ -6,6 +6,7 @@ from sqlalchemy import or_
 from utils.categorias import CATEGORIAS_FIXAS, GENEROS_FIXOS
 from utils.token import decode_token, get_token_from_header
 
+# Rota que filtra mangas por genero e tipo
 @manga_bp.route("/filtro", methods=["GET"])
 def filtro():
     genero = request.args.get("genero")
@@ -21,7 +22,7 @@ def filtro():
     mangas = query.all()
     return jsonify([m.serialize() for m in mangas]), 200
 
-
+# Rota que pesquisa mangas por termo nome ou descrição
 @manga_bp.route("/pesquisa", methods=["GET"])
 def pesquisa():
     termo = request.args.get("termo")
@@ -37,6 +38,7 @@ def pesquisa():
 
     return jsonify([m.serialize() for m in resultados]), 200
 
+# Rota que lista mangas com seus capítulos, sem imagens apenas com a capa
 @manga_bp.route("/mangas/<int:manga_id>/capitulos", methods=["GET", "OPTIONS"])
 def listar_capitulos_sem_imagens(manga_id):
     manga = Manga.query.get(manga_id)
@@ -63,7 +65,7 @@ def listar_capitulos_sem_imagens(manga_id):
     }), 200
 
 
-
+# Rota que retorna o capítulo específico de um manga, com imagens
 @manga_bp.route("/<int:manga_id>/capitulo/<int:num>", methods=["GET", "OPTIONS"])
 def leitura_online(manga_id, num):
     capitulo = Capitulo.query.filter_by(manga_id=manga_id, numero=num).first()
@@ -76,13 +78,13 @@ def leitura_online(manga_id, num):
         "imagens": capitulo.imagens  # mudou de pdf_url para imagens (lista)
     }), 200
 
-
+# Rota que 
 @manga_bp.route("/mangas", methods=["GET", "OPTIONS"])
 def listar_mangas():
     mangas = Manga.query.all()
     return jsonify([m.serialize() for m in mangas]), 200
 
-
+# Rota que avalia um manga
 @manga_bp.route("/<int:manga_id>/avaliar", methods=["POST"])
 def avaliar_manga(manga_id):
     dados = request.get_json()
@@ -102,7 +104,7 @@ def avaliar_manga(manga_id):
 
     return create_registro(Avaliacao, nova_avaliacao)
 
-
+# Ro
 @manga_bp.route("/mangas/<int:manga_id>", methods=["GET", "OPTIONS"])
 def get_manga_completo(manga_id):
     manga = Manga.query.get(manga_id)

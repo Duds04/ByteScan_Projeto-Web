@@ -37,6 +37,32 @@ def pesquisa():
 
     return jsonify([m.serialize() for m in resultados]), 200
 
+@manga_bp.route("/mangas/<int:manga_id>/capitulos", methods=["GET"])
+def listar_capitulos_sem_imagens(manga_id):
+    manga = Manga.query.get(manga_id)
+    if not manga:
+        return jsonify({"message": "Mangá não encontrado"}), 404
+
+    capitulos = Capitulo.query.filter_by(manga_id=manga_id).order_by(Capitulo.numero).all()
+
+    capitulos_serializados = [
+        {
+            "id": c.id,
+            "numero": c.numero,
+            "titulo": c.titulo,
+            "data_postagem": c.data_postagem.strftime("%d/%m/%Y")
+        }
+        for c in capitulos
+    ]
+
+    return jsonify({
+        "id": manga.id,
+        "nome": manga.nome,
+        "imagemCapa": manga.imagemCapa,
+        "capitulos": capitulos_serializados
+    }), 200
+
+
 
 @manga_bp.route("/<int:manga_id>/capitulo/<int:num>", methods=["GET"])
 def leitura_online(manga_id, num):

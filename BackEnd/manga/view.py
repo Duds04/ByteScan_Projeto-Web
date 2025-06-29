@@ -112,7 +112,7 @@ def get_manga_completo(manga_id):
         return jsonify({"message": "Manga não encontrado"}), 404
 
     favoritado = False
-    avaliacao = None
+    avaliacao = 0
 
     try:
         token = get_token_from_header()
@@ -128,7 +128,10 @@ def get_manga_completo(manga_id):
 
     except Exception:
         pass
-
+    
+    if not avaliacao:
+        avaliacao = 0
+        
     return jsonify({
         "manga": manga.serialize(),
         "favoritado": favoritado,

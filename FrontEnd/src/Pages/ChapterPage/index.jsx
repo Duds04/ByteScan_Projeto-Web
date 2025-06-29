@@ -59,8 +59,7 @@ function ChapterPage() {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const stored = localStorage.getItem("auth");
-      const token = stored ? JSON.parse(stored).token : "";
+      const token = localStorage.getItem("auth");
 
       try {
         // Buscar capítulo real

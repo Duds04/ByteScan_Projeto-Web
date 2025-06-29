@@ -10,13 +10,11 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const stored = localStorage.getItem("auth");
-    if (stored) {
+    if (stored != undefined) {
       const decoded = decodeJWT(stored);
       setUser(decoded.username);
       setUserId(decoded.user_id);
     }
-
-    console.log("== ", user, " == ", userId);
 
   }, [user, userId]);
 

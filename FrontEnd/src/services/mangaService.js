@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api/manga";
+const BASE_URL = "http://localhost:5000/api";
 
 export const handleRequest = async (url, options = {}) => {
   const response = await fetch(url, options);
@@ -14,6 +14,33 @@ export const handleRequest = async (url, options = {}) => {
   }
   return response.json();
 };
+
+export const getManga = async (token, id) => {
+  const response = await fetch(`http://localhost:5000/api/manga/mangas/${id}`, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erro ao fazer login");
+  }
+
+  return await response.json();
+};
+
+export const getCapitulos = async (obraId, token) => {
+
+  console.log("dasdas ", obraId, token);
+    return handleRequest(`${BASE_URL}/manga/mangas/${obraId}/capitulos`, {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+  });
+
+}
 
 export const getObras = () => {
   return handleRequest(`${BASE_URL}/mangas`);

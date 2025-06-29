@@ -22,7 +22,7 @@ import {
   avaliarObra,
   addFavorito,
   removeFavorito,
-  handleRequest
+  getCapitulos
 } from "../../services/mangaService.js"; 
 
 
@@ -38,25 +38,25 @@ function MangaPage() {
   useEffect(() => {
     setLoading(true);
     setFavoritado(false);
-    const stored = localStorage.getItem("auth");
-    const token = stored ? JSON.parse(stored).token : "";
+    const token = localStorage.getItem("auth");
 
     async function fetchData() {
       try {
         const data = await getManga(token, id);
+        const dataCap = await getCapitulos(id, token);
 
-        console.log("Testeeeeeee ", data);
-        console.log("Testeeeeeee2 ", data.manga);
+        console.log("Testeeeeeee ", dataCap.capitulos);
 
         setManga({
           ...data.manga,
           generos: data.manga.genero.split(",").map((g) => g.trim()),
           autores: data.manga.autores.split(",").map((a) => a.trim()),
           artistas: data.manga.artistas.split(",").map((a) => a.trim()),
+          capitulos: dataCap.capitulos
         });
 
         setFavoritado(data.favoritado);
-        setUserRating(data.avaliacao?.nota ?? null);
+        setUserRating(data.manga.avaliacao);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
       } finally {

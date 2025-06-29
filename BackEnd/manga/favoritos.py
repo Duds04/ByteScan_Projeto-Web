@@ -8,7 +8,7 @@ from database.db import db
 @autorizar
 def listar_favoritos():
     favoritos = Favorito.query.filter_by(user_id=request.user_id).all()
-    return jsonify([fav.serialize() for fav in favoritos]), 200
+    return jsonify([fav.manga.serialize() for fav in favoritos if fav.manga]), 200
 
 @manga_bp.route("/<int:manga_id>/favorito", methods=["POST"])
 @autorizar

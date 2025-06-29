@@ -25,9 +25,6 @@ export const AuthProvider = ({ children }) => {
       const decoded = decodeJWT(data.token);
       setUserId(decoded.user_id);
       setUser(decoded.username);
-      console.log(decoded);
-      console.log(decoded.user_id);
-      console.log(decoded.username);
 
       localStorage.setItem("auth", JSON.stringify(data.token));
       localStorage.setItem("user", JSON.stringify(decoded.username));

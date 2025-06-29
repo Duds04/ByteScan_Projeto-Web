@@ -10,10 +10,9 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const stored = localStorage.getItem("auth");
-    const user = localStorage.getItem("auth");
     if (stored) {
-      const data = JSON.parse(stored);
-      setUser(data.user);
+      const decoded = decodeJWT(stored);
+      setUser(decoded.user_id);
     }
   }, []);
 
@@ -27,6 +26,9 @@ export const AuthProvider = ({ children }) => {
       setUserId(decoded.user_id);
       setUser(decoded.username);
       console.log(decoded);
+      console.log(decoded.user_id);
+      console.log(decoded.username);
+
       localStorage.setItem("auth", JSON.stringify(data.token));
       localStorage.setItem("user", JSON.stringify(decoded.username));
       return { success: true };

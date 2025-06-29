@@ -1,60 +1,59 @@
 from flask import request, jsonify
+from functools import wraps
+from datetime import datetime, timedelta
 import jwt
 import os
-from datetime import datetime, timedelta
-from functools import wraps
 from database.models import User
 
-SECRET_KEY = os.getenv("SECRET_KEY", "fallback_secret")
+JWT_SECRET = os.getenv("JWT_SECRET", "fallback_jwt_secret")
 
-# Gera um token JWT válido
+# Gera token JWT
 def generate_token(user):
     payload = {
-        "sub": user.id,
+        "user_id": user.id,
         "nome": user.nome,
         "username": user.username,
         "email": user.email,
         "exp": datetime.utcnow() + timedelta(days=2)
     }
-    token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-    return token
+    return jwt.encode(payload, JWT_SECRET, algorithm="HS256")
 
-# Decodifica e valida o token
+# Decodifica token
 def decode_token(token):
     try:
-        return jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        return jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
     except jwt.ExpiredSignatureError:
         raise ValueError("Token expirado.")
     except jwt.InvalidTokenError:
         raise ValueError("Token inválido.")
 
-# Extrai o token do cabeçalho
+# Extrai token do cabeçalho Authorization
 def get_token_from_header():
     auth_header = request.headers.get("Authorization")
     if not auth_header or not auth_header.startswith("Bearer "):
         raise ValueError("Token não fornecido ou mal formatado.")
-    return auth_header.split()[1]
+    return auth_header.split(" ")[1]
 
-# Decorator para proteger rotas
-def token_required(f):
+# Decorador de proteção de rota
+def autorizar(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         try:
             token = get_token_from_header()
-            user_data = decode_token(token)
+            decoded = decode_token(token)
+            request.user_data = decoded  # Informações completas do usuário
+            request.user_id = decoded.get("user_id")  # ID rápido
         except ValueError as e:
             return jsonify({"message": str(e)}), 401
-
-        request.user_data = user_data  # Você pode acessar isso na view
         return f(*args, **kwargs)
     return decorated
 
-# Autorização baseada no ID do token
+# Verifica se o ID do token corresponde ao recurso acessado
 def authorize_user(id):
     try:
         token = get_token_from_header()
-        user_data = decode_token(token)
-        if int(user_data["sub"]) != int(id):
+        decoded = decode_token(token)
+        if int(decoded.get("user_id")) != int(id):
             return jsonify({"message": "Usuário não autorizado."}), 403
     except ValueError as e:
         return jsonify({"message": str(e)}), 401

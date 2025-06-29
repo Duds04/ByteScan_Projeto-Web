@@ -74,7 +74,7 @@ function ChapterPage() {
       //   .then(res => res.json()).then(data => setFavoritado(data.favoritado));
 
       setCapitulo({
-        
+        ...mockCapitulo
       });
 
       if (manga === null) {

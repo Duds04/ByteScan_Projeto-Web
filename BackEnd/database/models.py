@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from database.db import db
+from sqlalchemy.dialects.postgresql import JSON
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -74,7 +75,7 @@ class Capitulo(db.Model):
     numero = db.Column(db.Integer, nullable=False)
     titulo = db.Column(db.String(100))
     data_postagem = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    pdf_url = db.Column(db.String(255))
+    imagens = db.Column(JSON, nullable=True)  # lista de URLs
 
     manga_id = db.Column(db.Integer, db.ForeignKey('mangas.id', ondelete="CASCADE"), nullable=False)
 
@@ -83,9 +84,9 @@ class Capitulo(db.Model):
             "id": self.id,
             "numero": self.numero,
             "titulo": self.titulo,
-            "data_postagem": self.data_postagem.isoformat(),
-            "pdf_url": self.pdf_url,
-            "manga_id": self.manga_id
+            "data_postagem": self.data_postagem.strftime("%d/%m/%Y"),
+            "imagensCapitulo": self.imagens,
+            "idManga": self.manga_id
         }
 
 

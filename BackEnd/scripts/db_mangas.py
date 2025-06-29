@@ -20,11 +20,25 @@ def create_mangas():
             "autores": "Hajime Isayama",
             "artistas": "Hajime Isayama",
             "capitulos": [
-                {"numero": 1, "titulo": "Para Ti, 2.000 Anos Depois", "pdf_url": "https://example.com/snkap1.pdf"},
-                {"numero": 2, "titulo": "Aquele Dia", "pdf_url": "https://example.com/snkap2.pdf"},
-                {"numero": 3, "titulo": "Uma Luz Fraca no Escuro", "pdf_url": "https://example.com/snkap3.pdf"},
-                {"numero": 4, "titulo": "Arma Letal", "pdf_url": "https://example.com/snkap4.pdf"},
-                {"numero": 5, "titulo": "A Muralha", "pdf_url": "https://example.com/snkap5.pdf"}
+                {
+                    "numero": 1,
+                    "titulo": "Para Ti, 2.000 Anos Depois",
+                    "imagens": [
+                        "https://s3.yomucomics.com/uploads/media/001.jpg",
+                        "https://s3.yomucomics.com/uploads/media/002.jpg",
+                        "https://s3.yomucomics.com/uploads/media/003.jpg",
+                        "https://s3.yomucomics.com/uploads/media/004.jpg",
+                    ]
+                },
+                {
+                    "numero": 2,
+                    "titulo": "Aquele Dia",
+                    "imagens": [
+                        "https://example.com/snkap2-1.jpg",
+                        "https://example.com/snkap2-2.jpg"
+                    ]
+                }
+                # Adicione mais capítulos se quiser
             ]
         },
         {
@@ -38,11 +52,23 @@ def create_mangas():
             "autores": "Eiichiro Oda",
             "artistas": "Eiichiro Oda",
             "capitulos": [
-                {"numero": 1, "titulo": "Romance Dawn", "pdf_url": "https://example.com/opcap1.pdf"},
-                {"numero": 2, "titulo": "O Grande Espadachim Aparece", "pdf_url": "https://example.com/opcap2.pdf"},
-                {"numero": 3, "titulo": "Morgan, o Mão de Machado", "pdf_url": "https://example.com/opcap3.pdf"},
-                {"numero": 4, "titulo": "O Tesouro de Buggy", "pdf_url": "https://example.com/opcap4.pdf"},
-                {"numero": 5, "titulo": "Chef de Navio", "pdf_url": "https://example.com/opcap5.pdf"}
+                {
+                    "numero": 1,
+                    "titulo": "Romance Dawn",
+                    "imagens": [
+                        "https://example.com/opcap1-1.jpg",
+                        "https://example.com/opcap1-2.jpg"
+                    ]
+                },
+                {
+                    "numero": 2,
+                    "titulo": "O Grande Espadachim Aparece",
+                    "imagens": [
+                        "https://example.com/opcap2-1.jpg",
+                        "https://example.com/opcap2-2.jpg"
+                    ]
+                }
+                # Adicione mais capítulos se quiser
             ]
         }
     ]
@@ -51,14 +77,14 @@ def create_mangas():
         capitulos_data = manga_data.pop("capitulos")
         novo_manga = Manga(**manga_data)
         db.session.add(novo_manga)
-        db.session.flush()  # Garante que novo_manga.id esteja disponível
+        db.session.flush()  # Para garantir novo_manga.id
 
         ultimo_cap = None
         for cap in capitulos_data:
             novo_capitulo = Capitulo(
                 numero=cap["numero"],
                 titulo=cap["titulo"],
-                pdf_url=cap["pdf_url"],
+                imagens=cap.get("imagens", []),
                 manga_id=novo_manga.id,
                 data_postagem=datetime.now(timezone.utc)
             )

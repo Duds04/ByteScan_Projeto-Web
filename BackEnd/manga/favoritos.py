@@ -1,13 +1,8 @@
 from manga import manga_bp
 from flask import request, jsonify
-from database.models import Manga, Capitulo, Avaliacao, Favorito
-from database.db_func import get_all, get_id, create_registro
-from sqlalchemy import or_, and_
+from database.models import Manga, Favorito
 from utils.token import autorizar
 from database.db import db
-from utils.categorias import CATEGORIAS_FIXAS, GENEROS_FIXOS
-from flask import send_file
-import os
 
 @manga_bp.route("/favoritos", methods=["GET"])
 @autorizar

@@ -1,13 +1,10 @@
 from manga import manga_bp
 from flask import request, jsonify
 from database.models import Manga, Capitulo, Avaliacao, Favorito
-from database.db_func import get_all, get_id, create_registro
+from database.db_func import create_registro
 from sqlalchemy import or_
 from utils.categorias import CATEGORIAS_FIXAS, GENEROS_FIXOS
 from utils.token import decode_token, get_token_from_header
-from flask import send_file
-import os
-
 
 @manga_bp.route("/filtro", methods=["GET"])
 def filtro():
@@ -50,7 +47,7 @@ def leitura_online(manga_id, num):
     return jsonify({
         "numero": capitulo.numero,
         "titulo": capitulo.titulo,
-        "pdf_url": capitulo.pdf_url
+        "imagens": capitulo.imagens  # mudou de pdf_url para imagens (lista)
     }), 200
 
 
@@ -131,8 +128,8 @@ def get_generos():
 def adicionar_capitulo(manga_id):
     dados = request.get_json()
 
-    if not dados.get("numero") or not dados.get("titulo") or not dados.get("pdf_url"):
-        return jsonify({"message": "Campos obrigatórios: numero, titulo, pdf_url"}), 400
+    if not dados.get("numero") or not dados.get("titulo") or not dados.get("imagens"):
+        return jsonify({"message": "Campos obrigatórios: numero, titulo, imagens"}), 400
 
     dados["manga_id"] = manga_id
     return create_registro(Capitulo, dados)

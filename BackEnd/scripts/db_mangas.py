@@ -3,72 +3,95 @@ from database.models import Manga, Capitulo
 from datetime import datetime, timezone
 
 def create_mangas():
-    # Verifica se já existem mangás cadastrados
     if Manga.query.first():
         print("Já existem mangás cadastrados. Abortando inserção.")
         return
 
+    base_url = "./ByteScan_Projeto-Web/Mangas"  # Atualize com o caminho real de hospedagem das imagens
+
     mangas_data = [
         {
-            "nome": "Shingeki no Kyojin",
-            "descricao": "A humanidade contra gigantes devoradores.",
-            "genero": "Ação",
-            "tipo": "Mangá",
-            "imagemCapa": "https://example.com/shingeki.jpg",
-            "status": "Finalizado",
-            "anoLancamento": 2009,
-            "autores": "Hajime Isayama",
-            "artistas": "Hajime Isayama",
+            "nome": "The Beginning After The End",
+            "descricao": "Rei poderoso reencarna em mundo mágico.",
+            "genero": "Fantasia",
+            "tipo": "Webtoon",
+            "imagemCapa": f"{base_url}/The Beginning After The End/capa.png",
+            "status": "Em andamento",
+            "anoLancamento": 2018,
+            "autores": "TurtleMe",
+            "artistas": "Fuyuki23",
             "capitulos": [
                 {
                     "numero": 1,
-                    "titulo": "Para Ti, 2.000 Anos Depois",
+                    "titulo": "Capítulo 1",
                     "imagens": [
-                        "https://s3.yomucomics.com/uploads/media/001.jpg",
-                        "https://s3.yomucomics.com/uploads/media/002.jpg",
-                        "https://s3.yomucomics.com/uploads/media/003.jpg",
-                        "https://s3.yomucomics.com/uploads/media/004.jpg",
+                        f"{base_url}/logo.png",
+                        f"{base_url}/The Beginning After The End/1/1.jpeg",
+                        f"{base_url}/The Beginning After The End/1/2.png",
+                        f"{base_url}/The Beginning After The End/1/3.jpeg"
                     ]
                 },
                 {
                     "numero": 2,
-                    "titulo": "Aquele Dia",
+                    "titulo": "Capítulo 2",
                     "imagens": [
-                        "https://example.com/snkap2-1.jpg",
-                        "https://example.com/snkap2-2.jpg"
+                        f"{base_url}/logo.png",
+                        f"{base_url}/The Beginning After The End/2/1.jpg",
+                        f"{base_url}/The Beginning After The End/2/2.jpeg"
+                    ]
+                },
+                {
+                    "numero": 3,
+                    "titulo": "Capítulo 3",
+                    "imagens": [
+                        f"{base_url}/logo.png",
+                        f"{base_url}/The Beginning After The End/3/1.jpeg"
                     ]
                 }
-                # Adicione mais capítulos se quiser
             ]
         },
         {
-            "nome": "One Piece",
-            "descricao": "Piratas em busca do lendário tesouro One Piece.",
-            "genero": "Aventura",
-            "tipo": "Mangá",
-            "imagemCapa": "https://example.com/onepiece.jpg",
+            "nome": "The Novel's Extra",
+            "descricao": "Um personagem secundário reescreve seu destino.",
+            "genero": "Ação",
+            "tipo": "Webtoon",
+            "imagemCapa": f"{base_url}/The Novel's Extra/capa.png",
             "status": "Em andamento",
-            "anoLancamento": 1997,
-            "autores": "Eiichiro Oda",
-            "artistas": "Eiichiro Oda",
+            "anoLancamento": 2019,
+            "autores": "Jeongha",
+            "artistas": "Kim Junghyun",
             "capitulos": [
                 {
                     "numero": 1,
-                    "titulo": "Romance Dawn",
+                    "titulo": "Capítulo 1",
                     "imagens": [
-                        "https://example.com/opcap1-1.jpg",
-                        "https://example.com/opcap1-2.jpg"
+                        f"{base_url}/logo.png",
+                        f"{base_url}/The Novel's Extra/1/1.png",
+                        f"{base_url}/The Novel's Extra/1/2.jpeg"
                     ]
                 },
                 {
                     "numero": 2,
-                    "titulo": "O Grande Espadachim Aparece",
+                    "titulo": "Capítulo 2",
                     "imagens": [
-                        "https://example.com/opcap2-1.jpg",
-                        "https://example.com/opcap2-2.jpg"
+                        f"{base_url}/logo.png",
+                        f"{base_url}/The Novel's Extra/2/1.jpeg",
+                        f"{base_url}/The Novel's Extra/2/2.jpeg",
+                        f"{base_url}/The Novel's Extra/2/3.jpg"
+                    ]
+                },
+                {
+                    "numero": 3,
+                    "titulo": "Capítulo 3",
+                    "imagens": [
+                        f"{base_url}/logo.png",
+                        f"{base_url}/The Novel's Extra/3/1.jpeg",
+                        f"{base_url}/The Novel's Extra/3/2.jpeg",
+                        f"{base_url}/The Novel's Extra/3/3.jpeg",
+                        f"{base_url}/The Novel's Extra/3/4.jpeg",
+                        f"{base_url}/The Novel's Extra/3/5.jpeg"
                     ]
                 }
-                # Adicione mais capítulos se quiser
             ]
         }
     ]
@@ -77,14 +100,14 @@ def create_mangas():
         capitulos_data = manga_data.pop("capitulos")
         novo_manga = Manga(**manga_data)
         db.session.add(novo_manga)
-        db.session.flush()  # Para garantir novo_manga.id
+        db.session.flush()
 
         ultimo_cap = None
         for cap in capitulos_data:
             novo_capitulo = Capitulo(
                 numero=cap["numero"],
                 titulo=cap["titulo"],
-                imagens=cap.get("imagens", []),
+                imagens=cap["imagens"],
                 manga_id=novo_manga.id,
                 data_postagem=datetime.now(timezone.utc)
             )

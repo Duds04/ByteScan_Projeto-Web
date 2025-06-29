@@ -56,6 +56,7 @@ function MangaPage() {
         });
 
         setFavoritado(data.favoritado);
+        console.log("data.manga.avaliacao",data.manga.avaliacao, data);
         setUserRating(data.manga.avaliacao);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);

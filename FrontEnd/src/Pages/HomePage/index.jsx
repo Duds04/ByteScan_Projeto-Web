@@ -4,6 +4,10 @@ import HomeMangaList from "./HomeMangaList.jsx";
 import LoadingGame from "../../components/LoadingGame/index.jsx";
 import { useState, useEffect } from "react";
 
+import {
+  getManga
+} from "../../services/mangaService.js"; 
+
 function HomePage() {
   const [loading, setLoading] = useState(true);
   const [mangasUltimos, setMangasUltimos] = useState([]);

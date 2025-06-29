@@ -96,3 +96,23 @@ class Avaliacao(db.Model):
             "user_id": self.user_id,
             "obra_id": self.obra_id
         }
+        
+class Favorito(db.Model):
+    __tablename__ = 'favoritos'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    obra_id = db.Column(db.Integer, db.ForeignKey('obras.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    user = db.relationship('User', backref=db.backref('favoritos', cascade="all, delete-orphan"))
+    obra = db.relationship('Obra', backref=db.backref('favoritos', cascade="all, delete-orphan"))
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "obra_id": self.obra_id,
+            "created_at": self.created_at.isoformat()
+        }
+

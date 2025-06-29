@@ -1,10 +1,11 @@
 from manga import manga_bp
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, send_file
 from database.models import Obra, Capitulo, Avaliacao
 from database.db_func import get_all, get_id, create_registro
 from sqlalchemy import or_, and_
 from utils.categorias import CATEGORIAS_FIXAS, GENEROS_FIXOS
-from flask import send_file
+from database.models import Favorito
+from utils.token import decode_token, get_token_from_header
 import os
 
 
@@ -87,6 +88,41 @@ def avaliar_obra(obra_id):
     }
 
     return create_registro(Avaliacao, nova_avaliacao)
+
+@manga_bp.route("/obras/<int:obra_id>", methods=["GET"])
+def get_obra_completa(obra_id):
+    obra = Obra.query.get(obra_id)
+    if not obra:
+        return jsonify({"message": "Obra não encontrada"}), 404
+
+    favoritado = False
+    avaliacao = None
+
+    # Tenta extrair o token, se houver
+    try:
+        token = get_token_from_header()
+        user_data = decode_token(token)
+        user_id = user_data.get("user_id")
+
+        # Verifica se a obra está favoritada
+        favorito = Favorito.query.filter_by(user_id=user_id, obra_id=obra_id).first()
+        favoritado = favorito is not None
+
+        # Verifica se o usuário avaliou a obra
+        avaliacao_obj = Avaliacao.query.filter_by(user_id=user_id, obra_id=obra_id).first()
+        if avaliacao_obj:
+            avaliacao = avaliacao_obj.serialize()
+
+    except Exception:
+        # Usuário não está logado ou token inválido – mantemos valores padrão
+        pass
+
+    return jsonify({
+        "obra": obra.serialize(),
+        "favoritado": favoritado,
+        "avaliacao": avaliacao
+    }), 200
+
 
 # GET das avaliações de uma obra
 @manga_bp.route("/<int:obra_id>/avaliacoes", methods=["GET"])

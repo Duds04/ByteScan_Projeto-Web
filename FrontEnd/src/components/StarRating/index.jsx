@@ -3,8 +3,7 @@ import { Star } from 'lucide-react';
 import { useState } from 'react';
 
 function StarRating({ value = 0, onChange, interactive = false }) {
-  const [hovered, setHovered] = useState(null); // hovered pode ser null ou um valor tipo 2.5
-  // Garante que value está entre 0 e 5, e só aceita .0 ou .5
+  const [hovered, setHovered] = useState(null); 
   let rating = Math.max(0, Math.min(5, Math.round(value * 2) / 2));
   const displayRating = hovered !== null ? hovered : rating;
   const stars = [];

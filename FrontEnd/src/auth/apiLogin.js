@@ -1,49 +1,42 @@
-// src/auth/api.js
+export const loginAPI = async ({ email, senha }) => {
+  const response = await fetch("http://localhost:5000/api/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email,
+      password: senha,
+    }),
+  });
 
-let fakeUsersDB = [
-  {
-    email: 'admin@admin.com',
-    senha: '123',
-    nome: 'Administrador',
-    nomeUsuario: 'admin'
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erro ao fazer login");
   }
-];
 
-// Função mock para simular delay de rede
-const delay = (ms) => new Promise(res => setTimeout(res, ms));
+  return await response.json();
+};
 
-// Simula login
-export async function loginAPI({ email, senha }) {
-  await delay(500);
-  const user = fakeUsersDB.find(u => u.email === email && u.senha === senha);
-  if (!user) throw new Error('Credenciais inválidas');
-
-  // Simula token
-  return {
-    token: 'fake-jwt-token',
-    user: {
-      nome: user.nome,
-      email: user.email,
-      nomeUsuario: user.nomeUsuario
-    }
-  };
-}
-
-// Simula cadastro
 export async function registerAPI({ nome, nomeUsuario, email, senha }) {
-  await delay(500);
-  const userExists = fakeUsersDB.some(u => u.email === email || u.nomeUsuario === nomeUsuario);
-  if (userExists) throw new Error('Usuário já existe');
+  const response = await fetch("http://localhost:5000/api/auth/cadastro", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: nomeUsuario,
+      email: email,
+      nome: nome,
+      password: senha,
+    }),
+  });
 
-  const newUser = { nome, nomeUsuario, email, senha };
-  fakeUsersDB.push(newUser);
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erro ao fazer cadastro");
+  }
 
-  return {
-    token: 'fake-jwt-token',
-    user: {
-      nome,
-      email,
-      nomeUsuario
-    }
-  };
+  return await response.json();
 }
+

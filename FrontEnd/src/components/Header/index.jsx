@@ -1,6 +1,6 @@
-import { 
-  ChevronDown, 
-  ChevronUp, 
+import {
+  ChevronDown,
+  ChevronUp,
   CircleUserRound,
   Home,
   MessageCircle,
@@ -19,26 +19,48 @@ import { useAuth } from "../../auth/AuthContext";
 
 import LoginComponent from "../LoginComponent";
 
+export const getGeneros = async () => {
+  const response = await fetch("http://localhost:5000/api/manga/generos", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erro ao fazer login");
+  }
+
+  return await response.json();
+};
+
+export const getTipos = async () => {
+  const response = await fetch("http://localhost:5000/api/manga/categorias", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erro ao fazer login");
+  }
+
+  return await response.json();
+};
+
+
 function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const [login, setLogin] = useState(false);
   const [open, setOpen] = useState(false);
   const [hiding, setHiding] = useState(false);
+  const [generos, setGeneros ] = useState([]); 
+  const [tipos, setTipos ] = useState([]); 
   const { user, isLoggedIn } = useAuth();
-
-  // Lista de gêneros e tipos
-  const generos = [
-    "Ação",
-    "Aventura",
-    "Comédia",
-    "Drama",
-    "Fantasia",
-    "Romance",
-    "Slice of Life",
-    "Terror",
-  ];
-  const tipos = ["Mangá", "Manhwa", "Manhua", "Webtoon"];
 
   const handleDropdownClose = () => {
     setHiding(true);
@@ -50,6 +72,18 @@ function Header() {
 
   // Abre o modal de login automaticamente se vier do PrivateRoute
   useEffect(() => {
+    async function fetchData() {
+      try {
+        const g = await getGeneros();
+        const t = await getTipos();
+        setGeneros(g);
+        setTipos(t);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      }
+    }
+
+    fetchData();
     if (location.state?.openLogin) {
       setLogin(true);
       // Limpa o state para evitar reabrir ao navegar
@@ -145,7 +179,7 @@ function Header() {
 
         </div>
         {/* {isLoggedIn ? (): () } */}
-        {isLoggedIn() && (      
+        {isLoggedIn() && (
           <div
             className="header-user-info"
             style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
@@ -167,7 +201,7 @@ function Header() {
             <span className="header-username">
               {user?.nomeUsuario || "Usuário"}
             </span>
-          </div>      
+          </div>
         )}
         {!isLoggedIn() && (
           <button

@@ -30,7 +30,7 @@ function App() {
           <Route
             path="/manga/:id/cap/:idCap"
             element={
-              // <PrivateRoute>
+              <PrivateRoute>
                 <ChapterPage />
               </PrivateRoute>
             }

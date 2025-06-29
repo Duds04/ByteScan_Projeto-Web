@@ -17,8 +17,10 @@ import {
 } from "lucide-react";
 import LoadingGame from "../../components/LoadingGame";
 
+const BASE_URL = "http://localhost:5000/api/manga";
+
 export const getManga = async (token, obraId) => {
-  const response = await fetch(`http://localhost:5000/api/manga/obras/${obraId}`, {
+  const response = await fetch(`http://localhost:5000/api/manga/mangas/${obraId}`, {
     headers: {
       "Authorization": `Bearer ${token}`
     }
@@ -31,6 +33,38 @@ export const getManga = async (token, obraId) => {
   return await response.json();
 };
 
+export const addFavorito = async (token, obraId) => {
+  return handleRequest(`${BASE_URL}/favoritos/${obraId}`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+  });
+};
+
+export const removeFavorito = async (token, obraId) => {
+  return handleRequest(`${BASE_URL}/favoritos/${obraId}`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+  });
+};
+
+export const avaliarObra = async (token, obraId, nota, comentario = "") => {
+  return handleRequest(`${BASE_URL}/${obraId}/avaliar`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ nota, comentario }),
+  });
+};
+
+export const getAvaliacoes = (obraId) => {
+  return handleRequest(`${BASE_URL}/${obraId}/avaliacoes`);
+};
 
 function MangaPage() {
   const navigate = useNavigate();
@@ -43,63 +77,78 @@ function MangaPage() {
   // Mock de requisição ao servidor
   useEffect(() => {
     setLoading(true);
-    setFavoritado(false); // reset ao trocar de manga
-    const token = localStorage.getItem("auth");
+    setFavoritado(false);
+    const stored = localStorage.getItem("auth");
+    const token = stored ? JSON.parse(stored).token : "";
+
     async function fetchData() {
       try {
-        const manga = await getManga(token, id);
-        setManga(manga);
+        const data = await getManga(token, id);
+
+        console.log("Testeeeeeee ", data);
+        console.log("Testeeeeeee2 ", data.manga);
+
+        setManga({
+          ...data.manga,
+          generos: data.manga.genero.split(",").map((g) => g.trim()),
+          autores: data.manga.autores.split(",").map((a) => a.trim()),
+          artistas: data.manga.artistas.split(",").map((a) => a.trim()),
+        });
+
+        setFavoritado(data.favoritado);
+        setUserRating(data.avaliacao?.nota ?? null);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
+      } finally {
+        setLoading(false);
       }
     }
 
     fetchData();
-
-
-    // Simula verificação no backend se já favoritou
-    // fetch(`/api/manga/${id}/favoritado`, { method: 'GET' })
-    //   .then(res => res.json()).then(data => setFavoritado(data.favoritado));
-
-    setLoading(false);
   }, [id]);
 
-  // Função para enviar avaliação ao backend (mock)
-  function handleRating(newRating) {
-    setUserRating(newRating);
-    // Aqui você faria a requisição real para o backend
-    // Exemplo:
-    // fetch(`/api/manga/${id}/avaliar`, { method: 'POST', body: JSON.stringify({ rating: newRating }) })
-    //   .then(...)
-    //   .catch(...)
-    // Simulação de sucesso:
-    alert(`Avaliação enviada: ${newRating} estrela(s)`);
-  }
-  // Função para favoritar manga
-  function handleFavorite() {
-    if (favoritado) {
-      // remove favorito
-      // fetch(`/api/manga/${id}/desfavoritar`, { method: 'POST' })
-      //   .then(...)
-      //   .catch(...)
-      setManga((prev) => ({
-        ...prev,
-        quantidadeFavoritos: prev.quantidadeFavoritos - 1,
-      }));
-      setFavoritado(false);
-      alert("Mangá desfavoritado com sucesso!");
-      return;
+  // Função para enviar avaliação ao backend 
+  async function handleRating(newRating) {
+    const stored = localStorage.getItem("auth");
+    const token = stored ? JSON.parse(stored).token : "";
+
+    try {
+      await avaliarObra(token, id, newRating);
+      setUserRating(newRating);
+      alert(`Avaliação enviada: ${newRating} estrela(s)`);
+    } catch (error) {
+      console.error("Erro ao enviar avaliação:", error);
+      alert("Erro ao enviar avaliação.");
     }
-    // Simulação de requisição ao backend
-    // fetch(`/api/manga/${id}/favoritar`, { method: 'POST' })
-    //   .then(...)
-    //   .catch(...)
-    setManga((prev) => ({
-      ...prev,
-      quantidadeFavoritos: prev.quantidadeFavoritos + 1,
-    }));
-    setFavoritado(true);
-    alert("Mangá favoritado com sucesso!");
+  }
+
+  // Função para favoritar manga
+  async function handleFavorite() {
+    const stored = localStorage.getItem("auth");
+    const token = stored ? JSON.parse(stored).token : "";
+
+    try {
+      if (favoritado) {
+        await removeFavorito(token, id);
+        setManga((prev) => ({
+          ...prev,
+          quantidadeFavoritos: prev.quantidadeFavoritos - 1,
+        }));
+        setFavoritado(false);
+        alert("Mangá desfavoritado com sucesso!");
+      } else {
+        await addFavorito(token, id);
+        setManga((prev) => ({
+          ...prev,
+          quantidadeFavoritos: prev.quantidadeFavoritos + 1,
+        }));
+        setFavoritado(true);
+        alert("Mangá favoritado com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar favorito:", error);
+      alert("Erro ao atualizar favorito.");
+    }
   }
 
   function returnMangaCap(idCap) {
@@ -165,7 +214,7 @@ function MangaPage() {
               <button
                 className="button-chapters"
                 onClick={() => {
-                  returnMangaCap(manga.ultimoCapituloLancado);
+                  returnMangaCap(manga.idUltimoCapituloLancado);
                 }}
               >
                 <SkipForward size={18} />

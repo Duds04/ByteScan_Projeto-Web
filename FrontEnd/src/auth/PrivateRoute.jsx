@@ -3,9 +3,11 @@ import { useAuth } from "./AuthContext";
 
 // Se tiver logado, renderiza o componente filho, senão redireciona para a página inicial e abre o login
 const PrivateRoute = ({ children }) => {
-  const { user } = useAuth();
+  const stored = localStorage.getItem("auth");
 
-  return user ? (
+  console.log("Teste Auth ", stored);
+
+  return stored ? (
     children
   ) : (
     //replace para não manter o histórico de navegação   

@@ -38,14 +38,15 @@ export async function registerAPI({ nome, nomeUsuario, email, senha }) {
     })
   });
 
-  console.log("Resgistro realizado com sucesso:", data.token); 
-
   if (!response.ok) {
     const { error } = await response.json();
-    throw new Error(error || 'Erro ao registrar');
+    throw new Error(error || 'Erro ao fazer login');
   }
 
   const data = await response.json();
+  
+  console.log("Registro realizado com sucesso:", data.token); 
+
   return {
     token: data.token,
   };

@@ -30,13 +30,13 @@ function App() {
           <Route
             path="/manga/:id/cap/:idCap"
             element={
-              <PrivateRoute>
+              // <PrivateRoute>
                 <ChapterPage />
               </PrivateRoute>
             }
           ></Route>
           <Route
-            path="/Favoritos"
+            path="/favoritos"
             element={
               <PrivateRoute>
                 <FavoritosPage />

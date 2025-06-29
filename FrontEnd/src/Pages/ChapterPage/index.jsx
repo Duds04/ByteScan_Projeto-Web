@@ -3,11 +3,11 @@ import LoadingGame from "../../components/LoadingGame";
 import ScrollToTopButton from "../../components/ScrollToTopButton";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Info,
-  Bookmark,
+import { 
+  ArrowLeft, 
+  ArrowRight, 
+  Info, 
+  Bookmark, 
   BookOpen,
   Home,
   Heart,
@@ -74,7 +74,7 @@ function ChapterPage() {
       //   .then(res => res.json()).then(data => setFavoritado(data.favoritado));
 
       setCapitulo({
-        ...mockCapitulo
+        ...mockCapitulo,
       });
 
       if (manga === null) {
@@ -102,28 +102,9 @@ function ChapterPage() {
           idUltimoCapituloLancado: 3, // passa o id
         });
       }
+      setLoading(false);
     }, 400);
-
-    async function fetchData() {
-      try {
-        const res = await fetch(`http://localhost:5000/api/manga/${id}/capitulo/${idCap}`);
-        setCapitulo(await res.json());
-        if (manga === null) {
-          const res = await fetch(`http://localhost:5000/api/manga/obras/${id}`, {
-            headers: {
-              "Authorization": `Bearer ${token}`
-            }
-          });
-          setManga(await res.json());
-        }
-      } catch (error) {
-        console.error("Erro ao buscar dados:", error);
-      }
-    }
-
-    fetchData();
-    setLoading(false);
-  }, [id, idCap]); 
+  }, [id, idCap]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function ControlerCapitulo() {
     return (

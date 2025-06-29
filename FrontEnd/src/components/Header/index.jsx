@@ -83,14 +83,13 @@ function Header() {
         console.error("Erro ao buscar dados:", error);
       }
     }
-    
     fetchData();
     if (location.state?.openLogin) {
       setLogin(true);
       // Limpa o state para evitar reabrir ao navegar
       window.history.replaceState({}, document.title);
     }
-  }, [location.state, user]);
+  }, [location.state]);
 
   return (
     <>
@@ -200,7 +199,7 @@ function Header() {
               </svg>
             </span>
             <span className="header-username">
-              {user?.nomeUsuario || "Usuário"}
+              {user || "Usuário"}
             </span>
           </div>
         )}

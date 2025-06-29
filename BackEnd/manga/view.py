@@ -37,7 +37,7 @@ def pesquisa():
 
     return jsonify([m.serialize() for m in resultados]), 200
 
-@manga_bp.route("/mangas/<int:manga_id>/capitulos", methods=["GET"])
+@manga_bp.route("/mangas/<int:manga_id>/capitulos", methods=["GET", "OPTIONS"])
 def listar_capitulos_sem_imagens(manga_id):
     manga = Manga.query.get(manga_id)
     if not manga:
@@ -64,7 +64,7 @@ def listar_capitulos_sem_imagens(manga_id):
 
 
 
-@manga_bp.route("/<int:manga_id>/capitulo/<int:num>", methods=["GET"])
+@manga_bp.route("/<int:manga_id>/capitulo/<int:num>", methods=["GET", "OPTIONS"])
 def leitura_online(manga_id, num):
     capitulo = Capitulo.query.filter_by(manga_id=manga_id, numero=num).first()
     if not capitulo:
@@ -77,7 +77,7 @@ def leitura_online(manga_id, num):
     }), 200
 
 
-@manga_bp.route("/mangas", methods=["GET"])
+@manga_bp.route("/mangas", methods=["GET", "OPTIONS"])
 def listar_mangas():
     mangas = Manga.query.all()
     return jsonify([m.serialize() for m in mangas]), 200
@@ -103,7 +103,7 @@ def avaliar_manga(manga_id):
     return create_registro(Avaliacao, nova_avaliacao)
 
 
-@manga_bp.route("/mangas/<int:manga_id>", methods=["GET"])
+@manga_bp.route("/mangas/<int:manga_id>", methods=["GET", "OPTIONS"])
 def get_manga_completo(manga_id):
     manga = Manga.query.get(manga_id)
     if not manga:

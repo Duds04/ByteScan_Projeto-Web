@@ -7,3 +7,4 @@ PyJWT==2.6.0
 argon2-cffi==21.3.0
 Werkzeug==2.3.7
 cryptography>=3.3
+flask-cors

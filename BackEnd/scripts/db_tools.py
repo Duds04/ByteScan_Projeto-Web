@@ -1,11 +1,11 @@
 import os
 import pymysql
 import sys
+from database.models import User, Obra, Capitulo, Avaliacao  # ajuste para o nome real do seu models.py
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app import create_app
 from database.db import db
-from database.models import User, Obra, Capitulo, Avaliacao  # ajuste para o nome real do seu models.py
 from scripts.db_mangas import create_obras
 import click
 

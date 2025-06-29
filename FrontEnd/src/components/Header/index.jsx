@@ -62,6 +62,7 @@ function Header() {
   const [tipos, setTipos ] = useState([]); 
   const { user, isLoggedIn } = useAuth();
 
+
   const handleDropdownClose = () => {
     setHiding(true);
     setTimeout(() => {
@@ -82,14 +83,14 @@ function Header() {
         console.error("Erro ao buscar dados:", error);
       }
     }
-
+    
     fetchData();
     if (location.state?.openLogin) {
       setLogin(true);
       // Limpa o state para evitar reabrir ao navegar
       window.history.replaceState({}, document.title);
     }
-  }, [location.state]);
+  }, [location.state, user]);
 
   return (
     <>

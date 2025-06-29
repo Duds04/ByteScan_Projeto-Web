@@ -12,17 +12,19 @@ export const AuthProvider = ({ children }) => {
     const stored = localStorage.getItem("auth");
     if (stored) {
       const decoded = decodeJWT(stored);
-      setUser(decoded.user_id);
+      setUser(decoded.username);
+      setUserId(decoded.user_id);
     }
-  }, []);
+
+    console.log("== ", user, " == ", userId);
+
+  }, [user, userId]);
 
   const login = async (credentials) => {
     try {
-      // Exemplo de uso:
       const data = await loginAPI(credentials);
-      console.log('data  ', data);
-
       const decoded = decodeJWT(data.token);
+
       setUserId(decoded.user_id);
       setUser(decoded.username);
 
@@ -37,11 +39,13 @@ export const AuthProvider = ({ children }) => {
   const register = async (newUser) => {
     try {
       const data = await registerAPI(newUser);
-      console.log("data ", data);
+      const decoded = decodeJWT(data.token);
 
-      setUser(data.user);
+      setUserId(decoded.user_id);
+      setUser(decoded.username);
 
       localStorage.setItem("auth", JSON.stringify(data.token));
+      localStorage.setItem("user", JSON.stringify(decoded.username));
       return { success: true };
     } catch (error) {
       return { success: false, message: error.message };

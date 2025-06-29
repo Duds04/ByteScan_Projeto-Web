@@ -8,7 +8,6 @@ import { AuthProvider } from './auth/AuthContext';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-    {/* Envolve o App no hook de autentificação, assim todos os componentes de app terão acesso ao contexto  */}
       <AuthProvider>
         <App />
       </AuthProvider>

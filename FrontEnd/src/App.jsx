@@ -1,5 +1,5 @@
 import "./App.css";
-import { useParams, Routes, Route } from "react-router-dom";
+import { , Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import HomePage from "./Pages/HomePage";
@@ -51,13 +51,6 @@ function App() {
       <Footer />
     </div>
   );
-}
-
-// Wrapper para passar o id como prop
-
-function MangaWrapper() {
-  const { id } = useParams();
-  return <Manga id={id} />;
 }
 
 export default App;

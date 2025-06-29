@@ -40,3 +40,14 @@ export async function registerAPI({ nome, nomeUsuario, email, senha }) {
   return await response.json();
 }
 
+
+const decodeJWT = (token) => {
+  try {
+    const payloadBase64 = token.split('.')[1];
+    const decodedPayload = JSON.parse(atob(payloadBase64));
+    return decodedPayload;
+  } catch (e) {
+    console.error("Erro ao decodificar token:", e);
+    return null;
+  }
+};

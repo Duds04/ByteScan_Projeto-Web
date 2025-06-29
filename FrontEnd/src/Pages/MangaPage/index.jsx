@@ -17,6 +17,23 @@ import {
 } from "lucide-react";
 import LoadingGame from "../../components/LoadingGame";
 
+export const getManga = async () => {
+  const response = await fetch("http://localhost:5000/api/manga/categorias", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Erro ao fazer login");
+  }
+
+  return await response.json();
+};
+
+
 function MangaPage() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -29,35 +46,22 @@ function MangaPage() {
   useEffect(() => {
     setLoading(true);
     setFavoritado(false); // reset ao trocar de manga
-    setTimeout(() => {
-      // Mock de dados retornados do servidor
-      setManga({
-        id,
-        nome: "A Crônica do Erudito",
-        imagemCapa: "/manga1.jpeg",
-        descricao: "Um mangá de aventura e magia.",
-        generos: ["Terror", "Ação"],
-        tipo: "Manhua",
-        status: "Em Andamento",
-        avaliacao: 4.5,
-        anoLancamento: 2025,
-        quantidadeFavoritos: 1000,
-        autores: ["Autor Exemplo", "Ataide Jr"],
-        artistas: ["Artista Exemplo", "Tarik Segundo"],
-        ultimoCapituloLancado: 3, // passa o id
-        capitulos: [
-          { idCap: 1, capitulo: "Capítulo 1", data: "10/05/2025" },
-          { idCap: 2, capitulo: "Capítulo 2", data: "10/05/2025" },
-          { idCap: 3, capitulo: "Capítulo 2", data: "10/05/2025" },
-        ],
-        idUltimoCapituloLancado: 3, // passa o id
-      });
+     async function fetchData() {
+      try {
+        const manga = await getManga();
+        setManga(manga);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      }
+    }
+
+    fetchData();
+   
       // Simula verificação no backend se já favoritou
       // fetch(`/api/manga/${id}/favoritado`, { method: 'GET' })
       //   .then(res => res.json()).then(data => setFavoritado(data.favoritado));
 
       setLoading(false);
-    }, 500); // Simula 5 segundos de carregamento
   }, [id]);
 
   // Função para enviar avaliação ao backend (mock)

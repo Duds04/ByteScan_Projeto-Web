@@ -1,49 +1,51 @@
-// src/auth/api.js
+const BASE_URL = 'http://localhost:5000/api/auth'; // ajuste se seu backend estiver em outra porta
 
-let fakeUsersDB = [
-  {
-    email: 'admin@admin.com',
-    senha: '123',
-    nome: 'Administrador',
-    nomeUsuario: 'admin'
-  }
-];
-
-// Função mock para simular delay de rede
-const delay = (ms) => new Promise(res => setTimeout(res, ms));
-
-// Simula login
+// Função para login
 export async function loginAPI({ email, senha }) {
-  await delay(500);
-  const user = fakeUsersDB.find(u => u.email === email && u.senha === senha);
-  if (!user) throw new Error('Credenciais inválidas');
+  const response = await fetch(`${BASE_URL}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password: senha }) // o backend espera `password`
+  });
 
-  // Simula token
+  if (!response.ok) {
+    const { error } = await response.json();
+    throw new Error(error || 'Erro ao fazer login');
+  }
+
+  const data = await response.json();
+  
+  console.log("Login realizado com sucesso:", data.token); // Log para depuração
+
   return {
-    token: 'fake-jwt-token',
-    user: {
-      nome: user.nome,
-      email: user.email,
-      nomeUsuario: user.nomeUsuario
-    }
+    token: data.token,
   };
 }
 
-// Simula cadastro
+// Função para registro
 export async function registerAPI({ nome, nomeUsuario, email, senha }) {
-  await delay(500);
-  const userExists = fakeUsersDB.some(u => u.email === email || u.nomeUsuario === nomeUsuario);
-  if (userExists) throw new Error('Usuário já existe');
+  const response = await fetch(`${BASE_URL}/cadastro`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      nome: nome,
+      username: nomeUsuario,
+      email: email,
+      password: senha
+    })
+  });
 
-  const newUser = { nome, nomeUsuario, email, senha };
-  fakeUsersDB.push(newUser);
+  if (!response.ok) {
+    const { error } = await response.json();
+    throw new Error(error || 'Erro ao registrar');
+  }
 
+  const data = await response.json();
   return {
-    token: 'fake-jwt-token',
-    user: {
-      nome,
-      email,
-      nomeUsuario
-    }
+    message: data.message
   };
 }

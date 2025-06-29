@@ -10,14 +10,13 @@ from utils.categorias import CATEGORIAS_FIXAS, GENEROS_FIXOS
 from flask import send_file
 import os
 
-
 @manga_bp.route("/favoritos", methods=["GET"])
 @autorizar
 def listar_favoritos():
     favoritos = Favorito.query.filter_by(user_id=request.user_id).all()
     return jsonify([fav.serialize() for fav in favoritos]), 200
 
-@manga_bp.route("/favoritos/<int:obra_id>", methods=["POST"])
+@manga_bp.route("/<int:obra_id>/favorito", methods=["POST"])
 @autorizar
 def adicionar_favorito(obra_id):
     existente = Favorito.query.filter_by(user_id=request.user_id, obra_id=obra_id).first()
@@ -30,7 +29,7 @@ def adicionar_favorito(obra_id):
 
     return jsonify(novo.serialize()), 201
 
-@manga_bp.route("/favoritos/<int:obra_id>", methods=["DELETE"])
+@manga_bp.route("/<int:obra_id>/desfavoritar", methods=["DELETE"])
 @autorizar
 def remover_favorito(obra_id):
     favorito = Favorito.query.filter_by(user_id=request.user_id, obra_id=obra_id).first()

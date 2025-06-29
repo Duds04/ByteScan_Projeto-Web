@@ -13,6 +13,7 @@ def cadastro():
     email = dados.get("email")
     password = dados.get("password")
 
+    
     # Validação básica
     if not username or not email or not password or not nome:
         return jsonify({"message": "Todos os campos sao obrigatorios"}), 400
@@ -30,5 +31,7 @@ def cadastro():
         "password": hash_password(password)
     }
 
+    create_registro(User, data)
+    
     # Cria o usuário
-    return create_registro(User, data)
+    return 

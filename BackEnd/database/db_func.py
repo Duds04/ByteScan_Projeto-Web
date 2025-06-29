@@ -37,7 +37,7 @@ def create_registro(model, data):
         registro = model(**data)
         db.session.add(registro)
         db.session.commit()
-        return jsonify({"message": f"{model.__name__} criado com sucesso", "id": registro.id}), 201
+        return jsonify({"message": f"{model.__name__} criado com sucesso", "token": registro.id}), 201
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400

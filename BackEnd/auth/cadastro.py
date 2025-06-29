@@ -3,6 +3,7 @@ from flask import request, jsonify
 from database.models import User
 from utils.hash import hash_password
 from database.db_func import create_registro, get_registro
+from auth.login import autenticar_user
 
 @auth_bp.route('/cadastro', methods=['POST'])
 def cadastro():
@@ -30,8 +31,10 @@ def cadastro():
         "nome": nome,
         "password": hash_password(password)
     }
+    print("Dados recebidos para cadastro:", data)
+    msg, status = create_registro(User, data)
 
-    create_registro(User, data)
+    if status == 201:
+        return autenticar_user(email, password)
     
-    # Cria o usuário
-    return 
+    return jsonify(msg), status

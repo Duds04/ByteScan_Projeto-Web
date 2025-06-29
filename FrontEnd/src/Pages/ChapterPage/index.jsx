@@ -3,11 +3,11 @@ import LoadingGame from "../../components/LoadingGame";
 import ScrollToTopButton from "../../components/ScrollToTopButton";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { 
-  ArrowLeft, 
-  ArrowRight, 
-  Info, 
-  Bookmark, 
+import {
+  ArrowLeft,
+  ArrowRight,
+  Info,
+  Bookmark,
   BookOpen,
   Home,
   Heart,
@@ -15,6 +15,15 @@ import {
   ChevronLeft,
   ChevronRight
 } from "lucide-react";
+
+import {
+  getObraCompleta,
+  getCapitulo,
+  getIsFav,
+  addFavorito,
+  removeFavorito
+} from "../../services/mangaService.js"; 
+
 
 function ChapterPage() {
   const navigate = useNavigate();
@@ -47,64 +56,36 @@ function ChapterPage() {
     navigate(`/manga/${id}/cap/${parseInt(idCap) + 1}`);
   }
 
-  // Vai pegar o capitulo do manga passado como param
   useEffect(() => {
-    // Simula um mock
-    setTimeout(() => {
-      // Simulação de requisição ao backend
-      // fetch(`/api/manga/${id}/cap/${idCap}`, { method: 'GET' })
-      //   .then(...)
-      //   .catch(...)
-      // Retornaria o capitulo
-      // Mock dos dados retornados do backend
-      const mockCapitulo = {
-        idManga: id, // idManga
-        idCap,
-        capitulo: "Capítulo 1", // Simboliza o nome do cap
-        data: "10/05/2025",
-        imagensCapitulo: [
-          "https://s3.yomucomics.com/uploads/media/001.jpg",
-          "https://s3.yomucomics.com/uploads/media/002.jpg",
-          "https://s3.yomucomics.com/uploads/media/003.jpg",
-          "https://s3.yomucomics.com/uploads/media/004.jpg",
-        ],
-      };
-      // Simula verificação no backend se já favoritou
-      // fetch(`/api/manga/${id}/favoritado`, { method: 'GET' })
-      //   .then(res => res.json()).then(data => setFavoritado(data.favoritado));
+    async function fetchData() {
+      setLoading(true);
+      const stored = localStorage.getItem("auth");
+      const token = stored ? JSON.parse(stored).token : "";
 
-      setCapitulo({
-        ...mockCapitulo,
-      });
+      try {
+        // Buscar capítulo real
+        const cap = await getCapitulo(id, idCap);
+        setCapitulo(cap);
 
-      if (manga === null) {
-        // Faz requisição pro back pra pegar o manga a partir do seu id
-        // fetch(`/api/manga/${id}`, { method: 'GET' })
-        setManga({
-          id,
-          nome: "A Crônica do Erudito",
-          imagemCapa: "/manga1.jpeg",
-          descricao: "Um mangá de aventura e magia.",
-          generos: ["Terror", "Ação"],
-          tipo: "Manhua",
-          status: "Em Andamento",
-          avaliacao: 4.5,
-          anoLancamento: 2025,
-          quantidadeFavoritos: 1000,
-          autores: ["Autor Exemplo", "Ataide Jr"],
-          artistas: ["Artista Exemplo", "Tarik Segundo"],
-          ultimoCapituloLancado: 3, // passa o id
-          capitulos: [
-            { idCap: 1, capitulo: "Capítulo 1", data: "10/05/2025" },
-            { idCap: 2, capitulo: "Capítulo 2", data: "10/05/2025" },
-            { idCap: 3, capitulo: "Capítulo 2", data: "10/05/2025" },
-          ],
-          idUltimoCapituloLancado: 3, // passa o id
-        });
+        // Buscar dados do mangá, se ainda não estiverem disponíveis
+        if (!manga) {
+          const m = await getObraCompleta(id, token);
+          setManga(m);
+        }
+
+        // Ver se já está favoritado
+        const fav = await getIsFav(token, id);
+        setFavoritado(fav.favoritado);
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+        alert("Erro ao carregar capítulo ou mangá.");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    }, 400);
-  }, [id, idCap]); // eslint-disable-line react-hooks/exhaustive-deps
+    }
+
+    fetchData();
+  }, [id, idCap]);
 
   function ControlerCapitulo() {
     return (
@@ -184,7 +165,23 @@ function ChapterPage() {
         </div>
         <button
           className={favoritado ? "chapter-bookmark-btn-ativado" : "chapter-bookmark-btn"}
-          onClick={() => setFavoritado((f) => !f)}
+          onClick={async () => {
+            const stored = localStorage.getItem("auth");
+            const token = stored ? JSON.parse(stored).token : "";
+
+            try {
+              if (favoritado) {
+                await removeFavorito(token, id);
+                setFavoritado(false);
+              } else {
+                await addFavorito(token, id);
+                setFavoritado(true);
+              }
+            } catch (err) {
+              console.error("Erro ao atualizar favorito:", err);
+              alert("Erro ao atualizar favorito");
+            }
+          }}
           aria-label={favoritado ? "Desfavoritar" : "Favoritar"}
         >
           <Heart

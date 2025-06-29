@@ -5,8 +5,6 @@ import { useAuth } from "./AuthContext";
 const PrivateRoute = ({ children }) => {
   const stored = localStorage.getItem("auth");
 
-  console.log("Teste Auth ", stored);
-
   return stored ? (
     children
   ) : (

@@ -17,54 +17,14 @@ import {
 } from "lucide-react";
 import LoadingGame from "../../components/LoadingGame";
 
-const BASE_URL = "http://localhost:5000/api/manga";
+import {
+  getManga,
+  avaliarObra,
+  addFavorito,
+  removeFavorito,
+  handleRequest
+} from "../../services/mangaService.js"; 
 
-export const getManga = async (token, obraId) => {
-  const response = await fetch(`http://localhost:5000/api/manga/mangas/${obraId}`, {
-    headers: {
-      "Authorization": `Bearer ${token}`
-    }
-  });
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || "Erro ao fazer login");
-  }
-
-  return await response.json();
-};
-
-export const addFavorito = async (token, obraId) => {
-  return handleRequest(`${BASE_URL}/favoritos/${obraId}`, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    },
-  });
-};
-
-export const removeFavorito = async (token, obraId) => {
-  return handleRequest(`${BASE_URL}/favoritos/${obraId}`, {
-    method: "DELETE",
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    },
-  });
-};
-
-export const avaliarObra = async (token, obraId, nota, comentario = "") => {
-  return handleRequest(`${BASE_URL}/${obraId}/avaliar`, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ nota, comentario }),
-  });
-};
-
-export const getAvaliacoes = (obraId) => {
-  return handleRequest(`${BASE_URL}/${obraId}/avaliacoes`);
-};
 
 function MangaPage() {
   const navigate = useNavigate();

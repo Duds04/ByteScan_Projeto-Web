@@ -2,10 +2,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import StarRating from "../../components/StarRating";
 import "../../styles/MangaPage.css";
-import { 
-  Bookmark, 
-  User, 
-  Palette, 
+import {
+  Bookmark,
+  User,
+  Palette,
   Star,
   Tag,
   BookOpen,
@@ -17,14 +17,12 @@ import {
 } from "lucide-react";
 import LoadingGame from "../../components/LoadingGame";
 
-export const getManga = async () => {
-  const response = await fetch("http://localhost:5000/api/manga/categorias", {
-    method: "GET",
+export const getManga = async (token, obraId) => {
+  const response = await fetch(`http://localhost:5000/api/manga/obras/${obraId}`, {
     headers: {
-      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
     }
   });
-
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.message || "Erro ao fazer login");
@@ -46,9 +44,10 @@ function MangaPage() {
   useEffect(() => {
     setLoading(true);
     setFavoritado(false); // reset ao trocar de manga
-     async function fetchData() {
+    const token = localStorage.getItem("auth");
+    async function fetchData() {
       try {
-        const manga = await getManga();
+        const manga = await getManga(token, id);
         setManga(manga);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
@@ -56,12 +55,13 @@ function MangaPage() {
     }
 
     fetchData();
-   
-      // Simula verificação no backend se já favoritou
-      // fetch(`/api/manga/${id}/favoritado`, { method: 'GET' })
-      //   .then(res => res.json()).then(data => setFavoritado(data.favoritado));
 
-      setLoading(false);
+
+    // Simula verificação no backend se já favoritou
+    // fetch(`/api/manga/${id}/favoritado`, { method: 'GET' })
+    //   .then(res => res.json()).then(data => setFavoritado(data.favoritado));
+
+    setLoading(false);
   }, [id]);
 
   // Função para enviar avaliação ao backend (mock)
@@ -184,7 +184,7 @@ function MangaPage() {
                   favoritado ? { opacity: 0.5 } : {}
                 }
               >
-                <Heart fill={favoritado ? "#8a3cff" : "white" } size={50} />
+                <Heart fill={favoritado ? "#8a3cff" : "white"} size={50} />
               </button>
               {favoritado ? (
                 <>

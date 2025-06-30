@@ -1,16 +1,18 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { 
-  User, 
-  Palette, 
-  Search, 
-  BookOpen, 
+import {
+  User,
+  Palette,
+  Search,
+  BookOpen,
   Calendar,
   Tag,
   Star,
   Clock,
-  Filter
+  Filter,
 } from "lucide-react";
+import { filtrarObras } from "../../services/mangaService.js";
+import LoadingGame from "../../components/LoadingGame";
 import "../../styles/SearchPage.css";
 
 // Lista de mangás simulada (pode ser importada de um arquivo ou contexto futuramente)
@@ -44,9 +46,26 @@ function SearchPage() {
   const location = useLocation();
   const [searchResults, setSearchResults] = useState([]);
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(true);
 
   // Busca inicial e busca por gênero via state
   useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const token = localStorage.getItem("auth");
+
+      try {
+        // Buscar capítulo real
+        const obras = await filtrarObras("terror");
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+        alert("Erro ao carregar capítulo ou mangá.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
     if (location.state?.genero) {
       const genero = location.state.genero;
       const filtrados = ALL_MANGAS.filter((m) => m.generos.includes(genero));
@@ -78,6 +97,7 @@ function SearchPage() {
     navigate(`/manga/${id}`);
   };
 
+  if (loading) return <LoadingGame />;
   return (
     <div className="search-page">
       <div className="search-header">
@@ -134,44 +154,54 @@ function SearchPage() {
                   <span>4.5</span>
                 </div>
               </div>
-              
+
               <div className="manga-details">
                 <div className="detail-item">
                   <BookOpen size={16} className="detail-icon" />
                   <span className="detail-label">Tipo:</span>
                   <span className="detail-value">{manga.tipo}</span>
                 </div>
-                
+
                 <div className="detail-item">
                   <Tag size={16} className="detail-icon" />
                   <span className="detail-label">Gêneros:</span>
-                  <span className="detail-value">{manga.generos.join(", ")}</span>
+                  <span className="detail-value">
+                    {manga.generos.join(", ")}
+                  </span>
                 </div>
-                
+
                 <div className="detail-item">
                   <Clock size={16} className="detail-icon" />
                   <span className="detail-label">Status:</span>
-                  <span className={`detail-value status-${manga.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                  <span
+                    className={`detail-value status-${manga.status
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                  >
                     {manga.status}
                   </span>
                 </div>
-                
+
                 <div className="detail-item">
                   <Calendar size={16} className="detail-icon" />
                   <span className="detail-label">Ano:</span>
                   <span className="detail-value">{manga.anoLancamento}</span>
                 </div>
-                
+
                 <div className="detail-item">
                   <User size={16} className="detail-icon" />
                   <span className="detail-label">Autor(es):</span>
-                  <span className="detail-value">{manga.autores.join(", ")}</span>
+                  <span className="detail-value">
+                    {manga.autores.join(", ")}
+                  </span>
                 </div>
-                
+
                 <div className="detail-item">
                   <Palette size={16} className="detail-icon" />
                   <span className="detail-label">Artista(s):</span>
-                  <span className="detail-value">{manga.artistas.join(", ")}</span>
+                  <span className="detail-value">
+                    {manga.artistas.join(", ")}
+                  </span>
                 </div>
               </div>
             </div>

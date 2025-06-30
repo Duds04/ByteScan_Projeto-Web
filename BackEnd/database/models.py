@@ -111,7 +111,7 @@ class Avaliacao(db.Model):
     __tablename__ = 'avaliacoes'
 
     id = db.Column(db.Integer, primary_key=True)
-    nota = db.Column(db.Integer, nullable=False)
+    nota = db.Column(db.Float, nullable=False)
     comentario = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 

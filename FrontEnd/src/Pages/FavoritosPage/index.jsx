@@ -13,8 +13,8 @@ import {
   BarChart3,
 } from "lucide-react";
 import LoadingGame from "../../components/LoadingGame";
+import { removeFavorito, getFavoritos } from "../../services/mangaService.js";
 
-import { getFavoritos } from "../../services/mangaService.js";
 
 function FavoritosPage() {
   const navigate = useNavigate();
@@ -57,15 +57,17 @@ function FavoritosPage() {
         "Tem certeza que deseja remover este mangá dos seus favoritos?"
       )
     ) {
-      // Simula remoção do favorito
-      // fetch(`/api/manga/${id}/desfavoritar`, { method: 'POST' })
-      //   .then(...)
-      //   .catch(...)
-      // aqui tem que alterar a quantidade de favoritos do manga
-      alert("Mangá desfavoritado com sucesso!");
-      setMangasFavoritos((prev) =>
-        prev.filter((manga) => manga.id !== mangaId)
-      );
+      try {
+        const token = localStorage.getItem("auth");
+        await removeFavorito(token, mangaId);
+        setMangasFavoritos((prev) =>
+          prev.filter((manga) => manga.id !== mangaId)
+        );
+        alert("Mangá desfavoritado com sucesso!");
+      } catch (err) {
+        alert("Erro ao desfavoritar mangá!");
+        console.error(err);
+      }
     }
   };
 

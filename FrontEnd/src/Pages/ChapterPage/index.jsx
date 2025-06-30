@@ -185,8 +185,10 @@ function ChapterPage() {
             try {
               if (favoritado) {
                 await removeFavorito(token, id);
+                alert("Obra desfavoritada com sucesso!");
                 setFavoritado(false);
               } else {
+                alert("Obra favoritada com sucesso!");
                 await addFavorito(token, id);
                 setFavoritado(true);
               }

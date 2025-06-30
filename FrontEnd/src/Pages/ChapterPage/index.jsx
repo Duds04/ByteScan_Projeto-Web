@@ -13,7 +13,7 @@ import {
   Heart,
   Eye,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
 } from "lucide-react";
 
 import {
@@ -21,9 +21,8 @@ import {
   getCapitulo,
   getIsFav,
   addFavorito,
-  removeFavorito
-} from "../../services/mangaService.js"; 
-
+  removeFavorito,
+} from "../../services/mangaService.js";
 
 function ChapterPage() {
   const navigate = useNavigate();
@@ -41,7 +40,7 @@ function ChapterPage() {
     navigate(`/manga/${id}`);
   }
   function returnPrevCap() {
-    if (idCap == 0) {
+    if (idCap == 1) {
       alert("Você já está no primeiro capítulo!");
       return;
     }
@@ -49,8 +48,9 @@ function ChapterPage() {
   }
 
   function returnNextCap() {
-    if (parseInt(idCap) == parseInt(manga.idUltimoCapituloLancado)) {
+    if (parseInt(idCap) == parseInt(manga.ultimoCapituloLancado)) {
       alert("Você já está no último capítulo!");
+      navigate(`/manga/${id}`);
       return;
     }
     navigate(`/manga/${id}/cap/${parseInt(idCap) + 1}`);
@@ -96,7 +96,7 @@ function ChapterPage() {
         >
           {manga.capitulos.map((cap) => (
             <option key={cap.idCap} value={cap.idCap}>
-              Capítulo {cap.idCap}
+              Capítulo {cap.numero}
             </option>
           ))}
         </select>
@@ -104,9 +104,9 @@ function ChapterPage() {
         <div className="chapter-controler-buttons">
           <button
             className={
-              parseInt(idCap) === 0 ? "prev-disable" : "chapter-button"
+              parseInt(idCap) === 1 ? "prev-disable" : "chapter-button"
             }
-            disabled={parseInt(idCap) === 0 ? true : false}
+            disabled={parseInt(idCap) === 1 ? true : false}
             onClick={() => {
               returnPrevCap();
             }}
@@ -154,16 +154,18 @@ function ChapterPage() {
       <div className="chapter-header">
         <div className="breadcrumb-nav">
           <Home size={16} className="breadcrumb-icon" />
-          <a href="">Home</a>
+          <a href="" onClick={() => navigate("/")}>Home</a>
           <span>/</span>
           <BookOpen size={16} className="breadcrumb-icon" />
-          <a href="">{manga.nome}</a>
+          <a href="" onClick={() => returnMangaPage()}>{manga.nome}</a>
           <span>/</span>
           <Eye size={16} className="breadcrumb-icon" />
-          <a href="">{capitulo.capitulo}</a>
+          <a >{capitulo.capitulo}</a>
         </div>
         <button
-          className={favoritado ? "chapter-bookmark-btn-ativado" : "chapter-bookmark-btn"}
+          className={
+            favoritado ? "chapter-bookmark-btn-ativado" : "chapter-bookmark-btn"
+          }
           onClick={async () => {
             const stored = localStorage.getItem("auth");
             const token = stored ? JSON.parse(stored).token : "";

@@ -13,8 +13,7 @@ import {
   Calendar,
   Heart,
   Play,
-  SkipForward
-  
+  SkipForward,
 } from "lucide-react";
 import LoadingGame from "../../components/LoadingGame";
 
@@ -23,9 +22,8 @@ import {
   avaliarObra,
   addFavorito,
   removeFavorito,
-  getCapitulos
-} from "../../services/mangaService.js"; 
-
+  getCapitulos,
+} from "../../services/mangaService.js";
 
 function MangaPage() {
   const navigate = useNavigate();
@@ -53,12 +51,12 @@ function MangaPage() {
           generos: data.manga.genero.split(",").map((g) => g.trim()),
           autores: data.manga.autores.split(",").map((a) => a.trim()),
           artistas: data.manga.artistas.split(",").map((a) => a.trim()),
-          capitulos: dataCap.capitulos
+          capitulos: dataCap.capitulos,
         });
         console.log("Rota da imagem da capa:", data.manga.imagemCapa);
 
         setFavoritado(data.favoritado);
-        console.log("data.manga.avaliacao",data.manga.avaliacao, data);
+        console.log("data.manga.avaliacao", data.manga.avaliacao, data);
         setUserRating(data.manga.avaliacao);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
@@ -70,10 +68,9 @@ function MangaPage() {
     fetchData();
   }, [id]);
 
-  // Função para enviar avaliação ao backend 
+  // Função para enviar avaliação ao backend
   async function handleRating(newRating) {
-    const stored = localStorage.getItem("auth");
-    const token = stored ? JSON.parse(stored).token : "";
+    const token = localStorage.getItem("auth");
 
     try {
       await avaliarObra(token, id, newRating);
@@ -145,22 +142,40 @@ function MangaPage() {
             />
           </div>
           <p>
-            <b><Tag size={16} className="info-icon" /> Gênero(s):</b> {manga.generos.join(", ")}
+            <b>
+              <Tag size={16} className="info-icon" /> Gênero(s):
+            </b>{" "}
+            {manga.generos.join(", ")}
           </p>
           <p>
-            <b><BookOpen size={16} className="info-icon" /> Tipo:</b> {manga.tipo}
+            <b>
+              <BookOpen size={16} className="info-icon" /> Tipo:
+            </b>{" "}
+            {manga.tipo}
           </p>
           <p>
-            <b><Clock size={16} className="info-icon" /> Status:</b> {manga.status}
+            <b>
+              <Clock size={16} className="info-icon" /> Status:
+            </b>{" "}
+            {manga.status}
           </p>
           <p>
-            <b><Calendar size={16} className="info-icon" /> Ano de Lançamento:</b> {manga.anoLancamento}
+            <b>
+              <Calendar size={16} className="info-icon" /> Ano de Lançamento:
+            </b>{" "}
+            {manga.anoLancamento}
           </p>
           <p>
-            <b><User size={16} className="info-icon" /> Autor(es):</b> {manga.autores.join(", ")}
+            <b>
+              <User size={16} className="info-icon" /> Autor(es):
+            </b>{" "}
+            {manga.autores.join(", ")}
           </p>
           <p>
-            <b><Palette size={16} className="info-icon" /> Artista(s):</b> {manga.artistas.join(", ")}
+            <b>
+              <Palette size={16} className="info-icon" /> Artista(s):
+            </b>{" "}
+            {manga.artistas.join(", ")}
           </p>
           <div className="nav-chapters">
             <div className="button-chapters-container">
@@ -191,9 +206,7 @@ function MangaPage() {
                 onClick={() => {
                   handleFavorite();
                 }}
-                style={
-                  favoritado ? { opacity: 0.5 } : {}
-                }
+                style={favoritado ? { opacity: 0.5 } : {}}
               >
                 <Heart fill={favoritado ? "#8a3cff" : "white"} size={50} />
               </button>

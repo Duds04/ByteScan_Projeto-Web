@@ -44,7 +44,7 @@ function HomeMangaList({ title, mangas }) {
                     </div>
                     {manga.capitulos && manga.capitulos.length > 0 && (
                       <div className="home-manga-card-release">
-                        {manga.capitulos.map((capitulos, lidx) => (
+                        {manga.capitulos.slice(-3).map((capitulos, lidx) => (
                           <div
                             key={lidx}
                             className="home-manga-card-release-item"

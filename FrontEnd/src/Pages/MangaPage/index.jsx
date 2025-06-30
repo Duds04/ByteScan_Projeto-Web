@@ -186,7 +186,7 @@ function MangaPage() {
               <button
                 className="button-chapters"
                 onClick={() => {
-                  returnMangaCap(manga.idUltimoCapituloLancado);
+                  returnMangaCap(manga.ultimoCapituloLancado);
                 }}
               >
                 <SkipForward size={18} />

@@ -125,12 +125,12 @@ function ChapterPage() {
           </button>
           <button
             className={
-              parseInt(idCap) == parseInt(manga.idUltimoCapituloLancado)
+              parseInt(idCap) == parseInt(manga.ultimoCapituloLancado)
                 ? "prev-disable"
                 : "chapter-button"
             }
             disabled={
-              parseInt(idCap) == parseInt(manga.idUltimoCapituloLancado)
+              parseInt(idCap) == parseInt(manga.ultimoCapituloLancado)
                 ? true
                 : false
             }

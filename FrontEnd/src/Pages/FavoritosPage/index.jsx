@@ -2,17 +2,19 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import StarRating from "../../components/StarRating";
 import "../../styles/FavoritosPage.css";
-import { 
-  Bookmark, 
-  BookOpen, 
-  Trash2, 
-  User, 
+import {
+  Bookmark,
+  BookOpen,
+  Trash2,
+  User,
   Palette,
   Tag,
   Clock,
-  BarChart3
+  BarChart3,
 } from "lucide-react";
 import LoadingGame from "../../components/LoadingGame";
+
+import { getFavoritos } from "../../services/mangaService.js";
 
 function FavoritosPage() {
   const navigate = useNavigate();
@@ -22,52 +24,23 @@ function FavoritosPage() {
 
   useEffect(() => {
     setLoading(true);
-    // Simula requisição ao servidor para buscar os favoritos
-    setTimeout(() => {
-      setMangasFavoritos([
-        {
-          id: 1,
-          nome: "SPEH",
-          imagemCapa: "/manga1.jpeg",
-          generos: ["Terror", "Fantasia", "Mistério"],
-          tipo: "Mangá",
-          status: "Em lançamento",
-          anoLancamento: 2025,
-          autores: ["Ataide Jr"],
-          artistas: ["Tarik Terceiro"],
-          avaliacao: 4.5,
-          progresso: 75,
-          ultimoCapituloLido: 15,
-          totalCapitulos: 20,
-          capitulos: [
-            { idCap: 15, capitulo: "Capítulo 15", data: "15/01/2025" },
-            { idCap: 16, capitulo: "Capítulo 16", data: "22/01/2025" }
-          ],
-          dataAdicionado: "2025-01-01"
-        },
-        {
-          id: 2,
-          nome: "A Crônica do Erudito",
-          imagemCapa: "/manga2.jpg",
-          generos: ["Aventura", "Fantasia"],
-          tipo: "Manhua",
-          status: "Completo",
-          anoLancamento: 2024,
-          autores: ["Maria Eduarda"],
-          artistas: ["João Silva"],
-          avaliacao: 4.8,
-          progresso: 100,
-          ultimoCapituloLido: 50,
-          totalCapitulos: 50,
-          capitulos: [
-            { idCap: 49, capitulo: "Capítulo 49", data: "10/12/2024" },
-            { idCap: 50, capitulo: "Capítulo 50 - Final", data: "17/12/2024" }
-          ],
-          dataAdicionado: "2024-12-01"
-        },
-      ]);
-      setLoading(false);
-    }, 500);
+    async function fetchData() {
+      try {
+        const token = localStorage.getItem("auth");
+
+        // Buscar capítulo real
+        const data = await getFavoritos(token);
+        console.log("Dados dos favoritos:", data);
+        setMangasFavoritos(data);
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+        alert("Erro ao carregar capítulo ou mangá.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
   }, []);
 
   const returnMangaPage = (id) => {
@@ -87,10 +60,12 @@ function FavoritosPage() {
       // Simula remoção do favorito
       // fetch(`/api/manga/${id}/desfavoritar`, { method: 'POST' })
       //   .then(...)
-      //   .catch(...) 
+      //   .catch(...)
       // aqui tem que alterar a quantidade de favoritos do manga
       alert("Mangá desfavoritado com sucesso!");
-      setMangasFavoritos(prev => prev.filter(manga => manga.id !== mangaId));
+      setMangasFavoritos((prev) =>
+        prev.filter((manga) => manga.id !== mangaId)
+      );
     }
   };
 
@@ -117,10 +92,7 @@ function FavoritosPage() {
               ? "Sua lista de favoritos está vazia. Comece adicionando mangás aos seus favoritos!"
               : `Nenhum mangá encontrado na categoria "${filtro}".`}
           </p>
-          <button
-            className="btn-explorar"
-            onClick={() => navigate("/buscar")}
-          >
+          <button className="btn-explorar" onClick={() => navigate("/buscar")}>
             Explorar Mangás
           </button>
         </div>
@@ -143,7 +115,7 @@ function FavoritosPage() {
                     >
                       {manga.nome}
                     </div>
-                    
+
                     <div className="home-manga-card-rating">
                       <StarRating value={manga.avaliacao} />
                     </div>
@@ -151,35 +123,42 @@ function FavoritosPage() {
                     {/* Informações adicionais do mangá */}
                     <div className="manga-details">
                       <div className="manga-info-item">
-                        <strong><Tag size={14} className="detail-icon" /> Gêneros:</strong> {manga.generos.join(", ")}
+                        <strong>
+                          <Tag size={14} className="detail-icon" /> Gêneros:
+                        </strong>{" "}
+                        {manga.genero.split(",").map((g) => g.trim())}
                       </div>
                       <div className="manga-info-item">
-                        <strong><BookOpen size={14} className="detail-icon" /> Tipo:</strong> {manga.tipo}
+                        <strong>
+                          <BookOpen size={14} className="detail-icon" /> Tipo:
+                        </strong>{" "}
+                        {manga.tipo}
                       </div>
                       <div className="manga-info-item">
-                        <strong><Clock size={14} className="detail-icon" /> Status:</strong> {manga.status}
+                        <strong>
+                          <Clock size={14} className="detail-icon" /> Status:
+                        </strong>{" "}
+                        {manga.status}
                       </div>
                       <div className="manga-info-item">
-                        <strong><User size={14} className="detail-icon" /> Autor:</strong> {manga.autores.join(", ")}
+                        <strong>
+                          <User size={14} className="detail-icon" /> Autor:
+                        </strong>{" "}
+                        {manga.autores.split(",").map((g) => g.trim())}
                       </div>
                       <div className="manga-info-item">
-                        <strong><Palette size={14} className="detail-icon" /> Artista:</strong> {manga.artistas.join(", ")}
-                      </div>
-                      <div className="manga-info-item">
-                        <strong><BarChart3 size={14} className="detail-icon" /> Progresso:</strong> {manga.ultimoCapituloLido}/{manga.totalCapitulos} ({manga.progresso}%)
+                        <strong>
+                          <Palette size={14} className="detail-icon" /> Artista:
+                        </strong>{" "}
+                        {manga.artistas.split(",").map((g) => g.trim())}
                       </div>
                     </div>
-
                     {/* Ações do favorito */}
                     <div className="favoritos-actions">
                       <button
                         className="btn-continuar-favorito"
                         onClick={() => {
-                          if (manga.ultimoCapituloLido < manga.totalCapitulos) {
-                            returnMangaCap(manga.id, manga.ultimoCapituloLido + 1);
-                          } else {
-                            returnMangaPage(manga.id);
-                          }
+                          returnMangaPage(manga.id);
                         }}
                       >
                         <BookOpen size={16} />
@@ -198,20 +177,24 @@ function FavoritosPage() {
                     {/* Capítulos recentes */}
                     {manga.capitulos && manga.capitulos.length > 0 && (
                       <div className="home-manga-card-release">
-                        <div className="release-header">Capítulos Recentes:</div>
-                        {manga.capitulos.map((capitulo, idx) => (
+                        <div className="release-header">
+                          Capítulos Recentes:
+                        </div>
+                        {manga.capitulos.slice(-3).map((capitulo, idx) => (
                           <div
                             key={idx}
                             className="home-manga-card-release-item"
                           >
                             <button
                               className="release-chapter"
-                              onClick={() => returnMangaCap(manga.id, capitulo.idCap)}
+                              onClick={() =>
+                                returnMangaCap(manga.id, capitulo.numero)
+                              }
                             >
-                              {capitulo.capitulo}
+                              {capitulo.titulo}
                             </button>
                             <span className="release-date">
-                              {capitulo.data}
+                              {capitulo.data_postagem}
                             </span>
                           </div>
                         ))}
@@ -219,10 +202,10 @@ function FavoritosPage() {
                     )}
 
                     <div className="data-adicionado">
-                      Adicionado em{" "}
-                      {manga.dataAdicionado
-                        ? new Date(manga.dataAdicionado).toLocaleDateString("pt-BR")
-                        : "Data não disponível"}
+                      Status da obra {" "}
+                      {manga.status
+                        ? `(${manga.status})`
+                        : "(Desconhecido)"}
                     </div>
                   </div>
                 </div>

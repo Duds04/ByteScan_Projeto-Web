@@ -137,6 +137,10 @@ export const getCapitulo = (obraId, numero) => {
   return handleRequest(`${BASE_URL}/manga/${obraId}/capitulo/${numero}`);
 };
 
+export const getMaisFavoritados = () => {
+  return handleRequest(`${BASE_URL}/manga/obras/mais-favoritados`);
+};
+
 export const adicionarCapitulo = async (obraId, capituloData) => {
   return handleRequest(`${BASE_URL}/manga/${obraId}/capitulo`, {
     method: "POST",

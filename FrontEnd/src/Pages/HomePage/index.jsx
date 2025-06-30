@@ -5,7 +5,8 @@ import LoadingGame from "../../components/LoadingGame/index.jsx";
 import { useState, useEffect } from "react";
 
 import {
-  getObras
+  getObras,
+  getMaisFavoritados
 } from "../../services/mangaService.js"; 
 
 function HomePage() {
@@ -19,8 +20,9 @@ function HomePage() {
      async function fetchData() {
           try {
             const data = await getObras();
+            const data_mais_fav = await getMaisFavoritados();
             setMangasUltimos(data);
-            setMangasMaisLidos(data);
+            setMangasMaisLidos(data_mais_fav);
           } catch (error) {
             console.error("Erro ao buscar dados:", error);
           } finally {
@@ -38,7 +40,7 @@ function HomePage() {
     <div className="home-container">
       <HomeIntroduction />
       <HomeMangaList title="Últimos Lançamentos" mangas={mangasUltimos} />
-      <HomeMangaList title="Mais Lidos" mangas={mangasMaisLidos} />
+      <HomeMangaList title="Mais Relevantes" mangas={mangasMaisLidos} />
     </div>
   );
 }

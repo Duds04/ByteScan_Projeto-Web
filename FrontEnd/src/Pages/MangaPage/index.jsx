@@ -66,26 +66,31 @@ function MangaPage() {
   // Função para enviar avaliação ao backend
   async function handleRating(newRating) {
     const token = localStorage.getItem("auth");
+    console.log("Token para avaliação:", token);
+    console.log("Enviando avaliação:", newRating, "para manga ID:", id);
 
     try {
-      await avaliarObra(token, id, newRating);
-      // const data = await avaliarObra(token, id, newRating);
-      // setUserRating(data);
+      const data = await avaliarObra(token, id, newRating);
+      console.log("Resposta da avaliação:", data);
       setUserRating(newRating);
       alert(`Avaliação enviada: ${newRating} estrela(s)`);
     } catch (error) {
       console.error("Erro ao enviar avaliação:", error);
-      alert("Erro ao enviar avaliação.");
+      alert("Erro ao enviar avaliação: " + error.message);
     }
   }
 
   // Função para favoritar manga
   async function handleFavorite() {
     const token = localStorage.getItem("auth");
+    console.log("Token para favoritar:", token);
+    console.log("Estado atual favoritado:", favoritado);
 
     try {
       if (favoritado) {
-        await removeFavorito(token, id);
+        console.log("Removendo favorito para manga ID:", id);
+        const response = await removeFavorito(token, id);
+        console.log("Resposta remover favorito:", response);
         setManga((prev) => ({
           ...prev,
           quantidadeFavoritos: prev.quantidadeFavoritos - 1,
@@ -93,7 +98,9 @@ function MangaPage() {
         setFavoritado(false);
         alert("Mangá desfavoritado com sucesso!");
       } else {
-        await addFavorito(token, id);
+        console.log("Adicionando favorito para manga ID:", id);
+        const response = await addFavorito(token, id);
+        console.log("Resposta adicionar favorito:", response);
         setManga((prev) => ({
           ...prev,
           quantidadeFavoritos: prev.quantidadeFavoritos + 1,
@@ -103,7 +110,7 @@ function MangaPage() {
       }
     } catch (error) {
       console.error("Erro ao atualizar favorito:", error);
-      alert("Erro ao atualizar favorito.");
+      alert("Erro ao atualizar favorito: " + error.message);
     }
   }
 

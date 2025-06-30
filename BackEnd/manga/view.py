@@ -15,10 +15,10 @@ def filtro():
 
     query = Manga.query
 
-    if genero != "genero":
-        query = query.filter_by(genero=genero)
-    if tipo != "categoria":
-        query = query.filter_by(tipo=tipo)
+    if genero:
+        query = query.filter(Manga.genero.ilike(f"%{genero}%"))
+    if tipo:
+        query = query.filter(Manga.tipo.ilike(f"%{tipo}%"))
 
     mangas = query.all()
     return jsonify([m.serialize() for m in mangas]), 200

@@ -36,12 +36,12 @@ function MangaPage() {
   // Mock de requisição ao servidor
   useEffect(() => {
     setLoading(true);
-    setFavoritado(false);
     const token = localStorage.getItem("auth");
 
     async function fetchData() {
       try {
         const data = await getManga(token, id);
+        console.log("Dados do mangá:", data);
         const dataCap = await getCapitulos(id, token);
         setManga({
           ...data.manga,
@@ -69,6 +69,8 @@ function MangaPage() {
 
     try {
       await avaliarObra(token, id, newRating);
+      // const data = await avaliarObra(token, id, newRating);
+      // setUserRating(data);
       setUserRating(newRating);
       alert(`Avaliação enviada: ${newRating} estrela(s)`);
     } catch (error) {

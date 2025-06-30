@@ -18,7 +18,7 @@ export const handleRequest = async (url, options = {}) => {
 export const getManga = async (token, id) => {
   const response = await fetch(`${BASE_URL}/manga/obras/${id}`, {
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -31,14 +31,13 @@ export const getManga = async (token, id) => {
 };
 
 export const getCapitulos = async (obraId, token) => {
-    return handleRequest(`${BASE_URL}/manga/obras/${obraId}/capitulos`, {
+  return handleRequest(`${BASE_URL}/manga/obras/${obraId}/capitulos`, {
     method: "GET",
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
-
-}
+};
 
 export const getObras = () => {
   return handleRequest(`${BASE_URL}/manga/obras`);
@@ -47,7 +46,7 @@ export const getObras = () => {
 export const getObraCompleta = async (obraId, token) => {
   return handleRequest(`${BASE_URL}/manga/obras/${obraId}`, {
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 };
@@ -55,7 +54,7 @@ export const getObraCompleta = async (obraId, token) => {
 export const getIsFav = async (token, obraId) => {
   return handleRequest(`${BASE_URL}/manga/favoritos/${obraId}`, {
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 };
@@ -63,7 +62,7 @@ export const getIsFav = async (token, obraId) => {
 export const getFavoritos = async (token) => {
   return handleRequest(`${BASE_URL}/manga/favoritos`, {
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 };
@@ -73,7 +72,7 @@ export const addFavorito = async (token, obraId) => {
   return handleRequest(`${BASE_URL}/manga/favorito/${obraId}`, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 };
@@ -82,22 +81,21 @@ export const removeFavorito = async (token, obraId) => {
   return handleRequest(`${BASE_URL}/manga/desfavoritar/${obraId}`, {
     method: "DELETE",
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 };
 
 export const avaliarObra = async (token, obraId, nota, comentario = "") => {
-
   return handleRequest(`${BASE_URL}/manga/${obraId}/avaliar`, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ 
-      "nota" : nota, 
-      "comentario": comentario 
+    body: JSON.stringify({
+      nota: nota,
+      comentario: comentario,
     }),
   });
 };
@@ -106,16 +104,25 @@ export const getAvaliacoes = (obraId) => {
   return handleRequest(`${BASE_URL}/manga/${obraId}/avaliacoes`);
 };
 
-export const filtrarObras = (categoria, genero) => {
+export const filtrarObrasCategoria = (categoria) => {
   const params = new URLSearchParams();
-  if (categoria) params.append("categoria", categoria);
-  if (genero) params.append("genero", genero);
+  params.append("categoria", categoria);
 
   return handleRequest(`${BASE_URL}/manga/filtro?${params.toString()}`);
 };
 
+export const filtrarObrasGenero = (genero) => {
+  const params = new URLSearchParams();
+  params.append("genero", genero);
+  return handleRequest(`${BASE_URL}/manga/filtro?${params.toString()}`);
+};
+
 export const pesquisarObras = (termo) => {
-  return handleRequest(`${BASE_URL}/manga/pesquisa?termo=${encodeURIComponent(termo)}`);
+  console.log(`${BASE_URL}/manga/pesquisa?termo=${encodeURIComponent(termo)}`);
+
+  return handleRequest(
+    `${BASE_URL}/manga/pesquisa?termo=${encodeURIComponent(termo)}`
+  );
 };
 
 export const getCategorias = () => {

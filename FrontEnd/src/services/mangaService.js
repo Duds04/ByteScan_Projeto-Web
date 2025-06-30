@@ -16,7 +16,7 @@ export const handleRequest = async (url, options = {}) => {
 };
 
 export const getManga = async (token, id) => {
-  const response = await fetch(`http://localhost:5000/api/manga/mangas/${id}`, {
+  const response = await fetch(`${BASE_URL}/manga/obras/${id}`, {
     headers: {
       "Authorization": `Bearer ${token}`,
     },
@@ -33,7 +33,7 @@ export const getManga = async (token, id) => {
 export const getCapitulos = async (obraId, token) => {
 
   console.log("dasdas ", obraId, token);
-    return handleRequest(`${BASE_URL}/manga/mangas/${obraId}/capitulos`, {
+    return handleRequest(`${BASE_URL}/manga/obras/${obraId}/capitulos`, {
     method: "GET",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -43,11 +43,11 @@ export const getCapitulos = async (obraId, token) => {
 }
 
 export const getObras = () => {
-  return handleRequest(`${BASE_URL}/mangas`);
+  return handleRequest(`${BASE_URL}/manga/obras`);
 };
 
 export const getObraCompleta = async (obraId, token) => {
-  return handleRequest(`${BASE_URL}/mangas/${obraId}`, {
+  return handleRequest(`${BASE_URL}/manga/obras/${obraId}`, {
     headers: {
       "Authorization": `Bearer ${token}`,
     },

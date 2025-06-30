@@ -7,7 +7,7 @@ def create_mangas():
         print("Já existem mangás cadastrados. Abortando inserção.")
         return
 
-    base_url = "./ByteScan_Projeto-Web/Mangas"  # Atualize com o caminho real de hospedagem das imagens
+    base_url = "/Mangas"  # Atualize com o caminho real de hospedagem das imagens
 
     mangas_data = [
         {

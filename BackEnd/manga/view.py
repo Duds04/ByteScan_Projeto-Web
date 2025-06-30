@@ -2,7 +2,7 @@ from manga import manga_bp
 from flask import request, jsonify
 from database.models import Manga, Capitulo, Avaliacao, Favorito
 from database.db_func import create_registro
-from sqlalchemy import or_
+from sqlalchemy import or_, func, desc
 from utils.categorias import CATEGORIAS_FIXAS, GENEROS_FIXOS
 from utils.token import decode_token, get_token_from_header
 
@@ -38,20 +38,20 @@ def pesquisa():
 
     return jsonify([m.serialize() for m in resultados]), 200
 
-# Rota que lista mangas com seus capítulos, sem imagens apenas com a capa
-@manga_bp.route("/mangas/<int:manga_id>/capitulos", methods=["GET", "OPTIONS"])
+# Rota que lista mangas com seus capítulos, sem imagens apenas com a capa ordem decescente
+@manga_bp.route("/obras/<int:manga_id>/capitulos", methods=["GET", "OPTIONS"])
 def listar_capitulos_sem_imagens(manga_id):
     manga = Manga.query.get(manga_id)
     if not manga:
         return jsonify({"message": "Mangá não encontrado"}), 404
 
-    capitulos = Capitulo.query.filter_by(manga_id=manga_id).order_by(Capitulo.numero).all()
+    capitulos = Capitulo.query.filter_by(manga_id=manga_id).order_by(Capitulo.data_postagem.desc()).all()
 
     capitulos_serializados = [
         {
-            "id": c.id,
+            "idCap": c.id,
             "numero": c.numero,
-            "titulo": c.titulo,
+            "capitulo": c.titulo,
             "data_postagem": c.data_postagem.strftime("%d/%m/%Y")
         }
         for c in capitulos
@@ -65,6 +65,18 @@ def listar_capitulos_sem_imagens(manga_id):
     }), 200
 
 
+@manga_bp.route("/obras/mais-favoritados", methods=["GET"])
+def listar_mangas_mais_favoritados():
+    # Faz um join com Favorito e conta quantos favoritos cada mangá tem
+    mangas = (
+        Manga.query
+        .outerjoin(Favorito, Manga.id == Favorito.manga_id)
+        .group_by(Manga.id)
+        .order_by(desc(func.count(Favorito.id)))
+        .all()
+    )
+    return jsonify([m.serialize() for m in mangas]), 200
+
 # Rota que retorna o capítulo específico de um manga, com imagens
 @manga_bp.route("/<int:manga_id>/capitulo/<int:num>", methods=["GET", "OPTIONS"])
 def leitura_online(manga_id, num):
@@ -73,13 +85,15 @@ def leitura_online(manga_id, num):
         return jsonify({"message": "Capítulo não encontrado"}), 404
 
     return jsonify({
-        "numero": capitulo.numero,
-        "titulo": capitulo.titulo,
-        "imagens": capitulo.imagens  # mudou de pdf_url para imagens (lista)
+        "idManga": manga_id,
+        "idCap": capitulo.id,
+        "data": capitulo.data_postagem.strftime("%d/%m/%Y"),
+        "capitulo": capitulo.titulo,
+        "imagensCapitulo": capitulo.imagens  # mudou de pdf_url para imagens (lista)
     }), 200
 
-# Rota que 
-@manga_bp.route("/mangas", methods=["GET", "OPTIONS"])
+# Rota que lista todas as obras
+@manga_bp.route("/obras", methods=["GET", "OPTIONS"])
 def listar_mangas():
     mangas = Manga.query.all()
     return jsonify([m.serialize() for m in mangas]), 200
@@ -104,12 +118,12 @@ def avaliar_manga(manga_id):
 
     return create_registro(Avaliacao, nova_avaliacao)
 
-# Ro
-@manga_bp.route("/mangas/<int:manga_id>", methods=["GET", "OPTIONS"])
+# Rota que retorna uma obra específica
+@manga_bp.route("/obras/<int:manga_id>", methods=["GET", "OPTIONS"])
 def get_manga_completo(manga_id):
     manga = Manga.query.get(manga_id)
     if not manga:
-        return jsonify({"message": "Manga não encontrado"}), 404
+        return jsonify({"message": "Obra não encontrada"}), 404
 
     favoritado = False
     avaliacao = 0

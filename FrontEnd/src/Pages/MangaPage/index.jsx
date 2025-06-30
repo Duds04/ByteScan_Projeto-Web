@@ -55,6 +55,7 @@ function MangaPage() {
           artistas: data.manga.artistas.split(",").map((a) => a.trim()),
           capitulos: dataCap.capitulos
         });
+        console.log("Rota da imagem da capa:", data.manga.imagemCapa);
 
         setFavoritado(data.favoritado);
         console.log("data.manga.avaliacao",data.manga.avaliacao, data);

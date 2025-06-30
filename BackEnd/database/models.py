@@ -37,7 +37,7 @@ class Manga(db.Model):
     genero = db.Column(db.String(50))
     tipo = db.Column(db.String(50))
     status = db.Column(db.String(50))
-    avaliacao = db.Column(db.Float)
+    avaliacao = db.Column(db.Float, nullable=False, default=0.0)
     anoLancamento = db.Column(db.Integer)
     quantidadeFavoritos = db.Column(db.Integer, default=0)
     autores = db.Column(db.String(255))
@@ -50,6 +50,15 @@ class Manga(db.Model):
     favoritos = db.relationship('Favorito', backref='manga', cascade="all, delete-orphan", passive_deletes=True)
 
     def serialize(self):
+        capitulos_serializados = [
+            {
+                "idCap": c.id,
+                "numero": c.numero,
+                "titulo": c.titulo,
+                "data_postagem": c.data_postagem.strftime("%d/%m/%Y")
+            }
+            for c in sorted(self.capitulos, key=lambda x: x.data_postagem, reverse=True)
+        ]
         return {
             "id": self.id,
             "nome": self.nome,
@@ -64,7 +73,8 @@ class Manga(db.Model):
             "autores": self.autores,
             "artistas": self.artistas,
             "ultimoCapituloLancado": self.ultimoCapituloLancado,
-            "idUltimoCapituloLancado": self.idUltimoCapituloLancado
+            "idUltimoCapituloLancado": self.idUltimoCapituloLancado,
+            "capitulos": capitulos_serializados
         }
 
 

@@ -180,7 +180,7 @@ function FavoritosPage() {
                         <div className="release-header">
                           Capítulos Recentes:
                         </div>
-                        {manga.capitulos.slice(-3).map((capitulo, idx) => (
+                        {manga.capitulos.slice().reverse().slice(-3).map((capitulo, idx) => (
                           <div
                             key={idx}
                             className="home-manga-card-release-item"

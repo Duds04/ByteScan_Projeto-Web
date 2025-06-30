@@ -213,7 +213,7 @@ function MangaPage() {
                 <>
                   {manga.quantidadeFavoritos === 0 
                     ? "Seja o primeiro a favoritar!" 
-                    : `${manga.quantidadeFavoritos} ${manga.quantidadeFavoritos === 1 ? "usuário favoritou" : "usuários favoritaram"}`
+                    : `${manga.quantidadeFavoritos} ${manga.quantidadeFavoritos === 1 ? "usuário favoritou essa obra!" : "usuários favoritaram essa obra!"}`
                   }
                 </>
               )}{" "}

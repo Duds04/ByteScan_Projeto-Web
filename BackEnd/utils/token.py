@@ -46,8 +46,6 @@ def autorizar(f):
             request.user_data = decoded  # Informações completas do usuário
             request.user_id = decoded.get("user_id")  # ID rápido
         except ValueError as e:
-            print(f"Erro ao decodificar token: {str(e)}")
-            print("Token = ", token)
             return jsonify({"message": str(e)}), 401
         return f(*args, **kwargs)
     return decorated

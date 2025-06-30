@@ -90,13 +90,23 @@ export const removeFavorito = async (token, obraId) => {
 };
 
 export const avaliarObra = async (token, obraId, nota, comentario = "") => {
+    console.log("Enviando avaliação:", {
+    url: `${BASE_URL}/manga/${obraId}/avaliar`,
+    token,
+    nota,
+    comentario
+  });
+
   return handleRequest(`${BASE_URL}/manga/${obraId}/avaliar`, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ nota, comentario }),
+    body: JSON.stringify({ 
+      "nota" : nota, 
+      "comentario": comentario 
+    }),
   });
 };
 

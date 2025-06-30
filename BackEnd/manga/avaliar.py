@@ -9,7 +9,9 @@ from utils.token import autorizar
 @manga_bp.route("/<int:manga_id>/avaliar", methods=["POST"])
 @autorizar
 def avaliar_manga(manga_id):
+    print("Teste")
     dados = request.get_json()
+    print("TTeste")
     user_id = request.user_id
     nota = dados.get("nota")
     comentario = dados.get("comentario", "")

@@ -38,6 +38,7 @@ def get_token_from_header():
 def autorizar(f):
     @wraps(f)
     def decorated(*args, **kwargs):
+        print("Autorizando usuário...")
         try:
             token = get_token_from_header()
             if token.startswith("\"") and token.endswith("\""):

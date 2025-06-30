@@ -167,8 +167,7 @@ function ChapterPage() {
             favoritado ? "chapter-bookmark-btn-ativado" : "chapter-bookmark-btn"
           }
           onClick={async () => {
-            const stored = localStorage.getItem("auth");
-            const token = stored ? JSON.parse(stored).token : "";
+            const token = localStorage.getItem("auth");
             console.log("Token:", token);
             console.log("ID do capítulo:", idCap);
             console.log("ID do manga:", id);

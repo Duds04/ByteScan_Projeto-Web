@@ -240,7 +240,7 @@ function MangaPage() {
               key={cap.idCap}
               className="manga-chapters-item"
               onClick={() => {
-                returnMangaCap(cap.idCap);
+                returnMangaCap(cap.numero);
               }}
             >
               <div className="chapter-info">
@@ -249,7 +249,7 @@ function MangaPage() {
               </div>
               <div className="chapter-date">
                 <Calendar size={14} className="date-icon" />
-                <span className="chapters-data">{cap.data}</span>
+                <span className="chapters-data">{cap.data_postagem}</span>
               </div>
             </button>
           ))}

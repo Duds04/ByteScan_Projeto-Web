@@ -5,11 +5,6 @@ import { useNavigate } from "react-router-dom";
 function HomeMangaList({ title, mangas }) {
   const navigate = useNavigate();
 
-  console.log("HomeMangaList props:", {
-    title,
-    mangas,
-  });
-
   function returnMangaPage(id) {
     navigate(`/manga/${id}`);
   }
@@ -57,13 +52,13 @@ function HomeMangaList({ title, mangas }) {
                             <button
                               className="release-chapter"
                               onClick={() => {
-                                returnMangaCap(manga.id, capitulos.idCap);
+                                returnMangaCap(manga.id, capitulos.numero);
                               }}
                             >
-                              {capitulos.capitulo}
+                              {capitulos.titulo}
                             </button>
                             <span className="release-date">
-                              {capitulos.data}
+                              {capitulos.data_postagem}
                             </span>
                           </div>
                         ))}

@@ -83,18 +83,15 @@ function SearchPage() {
         let data;
         if (location.state?.genero) {
           const genero = location.state.genero;
-          console.log("Filtrando por gênero:", genero);
           data = await filtrarObrasGenero(genero);
           setFiltroGenero(genero);
         } else if (location.state?.tipo) {
           const tipo = location.state.tipo;
-          console.log("Filtrando por tipo:", tipo);
           data = await filtrarObrasCategoria(tipo);
           setFiltroTipo(tipo);
         } else {
           data = await getObras();
         }
-        console.log("Dados da busca:", data);
         setSearchResults(data || []);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);

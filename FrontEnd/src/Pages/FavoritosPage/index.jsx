@@ -30,7 +30,6 @@ function FavoritosPage() {
 
         // Buscar capítulo real
         const data = await getFavoritos(token);
-        console.log("Dados dos favoritos:", data);
         setMangasFavoritos(data);
       } catch (err) {
         console.error("Erro ao carregar dados:", err);

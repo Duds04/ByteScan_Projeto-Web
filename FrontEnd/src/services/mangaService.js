@@ -118,7 +118,6 @@ export const filtrarObrasGenero = (genero) => {
 };
 
 export const pesquisarObras = (termo) => {
-  console.log(`${BASE_URL}/manga/pesquisa?termo=${encodeURIComponent(termo)}`);
 
   return handleRequest(
     `${BASE_URL}/manga/pesquisa?termo=${encodeURIComponent(termo)}`

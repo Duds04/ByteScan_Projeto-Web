@@ -30,7 +30,7 @@ def decode_token(token):
 # Extrai token do cabeçalho Authorization
 def get_token_from_header():
     auth_header = request.headers.get("Authorization")
-    if not auth_header or not auth_header.startswith("Bearer "):
+    if not auth_header or not auth_header.startswith("Bearer"):
         raise ValueError("Token não fornecido ou mal formatado.")
     return auth_header.split(" ")[1]
 
@@ -40,10 +40,14 @@ def autorizar(f):
     def decorated(*args, **kwargs):
         try:
             token = get_token_from_header()
+            if token.startswith("\"") and token.endswith("\""):
+                token = token[1:-1] 
             decoded = decode_token(token)
             request.user_data = decoded  # Informações completas do usuário
             request.user_id = decoded.get("user_id")  # ID rápido
         except ValueError as e:
+            print(f"Erro ao decodificar token: {str(e)}")
+            print("Token = ", token)
             return jsonify({"message": str(e)}), 401
         return f(*args, **kwargs)
     return decorated

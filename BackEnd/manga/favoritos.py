@@ -13,9 +13,10 @@ def listar_favoritos():
 @manga_bp.route("/favoritos/<int:obra_id>", methods=["GET"])
 @autorizar
 def get_favorito(obra_id):
+    print(f"Verificando favorito para obra_id: {obra_id} e user_id: {request.user_id}")
     favorito = Favorito.query.filter_by(user_id=request.user_id, manga_id=obra_id).first()
     if not favorito:
-        return jsonify({"favoritado": False}), 404
+        return jsonify({"favoritado": False}), 200
 
     return jsonify({"favoritado": True}), 200
 

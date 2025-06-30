@@ -26,12 +26,13 @@
   flex-direction: column;
   align-items: center;
   width: 400px;
-  height: 550px;
+  min-height: 550px;
+  height: auto;
   background: linear-gradient(135deg, #291148 80%, #3a1e5c 100%);
   border-radius: 15px;
   padding: 2rem 2.5rem;
   box-shadow: 0 0 32px #451786bb;
-  transition: box-shadow 0.2s, background 0.2s;
+  transition: box-shadow 0.2s, background 0.2s, min-height 0.3s ease;
   border: 1.5px solid #8a3cff33;
 }
 
@@ -58,6 +59,8 @@
   gap: 1rem;
   width: 100%;
   padding: 20px 10px;
+  flex: 1;
+  overflow: visible;
 
   .login-input-username,
   .login-password-wrapper,
@@ -223,7 +226,7 @@
   border: 1.5px solid rgba(255, 0, 0, 0.25);
   border-left: 4px solid #ff3b3b;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 14px;
   margin-top: 14px;
   padding: 12px 20px;
   text-align: left;
@@ -234,6 +237,10 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .login-error::before {
@@ -297,7 +304,27 @@
   align-items: center;
 }
 .login-container-signin {
-  height: fit-content;
+  min-height: fit-content;
+}
+
+/* Classe para quando há erro, permitindo expansão */
+.login-container-with-error {
+  min-height: 600px;
+}
+
+/* Responsividade para containers com erro */
+@media (max-height: 700px) {
+  .login-container-with-error {
+    min-height: auto;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .login-overlay {
+    align-items: flex-start;
+    padding: 20px 0;
+  }
 }
 
 .logout-btn {

@@ -1,4 +1,20 @@
-.home-manga-list {
+.release-header {
+  font-family: "Montserrat", "Segoe UI", "Arial", sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-shadow: 0 2px 8px #47178555;
+  color: #d4b3ff;
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  border-left: 4px solid #6f00ff;
+  width: fit-content;
+  padding-right: 1rem;
+  border-radius: 1px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: rgba(41, 17, 72, 0.5);
+  box-shadow: 0 2px 8px #47178555;
+ 
 }
 .home-manga-list-items {
   display: grid;

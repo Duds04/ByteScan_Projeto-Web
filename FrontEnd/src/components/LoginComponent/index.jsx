@@ -28,10 +28,7 @@ function LoginComponent({ onClose }) {
     if (result.success) {
       onClose(); // Fecha o modal se o login for bem-sucedido
     } else {
-      alert("E-mail ou senha incorretos. Tente novamente.");
-      // colocar um span para exibir a mensagem de erro
       setError("E-mail ou senha incorretos. Tente novamente.");
-      // Limpa os campos
       e.target.password.value = "";
       e.target.email.value = "";
     }
@@ -41,7 +38,6 @@ function LoginComponent({ onClose }) {
     e.preventDefault();
     const formData = new FormData(e.target);
     if (formData.get("password") !== formData.get("confirm-password")) {
-      alert("As senhas não coincidem. Tente novamente.");
       setError("As senhas não coincidem. Tente novamente.");
       return;
     }
@@ -56,8 +52,6 @@ function LoginComponent({ onClose }) {
       alert("Conta criada com sucesso!");
       setSingIn(false); // Volta para a tela de login
     } else {
-      alert("Erro ao criar conta. Tente novamente.");
-      // Aqui você pode definir um erro específico se necessário
       setError("Erro ao criar conta. Tente novamente.");
     }
   };
@@ -68,7 +62,7 @@ function LoginComponent({ onClose }) {
         <div
           className={`login-container${
             singIn ? " login-container-signin" : ""
-          }`}
+          }${error ? " login-container-with-error" : ""}`}
         >
           <span
             onClick={onClose}

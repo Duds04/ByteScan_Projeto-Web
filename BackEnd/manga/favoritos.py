@@ -34,8 +34,6 @@ def add_favorito(manga_id):
     novo = Favorito(user_id=request.user_id, manga_id=manga_id)
     db.session.add(novo)
     
-    manga.quantidadeFavoritos = (manga.quantidadeFavoritos or 0) + 1
-    
     db.session.commit()
 
     return jsonify(novo.serialize()), 200
@@ -46,10 +44,6 @@ def remover_favorito(manga_id):
     favorito = Favorito.query.filter_by(user_id=request.user_id, manga_id=manga_id).first()
     if not favorito:
         return jsonify({"message": "Favorito não encontrado"}), 404
-
-    manga = Manga.query.get(manga_id)
-    if manga and manga.quantidadeFavoritos > 0:
-        manga.quantidadeFavoritos -= 1
 
     db.session.delete(favorito)
     db.session.commit()

@@ -38,7 +38,6 @@ class Manga(db.Model):
     tipo = db.Column(db.String(50))
     status = db.Column(db.String(50))
     anoLancamento = db.Column(db.Integer)
-    quantidadeFavoritos = db.Column(db.Integer, default=0)
     autores = db.Column(db.String(255))
     artistas = db.Column(db.String(255))
     ultimoCapituloLancado = db.Column(db.Integer)
@@ -75,7 +74,7 @@ class Manga(db.Model):
             "status": self.status,
             "avaliacao": media,
             "anoLancamento": self.anoLancamento,
-            "quantidadeFavoritos": self.quantidadeFavoritos,
+            "quantidadeFavoritos": len(self.favoritos),
             "autores": self.autores,
             "artistas": self.artistas,
             "ultimoCapituloLancado": self.ultimoCapituloLancado,

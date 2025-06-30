@@ -108,7 +108,7 @@ def create_mangas():
             if not os.path.isdir(cap_path) or not capitulo_nome.isdigit():
                 continue
 
-            imagens = []
+            imagens = ["/Mangas/logo.png"] 
             for nome_arquivo in sorted(os.listdir(cap_path)):
                 if nome_arquivo.lower().endswith(('.jpg', '.jpeg', '.png')):
                     url = f"{base_url_db}/{nome_manga}/{capitulo_nome}/{nome_arquivo}"

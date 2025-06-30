@@ -88,6 +88,7 @@ def get_capitulo(manga_id, num):
     return jsonify({
         "idManga": manga_id,
         "idCap": capitulo.id,
+        "numero": num,
         "data": capitulo.data_postagem.strftime("%d/%m/%Y"),
         "capitulo": capitulo.titulo,
         "imagensCapitulo": capitulo.imagens  # mudou de pdf_url para imagens (lista)

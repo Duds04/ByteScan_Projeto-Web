@@ -6,7 +6,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 
-from database.models import User, Manga, Capitulo, Avaliacao  # ajuste para o nome real do seu models.py
+from database.models import User, Manga, Capitulo, Avaliacao, Favorito  # ajuste para o nome real do seu models.py
 
 from app import create_app
 from database.db import db
@@ -80,7 +80,12 @@ def print_all_data():
         print("\nAVALIAÇÕES:")
         for avali in Avaliacao.query.all():
             print(pop_vars(avali))
-        
+            
+        print("\nFAVORITOS:")
+        for fav in Favorito.query.all():
+            print(f"Usuário: {fav.user.nome} | Mangá: {fav.manga.nome}")
+
+
         print()
         print("="*aux)
 

@@ -38,6 +38,7 @@ class Manga(db.Model):
     tipo = db.Column(db.String(50))
     status = db.Column(db.String(50))
     anoLancamento = db.Column(db.Integer)
+    quantidadeFavoritos = db.Column(db.Integer, default=0)
     autores = db.Column(db.String(255))
     artistas = db.Column(db.String(255))
     ultimoCapituloLancado = db.Column(db.Integer)

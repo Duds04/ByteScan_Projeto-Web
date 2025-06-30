@@ -41,7 +41,6 @@ function MangaPage() {
     async function fetchData() {
       try {
         const data = await getManga(token, id);
-        console.log("Dados do mangá:", data);
         const dataCap = await getCapitulos(id, token);
         setManga({
           ...data.manga,
@@ -66,12 +65,8 @@ function MangaPage() {
   // Função para enviar avaliação ao backend
   async function handleRating(newRating) {
     const token = localStorage.getItem("auth");
-    console.log("Token para avaliação:", token);
-    console.log("Enviando avaliação:", newRating, "para manga ID:", id);
-
     try {
       const data = await avaliarObra(token, id, newRating);
-      console.log("Resposta da avaliação:", data);
       setUserRating(newRating);
       alert(`Avaliação enviada: ${newRating} estrela(s)`);
     } catch (error) {
@@ -83,14 +78,9 @@ function MangaPage() {
   // Função para favoritar manga
   async function handleFavorite() {
     const token = localStorage.getItem("auth");
-    console.log("Token para favoritar:", token);
-    console.log("Estado atual favoritado:", favoritado);
-
     try {
       if (favoritado) {
-        console.log("Removendo favorito para manga ID:", id);
-        const response = await removeFavorito(token, id);
-        console.log("Resposta remover favorito:", response);
+        await removeFavorito(token, id);
         setManga((prev) => ({
           ...prev,
           quantidadeFavoritos: prev.quantidadeFavoritos - 1,
@@ -98,9 +88,7 @@ function MangaPage() {
         setFavoritado(false);
         alert("Mangá desfavoritado com sucesso!");
       } else {
-        console.log("Adicionando favorito para manga ID:", id);
-        const response = await addFavorito(token, id);
-        console.log("Resposta adicionar favorito:", response);
+        await addFavorito(token, id);
         setManga((prev) => ({
           ...prev,
           quantidadeFavoritos: prev.quantidadeFavoritos + 1,

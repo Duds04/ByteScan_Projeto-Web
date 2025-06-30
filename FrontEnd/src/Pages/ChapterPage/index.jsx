@@ -17,11 +17,12 @@ import {
 } from "lucide-react";
 
 import {
-  getObraCompleta,
+  getManga,
   getCapitulo,
   getIsFav,
   addFavorito,
   removeFavorito,
+  getCapitulos,
 } from "../../services/mangaService.js";
 
 function ChapterPage() {
@@ -67,9 +68,17 @@ function ChapterPage() {
         setCapitulo(cap);
 
         // Buscar dados do mangá, se ainda não estiverem disponíveis
-        if (!manga) {
-          const m = await getObraCompleta(id, token);
-          setManga(m);
+        if (manga === null) {
+          const data = await getManga(token, id);
+          const dataCap = await getCapitulos(id, token);
+
+          setManga({
+            ...data.manga,
+            generos: data.manga.genero.split(",").map((g) => g.trim()),
+            autores: data.manga.autores.split(",").map((a) => a.trim()),
+            artistas: data.manga.artistas.split(",").map((a) => a.trim()),
+            capitulos: dataCap.capitulos,
+          });
         }
 
         // Ver se já está favoritado
@@ -154,13 +163,17 @@ function ChapterPage() {
       <div className="chapter-header">
         <div className="breadcrumb-nav">
           <Home size={16} className="breadcrumb-icon" />
-          <a href="" onClick={() => navigate("/")}>Home</a>
+          <a href="" onClick={() => navigate("/")}>
+            Home
+          </a>
           <span>/</span>
           <BookOpen size={16} className="breadcrumb-icon" />
-          <a href="" onClick={() => returnMangaPage()}>{manga.nome}</a>
+          <a href="" onClick={() => returnMangaPage()}>
+            {manga.nome}
+          </a>
           <span>/</span>
           <Eye size={16} className="breadcrumb-icon" />
-          <a >{capitulo.capitulo}</a>
+          <a>{capitulo.capitulo}</a>
         </div>
         <button
           className={
@@ -168,19 +181,12 @@ function ChapterPage() {
           }
           onClick={async () => {
             const token = localStorage.getItem("auth");
-            console.log("Token:", token);
-            console.log("ID do capítulo:", idCap);
-            console.log("ID do manga:", id);
-            console.log("Favoritado:", favoritado);
 
             try {
               if (favoritado) {
                 await removeFavorito(token, id);
                 setFavoritado(false);
               } else {
-                console.log("Adicionando favorito...");
-                console.log("Token:", token);
-                console.log("ID do manga:", id);
                 await addFavorito(token, id);
                 setFavoritado(true);
               }

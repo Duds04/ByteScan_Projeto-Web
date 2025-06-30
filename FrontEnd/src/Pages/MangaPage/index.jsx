@@ -43,9 +43,6 @@ function MangaPage() {
       try {
         const data = await getManga(token, id);
         const dataCap = await getCapitulos(id, token);
-
-        console.log("Testeeeeeee ", dataCap.capitulos);
-
         setManga({
           ...data.manga,
           generos: data.manga.genero.split(",").map((g) => g.trim()),
@@ -53,10 +50,8 @@ function MangaPage() {
           artistas: data.manga.artistas.split(",").map((a) => a.trim()),
           capitulos: dataCap.capitulos,
         });
-        console.log("Rota da imagem da capa:", data.manga.imagemCapa);
 
         setFavoritado(data.favoritado);
-        console.log("data.manga.avaliacao", data.manga.avaliacao, data);
         setUserRating(data.manga.avaliacao);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);

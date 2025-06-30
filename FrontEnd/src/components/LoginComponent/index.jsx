@@ -24,7 +24,6 @@ function LoginComponent({ onClose }) {
       senha: formData.get("password"),
     };
     const result = await login(data);
-    console.log(result);
 
     if (result.success) {
       onClose(); // Fecha o modal se o login for bem-sucedido

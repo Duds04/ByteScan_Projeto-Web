@@ -17,8 +17,6 @@ export async function loginAPI({ email, senha }) {
 
   const data = await response.json();
   
-  console.log("Login realizado com sucesso:", data.token); 
-
   return {
     token: data.token,
   };
@@ -45,8 +43,6 @@ export async function registerAPI({ nome, nomeUsuario, email, senha }) {
 
   const data = await response.json();
   
-  console.log("Registro realizado com sucesso:", data.token); 
-
   return {
     token: data.token,
   };

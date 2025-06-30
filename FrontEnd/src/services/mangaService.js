@@ -131,7 +131,7 @@ export const getCapitulo = (obraId, numero) => {
 };
 
 export const adicionarCapitulo = async (obraId, capituloData) => {
-  return handleRequest(`${BASE_URL}/${obraId}/capitulo`, {
+  return handleRequest(`${BASE_URL}/manga/${obraId}/capitulo`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

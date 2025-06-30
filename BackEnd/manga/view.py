@@ -108,9 +108,10 @@ def get_manga_completo(manga_id):
 
     favoritado = False
     avaliacao = 0
-
     try:
         token = get_token_from_header()
+        if token.startswith("\"") and token.endswith("\""):
+                token = token[1:-1] 
         user_data = decode_token(token)
         user_id = user_data.get("user_id")
 

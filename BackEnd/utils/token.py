@@ -43,9 +43,11 @@ def autorizar(f):
             if token.startswith("\"") and token.endswith("\""):
                 token = token[1:-1] 
             decoded = decode_token(token)
-            request.user_data = decoded  # Informações completas do usuário
-            request.user_id = decoded.get("user_id")  # ID rápido
+            request.user_data = decoded
+            request.user_id = decoded.get("user_id")
         except ValueError as e:
+            print(f"Erro ao decodificar token: {str(e)}")
+            print("Token = ", token)
             return jsonify({"message": str(e)}), 401
         return f(*args, **kwargs)
     return decorated

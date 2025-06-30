@@ -87,8 +87,7 @@ function MangaPage() {
 
   // Função para favoritar manga
   async function handleFavorite() {
-    const stored = localStorage.getItem("auth");
-    const token = stored ? JSON.parse(stored).token : "";
+    const token = localStorage.getItem("auth");
 
     try {
       if (favoritado) {

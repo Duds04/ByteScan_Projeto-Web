@@ -167,12 +167,19 @@ function ChapterPage() {
           onClick={async () => {
             const stored = localStorage.getItem("auth");
             const token = stored ? JSON.parse(stored).token : "";
+            console.log("Token:", token);
+            console.log("ID do capítulo:", idCap);
+            console.log("ID do manga:", id);
+            console.log("Favoritado:", favoritado);
 
             try {
               if (favoritado) {
                 await removeFavorito(token, id);
                 setFavoritado(false);
               } else {
+                console.log("Adicionando favorito...");
+                console.log("Token:", token);
+                console.log("ID do manga:", id);
                 await addFavorito(token, id);
                 setFavoritado(true);
               }

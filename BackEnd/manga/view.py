@@ -99,33 +99,6 @@ def listar_mangas():
     mangas = Manga.query.all()
     return jsonify([m.serialize() for m in mangas]), 200
 
-# Rota que avalia um manga
-@manga_bp.route("/<int:manga_id>/avaliar", methods=["POST"])
-@autorizar
-def avaliar_manga(manga_id):
-    dados = request.get_json()
-    user_id = request.user_id
-    nota = dados.get("nota")
-    comentario = dados.get("comentario", "")
-
-    if not user_id or nota is None:
-        return jsonify({"message": "user_id e nota são obrigatórios"}), 400
-
-    nova_avaliacao = {
-        "user_id": user_id,
-        "manga_id": manga_id,
-        "nota": nota,
-        "comentario": comentario
-    }
-
-    return create_registro(Avaliacao, nova_avaliacao)
-
-@manga_bp.route("/<int:manga_id>/avaliacoes", methods=["GET"])
-def get_avaliacoes_manga(manga_id):
-    nota_media = Avaliacao.query.with_entities(func.avg(Avaliacao.nota)).filter_by(manga_id=manga_id).scalar()
-
-    return jsonify({"nota": nota_media}), 200
-
 # Rota que retorna uma obra específica
 @manga_bp.route("/obras/<int:manga_id>", methods=["GET", "OPTIONS"])
 def get_manga_completo(manga_id):

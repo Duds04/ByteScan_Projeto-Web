@@ -70,8 +70,11 @@ export const getFavoritos = async (token) => {
   });
 };
 
+// coloque um print do que esta sendo enviado
 export const addFavorito = async (token, obraId) => {
-  return handleRequest(`${BASE_URL}/manga/${obraId}/favorito`, {
+  console.log("Adicionando favorito:", obraId);
+  console.log("Token:", token);
+  return handleRequest(`${BASE_URL}/manga/favorito/${obraId}`, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -89,7 +92,7 @@ export const removeFavorito = async (token, obraId) => {
 };
 
 export const avaliarObra = async (token, obraId, nota, comentario = "") => {
-  return handleRequest(`${BASE_URL}/${obraId}/avaliar`, {
+  return handleRequest(`${BASE_URL}/manga/${obraId}/avaliar`, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -100,7 +103,7 @@ export const avaliarObra = async (token, obraId, nota, comentario = "") => {
 };
 
 export const getAvaliacoes = (obraId) => {
-  return handleRequest(`${BASE_URL}/${obraId}/avaliacoes`);
+  return handleRequest(`${BASE_URL}/manga/${obraId}/avaliacoes`);
 };
 
 export const filtrarObras = (categoria, genero) => {

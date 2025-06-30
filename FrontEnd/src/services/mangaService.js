@@ -31,8 +31,6 @@ export const getManga = async (token, id) => {
 };
 
 export const getCapitulos = async (obraId, token) => {
-
-  console.log("dasdas ", obraId, token);
     return handleRequest(`${BASE_URL}/manga/obras/${obraId}/capitulos`, {
     method: "GET",
     headers: {

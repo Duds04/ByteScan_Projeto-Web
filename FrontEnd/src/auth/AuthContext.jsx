@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const stored = localStorage.getItem("auth");
-    console.log("Stored token:", stored);
     if (stored != undefined) {
       const decoded = decodeJWT(stored);
       setUser(decoded.username);

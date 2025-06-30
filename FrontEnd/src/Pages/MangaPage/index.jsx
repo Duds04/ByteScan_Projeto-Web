@@ -36,16 +36,13 @@ function MangaPage() {
   // Mock de requisição ao servidor
   useEffect(() => {
     setLoading(true);
-    setFavoritado(false);
     const token = localStorage.getItem("auth");
 
     async function fetchData() {
       try {
         const data = await getManga(token, id);
+        console.log("Dados do mangá:", data);
         const dataCap = await getCapitulos(id, token);
-
-        console.log("Testeeeeeee ", dataCap.capitulos);
-
         setManga({
           ...data.manga,
           generos: data.manga.genero.split(",").map((g) => g.trim()),
@@ -53,10 +50,8 @@ function MangaPage() {
           artistas: data.manga.artistas.split(",").map((a) => a.trim()),
           capitulos: dataCap.capitulos,
         });
-        console.log("Rota da imagem da capa:", data.manga.imagemCapa);
 
         setFavoritado(data.favoritado);
-        console.log("data.manga.avaliacao", data.manga.avaliacao, data);
         setUserRating(data.manga.avaliacao);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
@@ -74,6 +69,8 @@ function MangaPage() {
 
     try {
       await avaliarObra(token, id, newRating);
+      // const data = await avaliarObra(token, id, newRating);
+      // setUserRating(data);
       setUserRating(newRating);
       alert(`Avaliação enviada: ${newRating} estrela(s)`);
     } catch (error) {
@@ -191,7 +188,7 @@ function MangaPage() {
               <button
                 className="button-chapters"
                 onClick={() => {
-                  returnMangaCap(manga.idUltimoCapituloLancado);
+                  returnMangaCap(manga.ultimoCapituloLancado);
                 }}
               >
                 <SkipForward size={18} />

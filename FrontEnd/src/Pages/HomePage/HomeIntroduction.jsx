@@ -15,9 +15,9 @@ function HomeIntroduction() {
             pesquisa.
           </p>
           <p>Divirta-se!</p>
-          <button className="home-introduction-button">
+          <button className="home-introduction-button" onClick={() => alert("Em breve!")}>
             Se torne um administrador
-          </button>
+          </button >
         </div>
       </div>
       <img className="home-logo" src="/logo.png" alt="Logo ByteScan" />

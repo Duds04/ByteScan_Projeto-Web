@@ -61,7 +61,7 @@ def create_mangas():
         },
         "Guerra das Grandes Potências": {
             "descricao": "O ano é 2206 e a humanidade tem apenas 100 anos restantes no planeta Terra. A “Batalha que derruba a nação”, uma guerra com a sobrevivência de cada país em jogo, começa!!",
-            "genero": "Drama",
+            "genero": "Terror",
             "tipo": "Manga",
             "status": "Em andamento",
             "anoLancamento": 2023,

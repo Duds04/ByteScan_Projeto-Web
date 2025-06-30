@@ -124,7 +124,7 @@ export const getGeneros = () => {
 };
 
 export const getCapitulo = (obraId, numero) => {
-  return handleRequest(`${BASE_URL}/${obraId}/capitulo/${numero}`);
+  return handleRequest(`${BASE_URL}/manga/${obraId}/capitulo/${numero}`);
 };
 
 export const adicionarCapitulo = async (obraId, capituloData) => {

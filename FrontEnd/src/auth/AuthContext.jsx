@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const stored = localStorage.getItem("auth");
+    console.log("Stored token:", stored);
     if (stored != undefined) {
       const decoded = decodeJWT(stored);
       setUser(decoded.username);
@@ -53,6 +54,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("auth");
+    localStorage.removeItem("user");
   };
 
   const isLoggedIn = () => {

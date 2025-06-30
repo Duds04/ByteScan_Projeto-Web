@@ -31,5 +31,5 @@ def avaliar_manga(manga_id):
 @manga_bp.route("/<int:manga_id>/avaliacoes", methods=["GET"])
 def get_avaliacoes_manga(manga_id):
     nota_media = Avaliacao.query.with_entities(func.avg(Avaliacao.nota)).filter_by(manga_id=manga_id).scalar()
-
+    nota_media = round(nota_media, 2) if nota_media is not None else 0.0
     return jsonify({"nota": nota_media}), 200

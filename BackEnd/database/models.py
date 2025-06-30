@@ -51,10 +51,10 @@ class Manga(db.Model):
     def serialize(self):
         # Cálculo da média das avaliações
         if self.avaliacoes:
-            soma = sum(a.nota for a in self.avaliacoes)
-            media = round(soma / len(self.avaliacoes), 1)
+            total = len(self.avaliacoes)
+            media = round(sum(a.nota for a in self.avaliacoes) / total, 1)
         else:
-            media = 0
+            media = 0.0
 
         capitulos_serializados = [
             {

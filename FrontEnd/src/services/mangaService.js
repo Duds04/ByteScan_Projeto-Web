@@ -55,7 +55,7 @@ export const getObraCompleta = async (obraId, token) => {
 };
 
 export const getIsFav = async (token, obraId) => {
-  return handleRequest(`${BASE_URL}/favoritos/${obraId}`, {
+  return handleRequest(`${BASE_URL}/manga/favoritos/${obraId}`, {
     headers: {
       "Authorization": `Bearer ${token}`,
     },
@@ -63,7 +63,7 @@ export const getIsFav = async (token, obraId) => {
 };
 
 export const getFavoritos = async (token) => {
-  return handleRequest(`${BASE_URL}/favoritos`, {
+  return handleRequest(`${BASE_URL}/manga/favoritos`, {
     headers: {
       "Authorization": `Bearer ${token}`,
     },
@@ -71,7 +71,7 @@ export const getFavoritos = async (token) => {
 };
 
 export const addFavorito = async (token, obraId) => {
-  return handleRequest(`${BASE_URL}/favoritos/${obraId}`, {
+  return handleRequest(`${BASE_URL}/manga/${obraId}/favorito`, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -80,7 +80,7 @@ export const addFavorito = async (token, obraId) => {
 };
 
 export const removeFavorito = async (token, obraId) => {
-  return handleRequest(`${BASE_URL}/favoritos/${obraId}`, {
+  return handleRequest(`${BASE_URL}/manga/desfavoritar/${obraId}`, {
     method: "DELETE",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -108,19 +108,19 @@ export const filtrarObras = (categoria, genero) => {
   if (categoria) params.append("categoria", categoria);
   if (genero) params.append("genero", genero);
 
-  return handleRequest(`${BASE_URL}/filtro?${params.toString()}`);
+  return handleRequest(`${BASE_URL}/manga/filtro?${params.toString()}`);
 };
 
 export const pesquisarObras = (termo) => {
-  return handleRequest(`${BASE_URL}/pesquisa?termo=${encodeURIComponent(termo)}`);
+  return handleRequest(`${BASE_URL}/manga/pesquisa?termo=${encodeURIComponent(termo)}`);
 };
 
 export const getCategorias = () => {
-  return handleRequest(`${BASE_URL}/categorias`);
+  return handleRequest(`${BASE_URL}/manga/categorias`);
 };
 
 export const getGeneros = () => {
-  return handleRequest(`${BASE_URL}/generos`);
+  return handleRequest(`${BASE_URL}/manga/generos`);
 };
 
 export const getCapitulo = (obraId, numero) => {

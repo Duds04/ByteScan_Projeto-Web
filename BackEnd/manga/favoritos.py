@@ -10,9 +10,18 @@ def listar_favoritos():
     favoritos = Favorito.query.filter_by(user_id=request.user_id).all()
     return jsonify([fav.manga.serialize() for fav in favoritos if fav.manga]), 200
 
-@manga_bp.route("/<int:manga_id>/favorito", methods=["POST"])
+@manga_bp.route("/favoritos/<int:obra_id>", methods=["GET"])
 @autorizar
-def adicionar_favorito(manga_id):
+def get_favorito(obra_id):
+    favorito = Favorito.query.filter_by(user_id=request.user_id, manga_id=obra_id).first()
+    if not favorito:
+        return jsonify({"favoritado": False}), 404
+
+    return jsonify({"favoritado": True}), 200
+
+@manga_bp.route("/favorito/<int:manga_id>", methods=["POST"])
+@autorizar
+def add_favorito(manga_id):
     existente = Favorito.query.filter_by(user_id=request.user_id, manga_id=manga_id).first()
     if existente:
         return jsonify({"message": "Mangá já está nos favoritos"}), 400
@@ -21,9 +30,9 @@ def adicionar_favorito(manga_id):
     db.session.add(novo)
     db.session.commit()
 
-    return jsonify(novo.serialize()), 201
+    return jsonify(novo.serialize()), 200
 
-@manga_bp.route("/<int:manga_id>/desfavoritar", methods=["DELETE"])
+@manga_bp.route("/desfavoritar/<int:manga_id>", methods=["DELETE"])
 @autorizar
 def remover_favorito(manga_id):
     favorito = Favorito.query.filter_by(user_id=request.user_id, manga_id=manga_id).first()

@@ -5,18 +5,19 @@ from database.db_func import create_registro
 from sqlalchemy import or_, func, desc
 from utils.categorias import CATEGORIAS_FIXAS, GENEROS_FIXOS
 from utils.token import decode_token, get_token_from_header
+from utils.token import autorizar
 
 # Rota que filtra mangas por genero e tipo
 @manga_bp.route("/filtro", methods=["GET"])
 def filtro():
+    tipo = request.args.get("categoria")
     genero = request.args.get("genero")
-    tipo = request.args.get("tipo")
 
     query = Manga.query
 
-    if genero:
+    if genero != "genero":
         query = query.filter_by(genero=genero)
-    if tipo:
+    if tipo != "categoria":
         query = query.filter_by(tipo=tipo)
 
     mangas = query.all()
@@ -79,7 +80,7 @@ def listar_mangas_mais_favoritados():
 
 # Rota que retorna o capítulo específico de um manga, com imagens
 @manga_bp.route("/<int:manga_id>/capitulo/<int:num>", methods=["GET", "OPTIONS"])
-def leitura_online(manga_id, num):
+def get_capitulo(manga_id, num):
     capitulo = Capitulo.query.filter_by(manga_id=manga_id, numero=num).first()
     if not capitulo:
         return jsonify({"message": "Capítulo não encontrado"}), 404
@@ -100,9 +101,10 @@ def listar_mangas():
 
 # Rota que avalia um manga
 @manga_bp.route("/<int:manga_id>/avaliar", methods=["POST"])
+@autorizar
 def avaliar_manga(manga_id):
     dados = request.get_json()
-    user_id = dados.get("user_id")
+    user_id = request.user_id
     nota = dados.get("nota")
     comentario = dados.get("comentario", "")
 
@@ -117,6 +119,12 @@ def avaliar_manga(manga_id):
     }
 
     return create_registro(Avaliacao, nova_avaliacao)
+
+@manga_bp.route("/<int:manga_id>/avaliacoes", methods=["GET"])
+def get_avaliacoes_manga(manga_id):
+    nota_media = Avaliacao.query.with_entities(func.avg(Avaliacao.nota)).filter_by(manga_id=manga_id).scalar()
+
+    return jsonify({"nota": nota_media}), 200
 
 # Rota que retorna uma obra específica
 @manga_bp.route("/obras/<int:manga_id>", methods=["GET", "OPTIONS"])
@@ -153,10 +161,6 @@ def get_manga_completo(manga_id):
     }), 200
 
 
-@manga_bp.route("/<int:manga_id>/avaliacoes", methods=["GET"])
-def get_avaliacoes_manga(manga_id):
-    avaliacoes = Avaliacao.query.filter_by(manga_id=manga_id).all()
-    return jsonify([a.serialize() for a in avaliacoes]), 200
 
 
 @manga_bp.route("/categorias", methods=["GET"])

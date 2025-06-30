@@ -66,7 +66,7 @@ function MangaPage() {
   async function handleRating(newRating) {
     const token = localStorage.getItem("auth");
     try {
-      const data = await avaliarObra(token, id, newRating);
+      await avaliarObra(token, id, newRating);
       setUserRating(newRating);
       alert(`Avaliação enviada: ${newRating} estrela(s)`);
     } catch (error) {
@@ -204,11 +204,17 @@ function MangaPage() {
               </button>
               {favoritado ? (
                 <>
-                  Você já favoritou <br /> este mangá!
+                  {manga.quantidadeFavoritos === 1 
+                    ? "Você é o único que favoritou essa obra!" 
+                    : `Você e mais ${manga.quantidadeFavoritos - 1} ${manga.quantidadeFavoritos - 1 === 1 ? "pessoa" : "pessoas"} favoritaram esta obra!`
+                  }
                 </>
               ) : (
                 <>
-                  {manga.quantidadeFavoritos} Usuários <br /> favoritaram
+                  {manga.quantidadeFavoritos === 0 
+                    ? "Seja o primeiro a favoritar!" 
+                    : `${manga.quantidadeFavoritos} ${manga.quantidadeFavoritos === 1 ? "usuário favoritou" : "usuários favoritaram"}`
+                  }
                 </>
               )}{" "}
             </span>

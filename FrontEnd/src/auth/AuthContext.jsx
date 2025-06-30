@@ -1,11 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { loginAPI, registerAPI, decodeJWT } from "./apiLogin";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -49,11 +51,11 @@ export const AuthProvider = ({ children }) => {
       return { success: false, message: error.message };
     }
   };
-
   const logout = () => {
     setUser(null);
     localStorage.removeItem("auth");
     localStorage.removeItem("user");
+    navigate("/");
   };
 
   const isLoggedIn = () => {

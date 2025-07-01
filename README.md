@@ -15,6 +15,27 @@ O ByteScan é um site que disponibiliza traduções de mangás, manhwa, webtoons
       
       npm run dev
    
+---
+
+### Arquivo `.env`
+
+O projeto já contém um arquivo `.env` configurado. Certifique-se apenas de **modificar a senha do banco de dados**, caso a senha do seu MySQL local seja diferente de `password`.
+
+No trecho abaixo, substitua `password` pela sua senha real do usuário `root`:
+
+```
+DB_PASSWORD=password
+DATABASE_URL=mysql+pymysql://root:password@localhost:3306/bytescan
+```
+
+> Exemplo com senha `minhasenha`:
+>
+> ```
+> DB_PASSWORD=minhasenha
+> DATABASE_URL=mysql+pymysql://root:minhasenha@localhost:3306/bytescan
+> ```
+
+
 # Back-End
 
 #### Guia de Execução
@@ -50,26 +71,6 @@ O ByteScan é um site que disponibiliza traduções de mangás, manhwa, webtoons
    ```
    make run
    ```
-
----
-
-### Arquivo `.env`
-
-O projeto já contém um arquivo `.env` configurado. Certifique-se apenas de **modificar a senha do banco de dados**, caso a senha do seu MySQL local seja diferente de `password`.
-
-No trecho abaixo, substitua `password` pela sua senha real do usuário `root`:
-
-```
-DB_PASSWORD=password
-DATABASE_URL=mysql+pymysql://root:password@localhost:3306/bytescan
-```
-
-> Exemplo com senha `minhasenha`:
->
-> ```
-> DB_PASSWORD=minhasenha
-> DATABASE_URL=mysql+pymysql://root:minhasenha@localhost:3306/bytescan
-> ```
 
 
 ---

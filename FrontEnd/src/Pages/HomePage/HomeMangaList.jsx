@@ -47,7 +47,7 @@ function HomeMangaList({ title, mangas }) {
                         <div className="release-header">
                           Capítulos Recentes:
                         </div>
-                        {manga.capitulos.slice().reverse().slice(-3).map((capitulos, lidx) => (
+                        {manga.capitulos.slice(-3).reverse().map((capitulos, lidx) => (
                           <div
                             key={lidx}
                             className="home-manga-card-release-item"

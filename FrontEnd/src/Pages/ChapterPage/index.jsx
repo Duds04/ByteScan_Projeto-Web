@@ -99,12 +99,12 @@ function ChapterPage() {
     return (
       <div className="chapter-controler">
         <select
-          value={capitulo.idCap}
+          value={capitulo.numero}
           onChange={(e) => navigate(`/Manga/${id}/cap/${e.target.value}`)}
           className="chapter-select"
         >
           {manga.capitulos.map((cap) => (
-            <option key={cap.idCap} value={cap.idCap}>
+            <option key={cap.idCap} value={cap.numero}>
               Capítulo {cap.numero}
             </option>
           ))}

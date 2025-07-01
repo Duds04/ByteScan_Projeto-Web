@@ -15,6 +15,41 @@ O ByteScan é um site que disponibiliza traduções de mangás, manhwa, webtoons
       
       npm run dev
    
+# Back-End
+
+#### Guia de Execução
+
+1. Acesse a pasta `BackEnd` e crie um ambiente virtual:
+
+   - **Windows:**
+     ```
+     python -m venv venv
+     venv\Scripts\activate
+     ```
+
+   - **Linux/Mac:**
+     ```
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+
+2. Instale as dependências:
+
+   ```
+   make install
+   ```
+
+3. Inicialize o banco de dados com dados de exemplo:
+
+   ```
+   make init-db
+   ```
+
+4. Inicie o servidor:
+
+   ```
+   make run
+   ```
 ---
 #### Tecnologias Utilizadas
    
